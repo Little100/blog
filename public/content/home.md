@@ -1,53 +1,53 @@
-content.home.lead
+content.home.p0
 
-## content.home.heading.blocks
+## content.home.section.自定义块
 
-content.home.blocks.intro
+content.home.p1
 
-content.home.blocks.listIcons
+content.home.p2
 
-content.home.blocks.listCollapsible
+content.home.p3
 
-content.home.blocks.listTitle
+content.home.p4
 
----
+content.home.p13
 
-### content.home.h3.question
+### content.home.section.问题
 
 <circle-question>
-content.home.callout.question.body
+content.home.p6
 </circle-question>
 
----
+content.home.p13
 
-### content.home.h3.lightbulb
+### content.home.section.提示
 
 <lightbulb collapsible>
-content.home.callout.lightbulb.body
+content.home.p8
 </lightbulb>
 
----
+content.home.p13
 
-### content.home.h3.exclamation
+### content.home.section.重要
 
-<circle-exclamation collapsible:close title:content.home.exclamation.panelTitle>
-content.home.callout.exclamation.body
+<circle-exclamation collapsible:close title:警告>
+content.home.p10
 </circle-exclamation>
 
----
+content.home.p13
 
-### content.home.h3.comments
+### content.home.section.评论
 
 <comments>
-content.home.callout.comments.body
+content.home.p12
 </comments>
 
----
+content.home.p13
 
-### content.home.h3.link
+### content.home.section.链接
 
-<link collapsible:open title:content.home.link.panelTitle>
-content.home.link.body
+<link collapsible:open title:外部资源>
+content.home.p14
 </link>
 
-content.home.footer
+content.home.p15

@@ -1,44 +1,44 @@
 {
-  "post.simplicity.heroAlt": {
-    "en": "Minimal desk with warm light",
-    "ja": "暖かい光のミニマルな机",
+  "post.simplicity.img.暖光下的简约桌面": {
+    "en": "",
+    "ja": "",
     "zh": "暖光下的简约桌面",
-    "zh-TW": "暖光下的簡約桌面"
+    "zh-TW": ""
   },
-  "post.simplicity.lead": {
-    "en": "Whitespace is not emptiness — it is the pause that lets meaning breathe.",
-    "ja": "余白は空っぽではなく、意味が息をするための間です。",
+  "post.simplicity.p0": {
+    "en": "",
+    "ja": "",
     "zh": "留白不是空洞，而是让意义得以呼吸的停顿。",
-    "zh-TW": "留白不是空洞，而是讓意義得以呼吸的停頓。"
+    "zh-TW": ""
   },
-  "post.simplicity.section.body": {
-    "en": "When every margin is intentional, the eye travels calmly. Reduce decoration until only structure and tone remain.",
-    "ja": "余白に意図があると、視線は落ち着いて動きます。装飾を削り、骨格とトーンだけ残す。",
+  "post.simplicity.p1": {
+    "en": "",
+    "ja": "",
     "zh": "当每一处边距都有意图，视线会从容移动。削减装饰，直到只剩结构与气质。",
-    "zh-TW": "當每一處邊距都有意圖，視線會從容移動。削減裝飾，直到只剩結構與氣質。"
+    "zh-TW": ""
   },
-  "post.simplicity.section.whitespace": {
-    "en": "Whitespace as rhythm",
-    "ja": "リズムとしての余白",
+  "post.simplicity.section.留白即节奏": {
+    "en": "",
+    "ja": "",
     "zh": "留白即节奏",
-    "zh-TW": "留白即節奏"
+    "zh-TW": ""
   },
-  "post.simplicity.tag.design": {
-    "en": "Design",
-    "ja": "デザイン",
-    "zh": "设计",
-    "zh-TW": "設計"
-  },
-  "post.simplicity.tag.life": {
-    "en": "Life",
-    "ja": "生活",
+  "post.simplicity.tag.生活": {
+    "en": "",
+    "ja": "",
     "zh": "生活",
-    "zh-TW": "生活"
+    "zh-TW": ""
+  },
+  "post.simplicity.tag.设计": {
+    "en": "",
+    "ja": "",
+    "zh": "设计",
+    "zh-TW": ""
   },
   "post.simplicity.title": {
-    "en": "The quiet beauty of simplicity",
-    "ja": "シンプルの静かな美しさ",
+    "en": "",
+    "ja": "",
     "zh": "简约之美",
-    "zh-TW": "簡約之美"
+    "zh-TW": ""
   }
 }

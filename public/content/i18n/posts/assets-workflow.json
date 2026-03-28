@@ -1,164 +1,260 @@
 {
-  "post.assets-workflow.anno.intro.demo.body": {
-    "en": "This is an annotation outside a code fence — hover or click to see the sidebar badge bubble. When the title bar is empty, no label is shown.",
-    "ja": "これはコード囲み外の注釈です — マウスオーバーでサイドバーの番号バッジ気泡が表示されます。タイトルが空ならラベルは表示しません。",
+  "post.assets-workflow.annotation.body": {
+    "en": "",
+    "ja": "",
     "zh": "这是一条围栏外的批注，鼠标悬停或点击会显示侧栏编号气泡。标题栏为空时不显示标签。",
-    "zh-TW": "這是一條圍欄外的註釋，滑鼠懸停或點擊會顯示側欄編號氣泡。標題欄為空時不顯示標籤。"
+    "zh-TW": ""
   },
-  "post.assets-workflow.anno.intro.demo2.body": {
-    "en": "Second annotation with a title label, useful for categorising different types of tips.",
-    "ja": "タイトルラベル付きの第二条注釈、不同種のヒントを区別するのに便利です。",
-    "zh": "第二条批注，带标题标签，用于区分不同类型的提示。",
-    "zh-TW": "第二條註釋，帶標題標籤，用於區分不同類型的提示。"
-  },
-  "post.assets-workflow.anno.intro.demo2.title": {
-    "en": "Image assets",
-    "ja": "画像資産",
+  "post.assets-workflow.annotation.title": {
+    "en": "",
+    "ja": "",
     "zh": "图片资产",
-    "zh-TW": "圖片資產"
+    "zh-TW": ""
   },
-  "post.assets-workflow.auto.1": {
-    "en": "Scan `raw-assets/images/` for new or changed raster files.",
-    "ja": "`raw-assets/images/` の新規・更新画像を走査します。",
-    "zh": "扫描 `raw-assets/images/` 中新增或变更的位图文件。",
-    "zh-TW": "掃描 `raw-assets/images/` 中新增或變更的點陣圖檔。"
-  },
-  "post.assets-workflow.auto.2": {
-    "en": "Pick quality presets per format (PNG vs JPEG vs GIF, etc.).",
-    "ja": "形式ごと（PNG / JPEG / GIF など）に品質プリセットを選びます。",
-    "zh": "按格式（PNG、JPEG、GIF 等）选择质量预设。",
-    "zh-TW": "依格式（PNG、JPEG、GIF 等）選擇品質預設。"
-  },
-  "post.assets-workflow.auto.3": {
-    "en": "Write lossy or lossless WebP into `public/assets/images/`.",
-    "ja": "可逆／非可逆 WebP を `public/assets/images/` に書き出します。",
-    "zh": "将有损或无损 WebP 写入 `public/assets/images/`。",
-    "zh-TW": "將有損或無損 WebP 寫入 `public/assets/images/`。"
-  },
-  "post.assets-workflow.auto.4": {
-    "en": "Keep raw sources out of git so the repo stays small.",
-    "ja": "原稿を Git に入れず、リポジトリを軽く保ちます。",
-    "zh": "不把原始大图纳入 Git，控制仓库体积。",
-    "zh-TW": "不把原始大圖納入 Git，控制儲存庫體積。"
-  },
-  "post.assets-workflow.autoIntro": {
-    "en": "Running `npm run compress` does the following:",
-    "ja": "`npm run compress` を実行すると、次の処理が走ります。",
-    "zh": "执行 `npm run compress` 时会自动完成：",
-    "zh-TW": "執行 `npm run compress` 時會自動完成："
-  },
-  "post.assets-workflow.blockquote.lfs": {
-    "en": "If you must version large binaries, use Git LFS or an object store — not plain blobs in the default tree.",
-    "ja": "大きなバイナリを履歴に残すなら Git LFS やオブジェクトストアを。通常のツリーに直置きしない。",
-    "zh": "若必须把大文件纳入版本历史，请用 Git LFS 或对象存储，而不是把二进制直接堆进普通提交。",
-    "zh-TW": "若必須把大檔納入版本歷史，請用 Git LFS 或物件儲存，而不是把二進位直接堆進一般提交。"
-  },
-  "post.assets-workflow.callout.gif": {
-    "en": "Animated GIFs are flattened to a single WebP frame by this pipeline — keep motion-critical GIFs elsewhere or extend the script.",
-    "ja": "このパイプラインではアニメ GIF は 1 枚の WebP に潰れます。動きが命なら別経路かスクリプト拡張を。",
-    "zh": "本流水线会把动画 GIF 压成单帧 WebP；若动画是关键素材，请另存或扩展脚本。",
-    "zh-TW": "本流水線會把動畫 GIF 壓成單幀 WebP；若動畫是關鍵素材，請另存或擴充腳本。"
-  },
-  "post.assets-workflow.gitignore.lead": {
-    "en": "Ignore the raw folder so accidental `git add .` never uploads multi-megabyte sources:",
-    "ja": "原稿フォルダを無視し、うっかり `git add .` で巨大ファイルを載せないようにします。",
-    "zh": "忽略原稿目录，避免手滑 `git add .` 把几兆大的源图推进仓库：",
-    "zh-TW": "忽略原稿目錄，避免手滑 `git add .` 把幾 MB 的源圖推進儲存庫："
-  },
-  "post.assets-workflow.h2.gitignore": {
-    "en": "Git ignore raw assets",
-    "ja": "原稿を .gitignore",
-    "zh": "用 .gitignore 排除原稿",
-    "zh-TW": "用 .gitignore 排除原稿"
-  },
-  "post.assets-workflow.h2.setup": {
-    "en": "One-time setup",
-    "ja": "初回セットアップ",
-    "zh": "一次性准备",
-    "zh-TW": "一次性準備"
-  },
-  "post.assets-workflow.h2.whyNotUnsplash": {
-    "en": "Why not hotlink Unsplash forever?",
-    "ja": "ずっと Unsplash 直リンクでいいのでは？",
-    "zh": "为什么不一直用 Unsplash 外链？",
-    "zh-TW": "為什麼不一直用 Unsplash 外連？"
-  },
-  "post.assets-workflow.h2.workflow": {
-    "en": "End-to-end workflow",
-    "ja": "全体の流れ",
-    "zh": "端到端流程",
-    "zh-TW": "端到端流程"
-  },
-  "post.assets-workflow.intro": {
-    "en": "Keep huge originals out of GitHub while still shipping crisp images on the site. This note documents the `compress-assets` script and the folders it expects.",
-    "ja": "巨大な原稿を GitHub に載せず、サイトでは鮮明な画像を配信するための `compress-assets` スクリプトとフォルダ構成のメモです。",
-    "zh": "把原始大图挡在 GitHub 仓库外，同时让站点仍输出清晰的 WebP。本文记录 `compress-assets` 脚本与目录约定。",
-    "zh-TW": "把原始大圖擋在 GitHub 儲存庫外，同時讓網站仍輸出清晰的 WebP。本文記錄 `compress-assets` 腳本與目錄約定。"
-  },
-  "post.assets-workflow.oneCommandLead": {
-    "en": "After setup, compressing is one command:",
-    "ja": "セットアップ後は、圧縮はこの一コマンドです。",
-    "zh": "准备好目录后，压缩只需一条命令：",
-    "zh-TW": "準備好目錄後，壓縮只需一條命令："
-  },
-  "post.assets-workflow.seoDescription": {
-    "en": "Compress images to WebP with one npm script, keep raw assets out of GitHub, and ship a lighter static site.",
-    "ja": "npm 一発で画像を WebP に圧縮し、原稿を GitHub の外に置いたまま軽い静的サイトを配信する手順。",
+  "post.assets-workflow.description": {
+    "en": "",
+    "ja": "",
     "zh": "用一条 npm 命令把图片压成 WebP：原始大图不进入 GitHub，站点仍输出清晰配图并控制仓库体积。",
-    "zh-TW": "用一條 npm 指令把圖片壓成 WebP：原始大圖不進 GitHub，網站仍輸出清晰配圖並控制儲存庫體積。"
+    "zh-TW": ""
   },
-  "post.assets-workflow.setup.footer": {
-    "en": "Then drop PNG/JPEG/WebP/AVIF/GIF sources into `raw-assets/images/` and run the script.",
-    "ja": "その後、PNG/JPEG/WebP/AVIF/GIF を `raw-assets/images/` に置いてスクリプトを実行します。",
-    "zh": "然后将 PNG/JPEG/WebP/AVIF/GIF 源文件放进 `raw-assets/images/` 再运行脚本。",
-    "zh-TW": "然後將 PNG/JPEG/WebP/AVIF/GIF 源檔放入 `raw-assets/images/` 再執行腳本。"
+  "post.assets-workflow.p0": {
+    "en": "",
+    "ja": "",
+    "zh": "把原始大图挡在 GitHub 仓库外，同时让站点仍输出清晰的 WebP。本文记录 `compress-assets` 脚本与目录约定。",
+    "zh-TW": ""
   },
-  "post.assets-workflow.setup.lead": {
-    "en": "Install Sharp once and create the inbox folder:",
-    "ja": "Sharp を一度入れ、受け皿フォルダを作ります。",
+  "post.assets-workflow.p1": {
+    "en": "",
+    "ja": "",
+    "zh": "准备好目录后，压缩只需一条命令：",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p2": {
+    "en": "",
+    "ja": "",
+    "zh": "执行 `npm run compress` 时会自动完成：",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p24": {
+    "en": "",
+    "ja": "",
+    "zh": "本流水线会把动画 GIF 压成单帧 WebP；若动画是关键素材，请另存或扩展脚本。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p25": {
+    "en": "",
+    "ja": "",
     "zh": "安装 Sharp 并创建原稿收件目录：",
-    "zh-TW": "安裝 Sharp 並建立原稿收件目錄："
+    "zh-TW": ""
   },
-  "post.assets-workflow.tag.tools": {
-    "en": "Tools",
-    "ja": "ツール",
-    "zh": "工具",
-    "zh-TW": "工具"
+  "post.assets-workflow.p26": {
+    "en": "",
+    "ja": "",
+    "zh": "然后将 PNG/JPEG/WebP/AVIF/GIF 源文件放进 `raw-assets/images/` 再运行脚本。",
+    "zh-TW": ""
   },
-  "post.assets-workflow.tag.workflow": {
-    "en": "Workflow",
-    "ja": "ワークフロー",
+  "post.assets-workflow.p27": {
+    "en": "",
+    "ja": "",
+    "zh": "原型阶段外链无可厚非；若要维护多年的站点，本地优化资源更稳，因为：",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p28": {
+    "en": "",
+    "ja": "",
+    "zh": "- 外链可能改政策、限流或直接失效。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p29": {
+    "en": "",
+    "ja": "",
+    "zh": "- 自托管 WebP 可按素材类型（界面图 / 照片）分别调质量。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p3": {
+    "en": "",
+    "ja": "",
+    "zh": "1. 扫描 `raw-assets/images/` 中新增或变更的位图文件。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p30": {
+    "en": "",
+    "ja": "",
+    "zh": "- 在 CI 里检测缺失的原稿目录，可当作有效的防护栏。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p31": {
+    "en": "",
+    "ja": "",
+    "zh": "忽略原稿目录，避免手滑 `git add .` 把几兆大的源图推进仓库：",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p4": {
+    "en": "",
+    "ja": "",
+    "zh": "2. 按格式（PNG、JPEG、GIF 等）选择质量预设。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p5": {
+    "en": "",
+    "ja": "",
+    "zh": "3. 将有损或无损 WebP 写入 `public/assets/images/`。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p6": {
+    "en": "",
+    "ja": "",
+    "zh": "4. 不把原始大图纳入 Git，控制仓库体积。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.pullquote": {
+    "en": "",
+    "ja": "",
+    "zh": "若必须把大文件纳入版本历史，请用 Git LFS 或对象存储，而不是把二进制直接堆进普通提交。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.section.一次性准备": {
+    "en": "",
+    "ja": "",
+    "zh": "一次性准备",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.section.为什么不一直用.unsplash.外链.": {
+    "en": "",
+    "ja": "",
+    "zh": "为什么不一直用 Unsplash 外链？",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.section.用.gitignore.排除原稿": {
+    "en": "",
+    "ja": "",
+    "zh": "用 .gitignore 排除原稿",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.section.端到端流程": {
+    "en": "",
+    "ja": "",
+    "zh": "端到端流程",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell10": {
+    "en": "",
+    "ja": "",
+    "zh": "说明",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell11": {
+    "en": "",
+    "ja": "",
+    "zh": "PNG",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell12": {
+    "en": "",
+    "ja": "",
+    "zh": "WebP",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell13": {
+    "en": "",
+    "ja": "",
+    "zh": "90%",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell14": {
+    "en": "",
+    "ja": "",
+    "zh": "无损压缩，适合 UI 素材",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell15": {
+    "en": "",
+    "ja": "",
+    "zh": "JPEG",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell16": {
+    "en": "",
+    "ja": "",
+    "zh": "82%",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell17": {
+    "en": "",
+    "ja": "",
+    "zh": "有损压缩，适合照片",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell18": {
+    "en": "",
+    "ja": "",
+    "zh": "85%",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell19": {
+    "en": "",
+    "ja": "",
+    "zh": "统一质量",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell20": {
+    "en": "",
+    "ja": "",
+    "zh": "AVIF",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell21": {
+    "en": "",
+    "ja": "",
+    "zh": "转码",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell22": {
+    "en": "",
+    "ja": "",
+    "zh": "GIF",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell23": {
+    "en": "",
+    "ja": "",
+    "zh": "动画 GIF 转为单帧（动画不保留）",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell7": {
+    "en": "",
+    "ja": "",
+    "zh": "原始格式",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell8": {
+    "en": "",
+    "ja": "",
+    "zh": "输出格式",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.table.cell9": {
+    "en": "",
+    "ja": "",
+    "zh": "质量",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.tag.工作流": {
+    "en": "",
+    "ja": "",
     "zh": "工作流",
-    "zh-TW": "工作流程"
+    "zh-TW": ""
+  },
+  "post.assets-workflow.tag.工具": {
+    "en": "",
+    "ja": "",
+    "zh": "工具",
+    "zh-TW": ""
   },
   "post.assets-workflow.title": {
-    "en": "Image workflow: automated compression & GitHub repo size",
-    "ja": "画像ワークフロー：自動圧縮と GitHub のリポジトリサイズ",
+    "en": "",
+    "ja": "",
     "zh": "图片工作流：全自动压缩与 GitHub 体积管理",
-    "zh-TW": "圖片工作流：全自動壓縮與 GitHub 體積管理"
-  },
-  "post.assets-workflow.why.b1": {
-    "en": "External URLs can change policies, rate limits, or disappear.",
-    "ja": "外部 URL はポリシー・レート制限・消失のリスクがあります。",
-    "zh": "外链可能改政策、限流或直接失效。",
-    "zh-TW": "外連可能改政策、限流或直接失效。"
-  },
-  "post.assets-workflow.why.b2": {
-    "en": "Self-hosted WebP lets you tune quality per asset class (UI vs photo).",
-    "ja": "自前 WebP なら UI 用と写真用など、素材ごとに品質を調整できます。",
-    "zh": "自托管 WebP 可按素材类型（界面图 / 照片）分别调质量。",
-    "zh-TW": "自架 WebP 可依素材類型（介面圖 / 照片）分別調品質。"
-  },
-  "post.assets-workflow.why.b3": {
-    "en": "CI can fail builds when raw folders are missing — a useful guard rail.",
-    "ja": "CI で原稿フォルダ欠落を検知でき、ガードレールになります。",
-    "zh": "在 CI 里检测缺失的原稿目录，可当作有效的防护栏。",
-    "zh-TW": "在 CI 裡偵測缺失的原稿目錄，可當作有效的防護欄。"
-  },
-  "post.assets-workflow.why.lead": {
-    "en": "Hotlinks are fine for prototypes. For a site you maintain for years, local optimised assets win because:",
-    "ja": "プロトタイプなら直リンクで十分。数年守るサイトでは最適化済み自前資産が勝ちます。理由は次のとおり。",
-    "zh": "原型阶段外链无可厚非；若要维护多年的站点，本地优化资源更稳，因为：",
-    "zh-TW": "原型階段外連無可厚非；若要維護多年的網站，本機最佳化資源更穩，因為："
+    "zh-TW": ""
   }
 }

@@ -1,116 +1,110 @@
 {
-  "content.home.blocks.intro": {
-    "en": "Custom blocks extend standard Markdown with interactive components: collapsible panels, callout boxes, links, comments, and zigzag layouts with alternating text and images.",
-    "ja": "カスタムブロックは標準Markdownをインタラクティブなコンポーネントで拡張します：折りたたみパネル、コールアウトボックス、リンク、コメント、テキストと画像が交互に配置されるジグザグレイアウト。",
-    "zh": "自定义块用交互式组件扩展标准 Markdown：可折叠面板、提示框、链接、评论，以及文字与图片交替的锯齿形布局。",
-    "zh-TW": "自訂區塊用互動式元件擴展標準 Markdown：可折疊面板、提示框、連結、評論，以及文字與圖片交替的鋸齒形佈局。"
-  },
-  "content.home.blocks.listCollapsible": {
-    "en": "Collapsible — some callouts collapse by default and expand on click.",
-    "ja": "折りたたみ — 一部のコールアウトはデフォルトで折りたたまれており、クリックで展開されます。",
-    "zh": "可折叠 — 某些提示框默认折叠，点击展开。",
-    "zh-TW": "可折疊 — 某些提示框預設折疊，點擊展開。"
-  },
-  "content.home.blocks.listIcons": {
-    "en": "Icons — each type uses a distinct icon: question circle, lightbulb, exclamation, link, comments.",
-    "ja": "アイコン — 各タイプは異なるアイコンを使用：疑問符、电球、感嘆符、リンク、コメント。",
-    "zh": "图标 — 每种类型使用不同的图标：问号、电灯泡、感叹号、链接、评论。",
-    "zh-TW": "圖標 — 每種類型使用不同的圖標：問號、電燈泡、驚嘆號、連結、評論。"
-  },
-  "content.home.blocks.listTitle": {
-    "en": "Custom titles — you can override the default title text.",
-    "ja": "カスタムタイトル — デフォルトのタイトルテキストをオーバーライドできます。",
-    "zh": "自定义标题 — 可以覆盖默认的标题文本。",
-    "zh-TW": "自訂標題 — 可以覆蓋預設的標題文字。"
-  },
-  "content.home.callout.comments.body": {
-    "en": "Use the comments block to embed a Giscus discussion thread below a section, providing context for reader reactions.",
-    "ja": "コメントブロックを使用して、セクションの下にGiscusのディスカッションスレッドを埋め込み、読者の反応のコンテキストを提供します。",
-    "zh": "使用评论块在章节下方嵌入 Giscus 讨论串，为读者反应提供上下文。",
-    "zh-TW": "使用評論區塊在章節下方嵌入 Giscus 討論串，為讀者反應提供上下文。"
-  },
-  "content.home.callout.exclamation.body": {
-    "en": "Important warnings or critical information that readers should not overlook.",
-    "ja": "読者が見落とすべきではない重要な警告または重要な情報。",
-    "zh": "重要的警告或关键信息，读者不应忽略。",
-    "zh-TW": "重要的警告或關鍵資訊，讀者不應忽略。"
-  },
-  "content.home.callout.lightbulb.body": {
-    "en": "Helpful tips, best practices, or additional insights that complement the main content.",
-    "ja": "メインコンテンツを補完する有用なヒント、ベストプラクティス、または追加の洞察。",
-    "zh": "补充主内容的有用提示、最佳实践或额外见解。",
-    "zh-TW": "補充主要內容的有用提示、最佳實踐或額外見解。"
-  },
-  "content.home.callout.question.body": {
-    "en": "Common questions readers might have, answered directly within the flow of the article.",
-    "ja": "読者が持っているかもしれない一般的な質問。文章の流れの中で直接回答します。",
-    "zh": "读者可能有的常见问题，在文章流程中直接回答。",
-    "zh-TW": "讀者可能有的常見問題，在文章流程中直接回答。"
-  },
-  "content.home.footer": {
-    "en": "These are just a few examples. Every block can be combined, nested, and customized to suit your content needs.",
-    "ja": "これらはほんの一例です。すべてのブロックは組み合わせ、ネスト、カスタマイズして、コンテンツのニーズに合わせることができます。",
-    "zh": "这些只是几个例子。每个块都可以组合、嵌套和自定义以满足你的内容需求。",
-    "zh-TW": "這些只是幾個例子。每個區塊都可以組合、巢狀和自訂以滿足你的內容需求。"
-  },
-  "content.home.h3.comments": {
-    "en": "Comments",
-    "ja": "コメント",
-    "zh": "评论",
-    "zh-TW": "評論"
-  },
-  "content.home.h3.exclamation": {
-    "en": "Important",
-    "ja": "重要",
-    "zh": "重要",
-    "zh-TW": "重要"
-  },
-  "content.home.h3.lightbulb": {
-    "en": "Tips",
-    "ja": "ヒント",
-    "zh": "提示",
-    "zh-TW": "提示"
-  },
-  "content.home.h3.link": {
-    "en": "Links",
-    "ja": "リンク",
-    "zh": "链接",
-    "zh-TW": "連結"
-  },
-  "content.home.h3.question": {
-    "en": "Questions",
-    "ja": "質問",
-    "zh": "问题",
-    "zh-TW": "問題"
-  },
-  "content.home.heading.blocks": {
-    "en": "Custom blocks",
-    "ja": "カスタムブロック",
-    "zh": "自定义块",
-    "zh-TW": "自訂區塊"
-  },
-  "content.home.lead": {
-    "en": "This blog supports rich Markdown extensions including custom callout blocks, collapsible sections, and zigzag layouts. Explore the features below to see what's possible.",
-    "ja": "このブログは、カスタムコールアウトブロック、折りたたみセクション、ジグザグラウアウトなど、リッチMarkdown拡張をサポートしています。以下の機能を探索してください。",
+  "content.home.p0": {
+    "en": "",
+    "ja": "",
     "zh": "本博客支持丰富的 Markdown 扩展，包括自定义提示块、可折叠部分和锯齿形布局。探索以下功能以了解可能性。",
-    "zh-TW": "本部落格支援豐富的 Markdown 擴展，包括自訂提示區塊、可折疊部分和鋸齒形佈局。探索以下功能以了解可能性。"
+    "zh-TW": ""
   },
-  "content.home.link.body": {
-    "en": "Link blocks style external references distinctly, making it easy for readers to identify and navigate to related resources.",
-    "ja": "リンクブロックは外部参照を区別化してスタイルし、読者が関連リソースを簡単に識別してナビゲートできるようにします。",
+  "content.home.p1": {
+    "en": "",
+    "ja": "",
+    "zh": "自定义块用交互式组件扩展标准 Markdown：可折叠面板、提示框、链接、评论，以及文字与图片交替的锯齿形布局。",
+    "zh-TW": ""
+  },
+  "content.home.p10": {
+    "en": "",
+    "ja": "",
+    "zh": "重要的警告或关键信息，读者不应忽略。",
+    "zh-TW": ""
+  },
+  "content.home.p12": {
+    "en": "",
+    "ja": "",
+    "zh": "使用评论块在章节下方嵌入 Giscus 讨论串，为读者反应提供上下文。",
+    "zh-TW": ""
+  },
+  "content.home.p13": {
+    "en": "",
+    "ja": "",
+    "zh": "---",
+    "zh-TW": ""
+  },
+  "content.home.p14": {
+    "en": "",
+    "ja": "",
     "zh": "链接块样式化外部引用，让读者可以轻松识别和导航到相关资源。",
-    "zh-TW": "連結區塊樣式化外部引用，讓讀者可以輕鬆識別和導航到相關資源。"
+    "zh-TW": ""
   },
-  "content.home.link.panelTitle": {
-    "en": "External resources",
-    "ja": "外部リソース",
-    "zh": "外部资源",
-    "zh-TW": "外部資源"
+  "content.home.p15": {
+    "en": "",
+    "ja": "",
+    "zh": "这些只是几个例子。每个块都可以组合、嵌套和自定义以满足你的内容需求。",
+    "zh-TW": ""
   },
-  "content.home.exclamation.panelTitle": {
-    "en": "Warning",
-    "ja": "警告",
-    "zh": "警告",
-    "zh-TW": "警告"
+  "content.home.p2": {
+    "en": "",
+    "ja": "",
+    "zh": "图标 — 每种类型使用不同的图标：问号、电灯泡、感叹号、链接、评论。",
+    "zh-TW": ""
+  },
+  "content.home.p3": {
+    "en": "",
+    "ja": "",
+    "zh": "可折叠 — 某些提示框默认折叠，点击展开。",
+    "zh-TW": ""
+  },
+  "content.home.p4": {
+    "en": "",
+    "ja": "",
+    "zh": "自定义标题 — 可以覆盖默认的标题文本。",
+    "zh-TW": ""
+  },
+  "content.home.p6": {
+    "en": "",
+    "ja": "",
+    "zh": "读者可能有的常见问题，在文章流程中直接回答。",
+    "zh-TW": ""
+  },
+  "content.home.p8": {
+    "en": "",
+    "ja": "",
+    "zh": "补充主内容的有用提示、最佳实践或额外见解。",
+    "zh-TW": ""
+  },
+  "content.home.section.提示": {
+    "en": "",
+    "ja": "",
+    "zh": "提示",
+    "zh-TW": ""
+  },
+  "content.home.section.自定义块": {
+    "en": "",
+    "ja": "",
+    "zh": "自定义块",
+    "zh-TW": ""
+  },
+  "content.home.section.评论": {
+    "en": "",
+    "ja": "",
+    "zh": "评论",
+    "zh-TW": ""
+  },
+  "content.home.section.重要": {
+    "en": "",
+    "ja": "",
+    "zh": "重要",
+    "zh-TW": ""
+  },
+  "content.home.section.链接": {
+    "en": "",
+    "ja": "",
+    "zh": "链接",
+    "zh-TW": ""
+  },
+  "content.home.section.问题": {
+    "en": "",
+    "ja": "",
+    "zh": "问题",
+    "zh-TW": ""
   }
 }

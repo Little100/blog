@@ -1,68 +1,116 @@
 {
-  "post.kyoto.callout.question": {
-    "en": "Does silence have a colour? On that path, grey stone and vermilion felt equally quiet.",
-    "ja": "静けさに色はある？ その道では、灰色の石と朱も同じように静かに見えた。",
-    "zh": "静默有颜色吗？在那条路上，灰石与朱红都显得同样安静。",
-    "zh-TW": "靜默有顏色嗎？在那條路上，灰石與朱紅都顯得同樣安靜。"
-  },
-  "post.kyoto.heroAlt": {
-    "en": "Torii gates climbing the forested hill",
-    "ja": "森の中へ続く千本鳥居",
-    "zh": "延伸至林间的千本鸟居",
-    "zh-TW": "延伸至林間的千本鳥居"
-  },
-  "post.kyoto.lead": {
-    "en": "Fushimi Inari before the crowds: mist, fox statues, and the rhythm of gates repeating uphill.",
-    "ja": "人波の前の伏見稲荷：霧、狐、坂道に連なる鳥居のリズム。",
+  "post.kyoto.block.0": {
+    "en": "",
+    "ja": "",
     "zh": "人潮未至的伏见稻荷：薄雾、石狐，以及沿坡道重复的鸟居节奏。",
-    "zh-TW": "人潮未至的伏見稻荷：薄霧、石狐，以及沿坡道重複的鳥居節奏。"
+    "zh-TW": ""
+  },
+  "post.kyoto.block.2": {
+    "en": "",
+    "ja": "",
+    "zh": "朱红重复到不再是颜色，而是一种质感。",
+    "zh-TW": ""
+  },
+  "post.kyoto.img.延伸至林间的千本鸟居": {
+    "en": "",
+    "ja": "",
+    "zh": "延伸至林间的千本鸟居",
+    "zh-TW": ""
+  },
+  "post.kyoto.img.朱红鸟居立柱近景": {
+    "en": "",
+    "ja": "",
+    "zh": "朱红鸟居立柱近景",
+    "zh-TW": ""
+  },
+  "post.kyoto.p1": {
+    "en": "",
+    "ja": "",
+    "zh": "静默有颜色吗？在那条路上，灰石与朱红都显得同样安静。",
+    "zh-TW": ""
+  },
+  "post.kyoto.p3": {
+    "en": "",
+    "ja": "",
+    "zh": "石狐望着与人潮同一条路，却用着另一种时钟。",
+    "zh-TW": ""
   },
   "post.kyoto.pullquote": {
-    "en": "Every gate is a frame; every frame asks you to pause before the next step.",
-    "ja": "一つ一つの鳥居は額縁で、次の一歩の前に立ち止まらせる。",
+    "en": "",
+    "ja": "",
     "zh": "每一座鸟居都是画框；每一框都让你在下一步前停一停。",
-    "zh-TW": "每一座鳥居都是畫框；每一框都讓你在下一步前停一停。"
+    "zh-TW": ""
   },
-  "post.kyoto.section.path": {
-    "en": "The path and the light",
-    "ja": "道と光",
+  "post.kyoto.section.小径与光线": {
+    "en": "",
+    "ja": "",
     "zh": "小径与光线",
-    "zh-TW": "小徑與光線"
+    "zh-TW": ""
   },
-  "post.kyoto.tag.photo": {
-    "en": "Photography",
-    "ja": "写真",
+  "post.kyoto.table.cell10": {
+    "en": "",
+    "ja": "",
+    "zh": "傍晚",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell11": {
+    "en": "",
+    "ja": "",
+    "zh": "暖色、剪影",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell4": {
+    "en": "",
+    "ja": "",
+    "zh": "时段",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell5": {
+    "en": "",
+    "ja": "",
+    "zh": "氛围",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell6": {
+    "en": "",
+    "ja": "",
+    "zh": "清晨",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell7": {
+    "en": "",
+    "ja": "",
+    "zh": "柔和、人少",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell8": {
+    "en": "",
+    "ja": "",
+    "zh": "正午",
+    "zh-TW": ""
+  },
+  "post.kyoto.table.cell9": {
+    "en": "",
+    "ja": "",
+    "zh": "对比强烈",
+    "zh-TW": ""
+  },
+  "post.kyoto.tag.摄影": {
+    "en": "",
+    "ja": "",
     "zh": "摄影",
-    "zh-TW": "攝影"
+    "zh-TW": ""
   },
-  "post.kyoto.tag.travel": {
-    "en": "Travel",
-    "ja": "旅行",
+  "post.kyoto.tag.旅行": {
+    "en": "",
+    "ja": "",
     "zh": "旅行",
-    "zh-TW": "旅行"
+    "zh-TW": ""
   },
   "post.kyoto.title": {
-    "en": "Field notes: stillness and torii at Fushimi Inari",
-    "ja": "撮影メモ：伏見稲荷の静けさと鳥居",
+    "en": "",
+    "ja": "",
     "zh": "摄影师手记：伏见稻荷的静默与鸟居",
-    "zh-TW": "攝影師手記：伏見稻荷的靜默與鳥居"
-  },
-  "post.kyoto.zigzag.alt": {
-    "en": "Close-up of vermilion torii columns",
-    "ja": "朱色の鳥居の柱のアップ",
-    "zh": "朱红鸟居立柱近景",
-    "zh-TW": "朱紅鳥居立柱近景"
-  },
-  "post.kyoto.zigzag.line1": {
-    "en": "Vermilion repeats until it becomes texture instead of colour.",
-    "ja": "朱が繰り返され、色というより質感になる。",
-    "zh": "朱红重复到不再是颜色，而是一种质感。",
-    "zh-TW": "朱紅重複到不再是顏色，而是一種質感。"
-  },
-  "post.kyoto.zigzag.line2": {
-    "en": "Fox messengers watch the same path tourists rush through — different clocks.",
-    "ja": "狐の使いは観光客が駆け抜ける同じ道を、別の時計で見ている。",
-    "zh": "石狐望着与人潮同一条路，却用着另一种时钟。",
-    "zh-TW": "石狐望著與人潮同一條路，卻用著另一種時鐘。"
+    "zh-TW": ""
   }
 }
