@@ -17,65 +17,65 @@ export const BLOG_INDEX: PostMeta[] = [
   {
     "slug": "annotation-demo",
     "sourceRel": "posts/annotation-demo.md",
-    "titleKey": "post.annotation-demo.title",
+    "titleKey": "批注功能演示",
     "date": "2026-03-28",
     "tagKeys": [
-      "post.annotation-demo.tag.feature",
-      "post.annotation-demo.tag.notes"
+      "功能",
+      "笔记"
     ],
-    "excerptKey": "post.annotation-demo.title",
-    "descriptionKey": "post.annotation-demo.seoDescription",
+    "excerptKey": "批注功能演示",
+    "descriptionKey": "",
     "icon": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80"
   },
   {
     "slug": "assets-workflow",
     "sourceRel": "posts/assets-workflow.md",
-    "titleKey": "post.assets-workflow.title",
+    "titleKey": "图片工作流：全自动压缩与 GitHub 体积管理",
     "date": "2026-03-27",
     "tagKeys": [
-      "post.assets-workflow.tag.tools",
-      "post.assets-workflow.tag.workflow"
+      "工具",
+      "工作流"
     ],
-    "excerptKey": "post.assets-workflow.title",
-    "descriptionKey": "post.assets-workflow.seoDescription",
+    "excerptKey": "图片工作流：全自动压缩与 GitHub 体积管理",
+    "descriptionKey": "",
     "icon": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&q=80"
   },
   {
     "slug": "kyoto",
     "sourceRel": "posts/kyoto.md",
-    "titleKey": "post.kyoto.title",
+    "titleKey": "摄影师手记：伏见稻荷的静默与鸟居",
     "date": "2023-10-26",
     "tagKeys": [
-      "post.kyoto.tag.travel",
-      "post.kyoto.tag.photo"
+      "旅行",
+      "摄影"
     ],
-    "excerptKey": "post.kyoto.title",
+    "excerptKey": "摄影师手记：伏见稻荷的静默与鸟居",
     "descriptionKey": "",
     "icon": "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=1200&q=80"
   },
   {
     "slug": "literature",
     "sourceRel": "posts/literature.md",
-    "titleKey": "post.literature.title",
+    "titleKey": "文学与逻辑：慢读与结构",
     "date": "2023-09-12",
     "tagKeys": [
-      "post.literature.tag.reading",
-      "post.literature.tag.writing"
+      "阅读",
+      "写作"
     ],
-    "excerptKey": "post.literature.title",
+    "excerptKey": "文学与逻辑：慢读与结构",
     "descriptionKey": "",
     "icon": "https://images.unsplash.com/photo-1512820790803-83ca734da794?w=1200&q=80"
   },
   {
     "slug": "simplicity",
     "sourceRel": "posts/simplicity.md",
-    "titleKey": "post.simplicity.title",
+    "titleKey": "简约之美",
     "date": "2023-08-01",
     "tagKeys": [
-      "post.simplicity.tag.life",
-      "post.simplicity.tag.design"
+      "生活",
+      "设计"
     ],
-    "excerptKey": "post.simplicity.title",
+    "excerptKey": "简约之美",
     "descriptionKey": "",
     "icon": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200&q=80"
   }

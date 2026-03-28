@@ -1,18 +1,18 @@
 ---
-  title: post.annotation-demo.title
-  description: post.annotation-demo.seoDescription
-  date: 2026-03-28
-  author: Little100
-  readMinutes: 5
-  tags: ["post.annotation-demo.tag.feature", "post.annotation-demo.tag.notes"]
-  icon: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80"
+title: 批注功能演示
+description: 探索多行和 Markdown 渲染的批注功能演示。
+date: 2026-03-28
+author: Little100
+readMinutes: 5
+tags: ["功能", "笔记"]
+icon: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80"
 ---
 
-post.annotation-demo.intro
+本文演示批注系统的功能：多行支持和 Markdown 渲染。
 
-## post.annotation-demo.h2.multiLine
+## 多行批注
 
-post.annotation-demo.multiLine.lead
+批注现在可以跨越多行。当文本超过卡片宽度时，会自动换行。
 
 | **格式** | **效果** |
 | --- | --- |
@@ -20,11 +20,11 @@ post.annotation-demo.multiLine.lead
 | 多行 | 支持**换行文本**，每行自动换行 |
 | Markdown | `**加粗**`、`*斜体*`、`` `代码` `` |
 
-post.annotation-demo.multiLine.table.note
+上表显示了批注中可用的不同格式选项。
 
-## post.annotation-demo.h2.markdown
+## Markdown 渲染
 
-post.annotation-demo.markdown.lead
+批注正文支持标准 Markdown 语法。下表显示了可用的功能：
 
 | 功能 | 示例 |
 | --- | --- |
@@ -34,13 +34,13 @@ post.annotation-demo.markdown.lead
 | 链接 | `[link](https://...)` |
 | 列表 | `- item 1\n- item 2` |
 
-post.annotation-demo.markdown.table.note
+所有这些元素都可在批注卡内正确渲染。
 
-### post.annotation-demo.h2.example
+### 实际示例
 
-post.annotation-demo.example.lead
+向下滚动查看本页上的实际批注。
 
-|This is a paragraph with a single-line annotation. |{[(This is a **single-line** annotation with *markdown*.)]}|post.annotation-demo.anno.single.title|
+|This is a paragraph with a single-line annotation. |{[(This is a **single-line** annotation with *markdown*.)]}|单行|
 
 |This paragraph has a multi-line annotation. |{[(This annotation spans multiple lines to show how longer text wraps naturally within the card.
 
@@ -48,9 +48,9 @@ post.annotation-demo.example.lead
 - Bullet point 2
 - Bullet point 3
 
-You can also use **bold** and *italic* text together.)]}|post.annotation-demo.anno.multi.title|
+You can also use **bold** and *italic* text together.)]}|多行|
 
-|A code example annotation. |{[(Use `inline code` for short snippets, or write longer explanations that wrap to the next line when they exceed the card width.)]}|post.annotation-demo.anno.code.title|
+|A code example annotation. |{[(Use `inline code` for short snippets, or write longer explanations that wrap to the next line when they exceed the card width.)]}|代码|
 
 |Mixed content annotation. |{[(This shows how **bold**, *italic*, and `code` can all appear in the same annotation.
 
@@ -60,13 +60,13 @@ You can even write multiple paragraphs.
 2. Second item
 3. Third item
 
-All rendered with proper Markdown formatting.)]}|post.annotation-demo.anno.mixed.title|
+All rendered with proper Markdown formatting.)]}|混合|
 
-## post.annotation-demo.h2.tips
+## 提示与最佳实践
 
-post.annotation-demo.tips.lead
+编写批注时请记住以下准则：
 
-- post.annotation-demo.tips.1
-- post.annotation-demo.tips.2
-- post.annotation-demo.tips.3
-- post.annotation-demo.tips.4
+- 对关键术语和重要概念使用**加粗**
+- 使用*斜体*进行轻微强调或外来词
+- 对技术术语、命令或文件名使用`代码`
+- 将长批注分成要点以提高可读性
