@@ -80,6 +80,9 @@ export const BLOG_INDEX: PostMeta[] = [
     "icon": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200&q=80"
   }
 ]
+// ── AUTO-GENERATED SECTION
+// This marker is used by scripts/sync-post-i18n.mjs and scripts/generate-sitemap.mjs
+// Do not remove or move this line — keep it at the end of the file
 
 export function getPostMeta(slug: string): PostMeta | undefined {
   return BLOG_INDEX.find((p) => p.slug === slug)
