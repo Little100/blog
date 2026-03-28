@@ -403,7 +403,7 @@ export function PostPage() {
             <PostReadingRailCard
               title={displayTitle}
               articleRootRef={articleSearchRootRef}
-              tags={resolvedTag}
+              tags={resolvedTags}
             />
             </motion.div>
           </aside>
