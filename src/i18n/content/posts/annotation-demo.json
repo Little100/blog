@@ -1,0 +1,164 @@
+{
+  "post.annotation-demo.title": {
+    "en": "Annotation Features Demo",
+    "ja": "アノテーション機能デモ",
+    "zh": "批注功能演示",
+    "zh-TW": "批註功能演示"
+  },
+  "post.annotation-demo.seoDescription": {
+    "en": "Explore multi-line and Markdown-rendered annotations in this demo post.",
+    "ja": "このデモでは複数行とMarkdownレンダリングの注釈機能を解説します。",
+    "zh": "探索多行和 Markdown 渲染的批注功能演示。",
+    "zh-TW": "探索多行和 Markdown 渲染的批註功能演示。"
+  },
+  "post.annotation-demo.tag.feature": {
+    "en": "Feature",
+    "ja": "機能",
+    "zh": "功能",
+    "zh-TW": "功能"
+  },
+  "post.annotation-demo.tag.notes": {
+    "en": "Notes",
+    "ja": "メモ",
+    "zh": "笔记",
+    "zh-TW": "筆記"
+  },
+  "post.annotation-demo.intro": {
+    "en": "This post demonstrates the annotation system features: multi-line support and Markdown rendering inside annotation cards.",
+    "ja": "この投稿では、アノテーションシステムの機能をデモします：複数行サポートとMarkdownレンダリング。",
+    "zh": "本文演示批注系统的功能：多行支持和 Markdown 渲染。",
+    "zh-TW": "本文演示批註系統的功能：多行支持和 Markdown 渲染。"
+  },
+  "post.annotation-demo.h2.multiLine": {
+    "en": "Multi-line Annotations",
+    "ja": "複数行アノテーション",
+    "zh": "多行批注",
+    "zh-TW": "多行批註"
+  },
+  "post.annotation-demo.multiLine.lead": {
+    "en": "Annotations can now span multiple lines. When the text exceeds the card width, it wraps naturally.",
+    "ja": "アノテーションは複数行にまたがることができます。テキストがカード幅を超えると、自然に折り返されます。",
+    "zh": "批注现在可以跨越多行。当文本超过卡片宽度时，会自动换行。",
+    "zh-TW": "批註現在可以跨越多行。當文字超過卡片寬度時，會自動換行。"
+  },
+  "post.annotation-demo.multiLine.table.note": {
+    "en": "The table above shows the different formatting options available in annotations.",
+    "ja": "上の表は、アノテーションで利用可能なさまざまなフォーマットオプションを示しています。",
+    "zh": "上表显示了批注中可用的不同格式选项。",
+    "zh-TW": "上表顯示了批註中可用的不同格式選項。"
+  },
+  "post.annotation-demo.h2.markdown": {
+    "en": "Markdown Rendering",
+    "ja": "Markdown描画",
+    "zh": "Markdown 渲染",
+    "zh-TW": "Markdown 渲染"
+  },
+  "post.annotation-demo.markdown.lead": {
+    "en": "Annotation bodies support standard Markdown syntax. The following table shows what you can use:",
+    "ja": "アノテーションの本文は標準的なMarkdown構文をサポートしています。以下の表に使用可能な機能を示します：",
+    "zh": "批注正文支持标准 Markdown 语法。下表显示了可用的功能：",
+    "zh-TW": "批註正文支援標準 Markdown 語法。下表顯示了可用的功能："
+  },
+  "post.annotation-demo.markdown.table.note": {
+    "en": "All these elements render correctly inside annotation cards.",
+    "ja": "これらの要素はすべてアノテーションカード内で正しく描画されます。",
+    "zh": "所有这些元素都可在批注卡内正确渲染。",
+    "zh-TW": "所有這些元素都可在批註卡內正確渲染。"
+  },
+  "post.annotation-demo.h2.example": {
+    "en": "Live Examples",
+    "ja": "実際の例",
+    "zh": "实际示例",
+    "zh-TW": "實際範例"
+  },
+  "post.annotation-demo.example.lead": {
+    "en": "Scroll down to see the annotations on this page in action.",
+    "ja": "スクロールして、このページのアノテーションを確認してください。",
+    "zh": "向下滚动查看本页上的实际批注。",
+    "zh-TW": "向下捲動查看本頁上的實際批註。"
+  },
+  "post.annotation-demo.h2.tips": {
+    "en": "Tips & Best Practices",
+    "ja": "ヒントとベストプラクティス",
+    "zh": "提示与最佳实践",
+    "zh-TW": "提示與最佳實踐"
+  },
+  "post.annotation-demo.tips.lead": {
+    "en": "Keep these guidelines in mind when writing annotations:",
+    "ja": "アノテーションを書くときは次の点に留意してください：",
+    "zh": "编写批注时请记住以下准则：",
+    "zh-TW": "編寫批註時請記住以下準則："
+  },
+  "post.annotation-demo.tips.1": {
+    "en": "Use **bold** for key terms and important concepts",
+    "ja": "重要な用語やコンセプトには**太字**を使用",
+    "zh": "对关键术语和重要概念使用**加粗**",
+    "zh-TW": "對關鍵術語和重要概念使用**加粗**"
+  },
+  "post.annotation-demo.tips.2": {
+    "en": "Use *italic* for subtle emphasis or foreign words",
+    "ja": "*斜体*は微妙な強調や外来語に使用",
+    "zh": "使用*斜体*进行轻微强调或外来词",
+    "zh-TW": "使用*斜體*進行輕微強調或外來詞"
+  },
+  "post.annotation-demo.tips.3": {
+    "en": "Use `code` for technical terms, commands, or file names",
+    "ja": "`コード`は技術用語やコマンド、ファイル名に使用",
+    "zh": "对技术术语、命令或文件名使用`代码`",
+    "zh-TW": "對技術術語、命令或檔案名使用`代碼`"
+  },
+  "post.annotation-demo.tips.4": {
+    "en": "Break long annotations into bullet points for better readability",
+    "ja": "長いアノテーションは箇条書きにして読みやすさを向上",
+    "zh": "将长批注分成要点以提高可读性",
+    "zh-TW": "將長批註分成要點以提高可讀性"
+  },
+  "post.annotation-demo.anno.single.title": {
+    "en": "Single Line",
+    "ja": "単一行",
+    "zh": "单行",
+    "zh-TW": "單行"
+  },
+  "post.annotation-demo.anno.single.body": {
+    "en": "This is a **single-line** annotation with *markdown*.",
+    "ja": "これは*Markdown*で書かれた**単一行**のアノテーションです。",
+    "zh": "这是一个带 *markdown* 的**单行**批注。",
+    "zh-TW": "這是一個帶 *markdown* 的**單行**批註。"
+  },
+  "post.annotation-demo.anno.multi.title": {
+    "en": "Multi Line",
+    "ja": "複数行",
+    "zh": "多行",
+    "zh-TW": "多行"
+  },
+  "post.annotation-demo.anno.multi.body": {
+    "en": "This annotation spans multiple lines to show how longer text wraps naturally within the card.\n\n- Bullet point 1\n- Bullet point 2\n- Bullet point 3\n\nYou can also use **bold** and *italic* text together.",
+    "ja": "このアノテーションは複数行にまたがり、長いテキストがカード内でどのように折り返されるかを示しています。\n\n- 箇条書き項目1\n- 箇条書き項目2\n- 箇条書き項目3\n\n**太字**と*斜体*を同時に使用することもできます。",
+    "zh": "此批注跨越多行，展示较长的文本如何在卡片内自然换行。\n\n- 要点 1\n- 要点 2\n- 要点 3\n\n你也可以同时使用**加粗**和*斜体*文本。",
+    "zh-TW": "此批註跨越多行，展示較長的文字如何在卡片內自然換行。\n\n- 要點 1\n- 要點 2\n- 要點 3\n\n你也可以同時使用**加粗**和*斜體*文字。"
+  },
+  "post.annotation-demo.anno.code.title": {
+    "en": "Code",
+    "ja": "コード",
+    "zh": "代码",
+    "zh-TW": "代碼"
+  },
+  "post.annotation-demo.anno.code.body": {
+    "en": "Use `inline code` for short snippets, or write longer explanations that wrap to the next line when they exceed the card width.",
+    "ja": "`インラインコード`は短いスニペットに使用し、長い説明はカード幅を超えると次の行に折り返されます。",
+    "zh": "对短代码片段使用`行内代码`，或编写较长的解释，当超过卡片宽度时会换行到下一行。",
+    "zh-TW": "對短代碼片段使用`行內代碼`，或編寫較長的解釋，當超過卡片寬度時會換行到下一行。"
+  },
+  "post.annotation-demo.anno.mixed.title": {
+    "en": "Mixed",
+    "ja": "混合",
+    "zh": "混合",
+    "zh-TW": "混合"
+  },
+  "post.annotation-demo.anno.mixed.body": {
+    "en": "This shows how **bold**, *italic*, and `code` can all appear in the same annotation.\n\nYou can even write multiple paragraphs.\n\n1. First item\n2. Second item\n3. Third item\n\nAll rendered with proper Markdown formatting.",
+    "ja": "これは、**太字**、*斜体*、`コード`が同じアノテーション内にすべて表示される方法を示しています。\n\n複数の段落を書くこともできます。\n\n1. 最初の項目\n2. 2番目の項目\n3. 3番目の項目\n\nすべて適切なMarkdownフォーマットで描画されます。",
+    "zh": "这展示了**加粗**、*斜体*和`代码`如何全部出现在同一个批注中。\n\n你甚至可以写多个段落。\n\n1. 第一项\n2. 第二项\n3. 第三项\n\n所有内容都使用正确的 Markdown 格式渲染。",
+    "zh-TW": "這展示了**加粗**、*斜體*和`代碼`如何全部出現在同一個批註中。\n\n你甚至可以寫多個段落。\n\n1. 第一項\n2. 第二項\n3. 第三項\n\n所有內容都使用正確的 Markdown 格式渲染。"
+  }
+}

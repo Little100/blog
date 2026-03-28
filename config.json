@@ -1,0 +1,216 @@
+{
+  "title": "Little100's BLOG",
+  "avatar": "/avatar.png",
+  "defaultAuthor": "Little100",
+  "exportContactPath": "/contact",
+  "contact": {
+    "title": {
+      "en": "Contact",
+      "ja": "連絡",
+      "zh": "联系",
+      "zh-TW": "聯絡"
+    },
+    "lead": {
+      "en": "For collaboration, photography, or a quick hello — reach out via the links below or your favorite network.",
+      "ja": "共同制作・写真・ご挨拶など — 下のリンク、またはお好みのネットワークからどうぞ。",
+      "zh": "合作、摄影或简单问候 — 可通过下方的链接或你常用的社交网络找到我。",
+      "zh-TW": "合作、攝影或簡單問候 — 可透過下方的連結或你慣用的社群找到我。"
+    },
+    "sections": [
+      {
+        "icon": {
+          "en": "fas fa-pen-nib",
+          "ja": "fas fa-pen-nib",
+          "zh": "fas fa-pen-nib",
+          "zh-TW": "fas fa-pen-nib"
+        },
+        "title": {
+          "en": "Writing & Collaboration",
+          "ja": "文章・共同制作",
+          "zh": "写作与合作",
+          "zh-TW": "寫作與合作"
+        },
+        "body": {
+          "en": "I'm open to guest posts, joint writing projects, and editorial collaborations.\n\nIf you have a story to tell or an idea you'd like to explore together, feel free to reach out.",
+          "ja": "ゲストポストや共同制作、編集コラボレーションを歓迎しています。\n\n話したい故事や一緒に探りたいアイデアがあれば、お気軽にお 联系ください。",
+          "zh": "欢迎来稿、联合写作项目与编辑合作。\n\n如果你有好故事想讲，或有想一起探索的想法，欢迎联系。",
+          "zh-TW": "歡迎來稿、聯合寫作項目與編輯合作。\n\n如果你有好故事想講，或有想一起探索的想法，歡迎聯繫。"
+        }
+      },
+      {
+        "icon": {
+          "en": "fas fa-camera-retro",
+          "ja": "fas fa-camera-retro",
+          "zh": "fas fa-camera-retro",
+          "zh-TW": "fas fa-camera-retro"
+        },
+        "title": {
+          "en": "Photography",
+          "ja": "写真",
+          "zh": "摄影",
+          "zh-TW": "攝影"
+        },
+        "body": {
+          "en": "I shoot film and digital. I'm available for photo walks, editorial shoots, and prints.\n\nCheck out my Instagram for recent work.",
+          "ja": "フィルムとデジタルで撮っています。写真歩き、編集撮影、プリントに対応可能です。\n\n近作は今下のInstagram看看吧。",
+          "zh": "胶片和数码都有在拍。可接摄影漫步、编辑拍摄与照片冲印。\n\n最新作品可在 Instagram 查看。",
+          "zh-TW": "軟片和數碼都有在拍。可接攝影漫步、編輯拍攝與照片沖印。\n\n最新作品可在 Instagram 查看。"
+        }
+      }
+    ]
+  },
+  "languages": [
+    "en",
+    "ja",
+    "zh",
+    "zh-TW"
+  ],
+  "giscus": {
+    "enabled": true,
+    "repo": "your-username/your-repo",
+    "repoId": "YOUR_REPO_ID",
+    "category": "Announcements",
+    "categoryId": "YOUR_CATEGORY_ID",
+    "mapping": "pathname",
+    "reactionsEnabled": "1",
+    "emitMetadata": "0",
+    "inputPosition": "bottom",
+    "lang": "en"
+  },
+  "social": [
+    {
+      "platform": "github",
+      "href": "https://github.com",
+      "label": {
+        "en": "GitHub",
+        "ja": "GitHub",
+        "zh": "GitHub",
+        "zh-TW": "GitHub"
+      },
+      "icon": "fab fa-github"
+    },
+    {
+      "platform": "instagram",
+      "href": "https://instagram.com",
+      "label": {
+        "en": "Instagram",
+        "ja": "Instagram",
+        "zh": "Instagram",
+        "zh-TW": "Instagram"
+      },
+      "icon": "fab fa-instagram"
+    },
+    {
+      "platform": "x",
+      "href": "https://x.com",
+      "label": {
+        "en": "X",
+        "ja": "X",
+        "zh": "X",
+        "zh-TW": "X"
+      },
+      "icon": "fab fa-x-twitter"
+    },
+    {
+      "platform": "email",
+      "href": "mailto:example@example.com",
+      "label": {
+        "en": "Email",
+        "ja": "メール",
+        "zh": "邮件",
+        "zh-TW": "郵件"
+      },
+      "icon": "fas fa-envelope"
+    }
+  ],
+  "footer": {
+    "tagline": {
+      "en": "Markdown on the fly · custom blocks via the tokenizer",
+      "ja": "Markdown をその場で · トークナイザでカスタムブロック",
+      "zh": "动态 Markdown · 自定义字块由分词层注入",
+      "zh-TW": "動態 Markdown · 自訂區塊由分詞層注入"
+    },
+    "copyright": {
+      "en": "© 2026 Little100. All rights reserved.",
+      "ja": "© 2026 Little100. 無断転載禁止。",
+      "zh": "© 2026 Little100。保留所有权利。",
+      "zh-TW": "© 2026 Little100。保留所有權利。"
+    },
+    "links": [
+      {
+        "label": {
+          "en": "About",
+          "ja": "自己紹介",
+          "zh": "关于",
+          "zh-TW": "關於"
+        },
+        "href": "/about"
+      },
+      {
+        "label": {
+          "en": "Tags",
+          "ja": "タグ",
+          "zh": "标签",
+          "zh-TW": "標籤"
+        },
+        "href": "/tags"
+      },
+      {
+        "label": {
+          "en": "Contact",
+          "ja": "連絡",
+          "zh": "联系",
+          "zh-TW": "聯絡"
+        },
+        "href": "/contact"
+      },
+      {
+        "label": {
+          "en": "Privacy",
+          "ja": "プライバシー",
+          "zh": "隐私政策",
+          "zh-TW": "隱私權政策"
+        },
+        "href": "/privacy"
+      }
+    ]
+  },
+  "seo": {
+    "siteUrl": "https://your-domain.com",
+    "description": {
+      "en": "Little100's personal blog about writing, photography, and web experiments.",
+      "ja": "文章・写真・ウェブ実験に関する Little100 の个人ブログ。",
+      "zh": "Little100 的个人博客，主题涵盖写作、摄影与网页实验。",
+      "zh-TW": "Little100 的個人部落格，主題涵蓋寫作、攝影與網頁實驗。"
+    },
+    "title": {
+      "en": "Little100's BLOG",
+      "ja": "Little100 の BLOG",
+      "zh": "Little100 的 BLOG",
+      "zh-TW": "Little100 的 BLOG"
+    },
+    "defaultLocale": "en",
+    "twitterHandle": "@yourhandle",
+    "ogImage": "/og-image.png"
+  },
+  "icons": {
+    "favicon": "/avatar.png",
+    "appleTouchIcon": "/avatar.png",
+    "maskIcon": "/avatar.png",
+    "themeColor": "#863bff"
+  },
+  "analytics": {
+    "enabled": false,
+    "provider": "umami",
+    "url": "",
+    "id": ""
+  },
+  "build": {
+    "compressAssets": true,
+    "targetFormat": "webp"
+  },
+  "updates": {
+    "enabled": true,
+    "repo": "Little100/blog"
+  }
+}

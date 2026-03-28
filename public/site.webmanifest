@@ -1,0 +1,26 @@
+{
+  "name": "Little100's BLOG",
+  "short_name": "BLOG",
+  "description": "Little100's personal blog about writing, photography, and web experiments.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#863bff",
+  "icons": [
+    {
+      "src": "/avatar.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/avatar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["blog", "personal"],
+  "lang": "en",
+  "dir": "ltr"
+}

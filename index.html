@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="color-scheme" content="light dark" />
+    <script>
+      ;(function () {
+        function readPreference() {
+          try {
+            var next = localStorage.getItem('BLOG-theme-preference')
+            if (next === 'system' || next === 'light' || next === 'dark') {
+              return next
+            }
+            var legacy = localStorage.getItem('BLOG-theme')
+            if (legacy === 'light' || legacy === 'dark') {
+              return legacy
+            }
+          } catch (e) {}
+          return 'system'
+        }
+        function effectiveTheme() {
+          var pref = readPreference()
+          if (pref === 'light' || pref === 'dark') {
+            return pref
+          }
+          if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark'
+          }
+          return 'light'
+        }
+        document.documentElement.dataset.theme = effectiveTheme()
+      })()
+    </script>
+    <!-- Defaults mirror `config.json` → `icons`; SeoHead syncs from config after load. -->
+    <link rel="icon" type="image/png" href="/avatar.png" />
+    <link rel="apple-touch-icon" type="image/png" href="/avatar.png" />
+    <meta name="msapplication-TileColor" content="#863bff" />
+    <meta name="theme-color" content="#863bff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Little100&apos;s BLOG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,500&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

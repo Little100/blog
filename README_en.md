@@ -1,0 +1,51 @@
+# Blog
+
+A personal blog powered by React + Vite with Markdown support and multi-language.
+
+## Quick Start
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+Output: `dist/`
+
+## Deploy
+
+Push to GitHub and GitHub Actions will automatically build and deploy to GitHub Pages.
+
+> Setup: Repository → Settings → Pages → Source: GitHub Actions
+
+## Giscus Comments
+
+### 1. Enable Giscus App
+
+1. Go to [giscus.app](https://giscus.app)
+2. Click "Authorize" to grant GitHub App access to your repository
+3. Select the repositories allowed for comments
+
+### 2. Get Configuration Values
+
+Fill in [giscus.app](https://giscus.app):
+
+- **Repository**: `username/blog`
+- **Page ↔️ Discussions Mapping**: `pathname`
+- **Discussion Category**: Choose a category (e.g., "Announcements")
+
+### 3. Configure Environment Variables
+
+Copy `.env.example` to `.env` and fill in your values:
+
+```bash
+VITE_GISCUS_REPO=your-username/your-repo
+VITE_GISCUS_REPO_ID=R_xxxxxxxxxxxxxx
+VITE_GISCUS_CATEGORY=Announcements
+VITE_GISCUS_CATEGORY_ID=DIC_xxxxxxxxxxxxxx
+```
