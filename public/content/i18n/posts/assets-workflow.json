@@ -5,7 +5,13 @@
     "zh": "这是一条围栏外的批注，鼠标悬停或点击会显示侧栏编号气泡。标题栏为空时不显示标签。",
     "zh-TW": ""
   },
-  "post.assets-workflow.annotation.title": {
+  "post.assets-workflow.annotation.body1": {
+    "en": "",
+    "ja": "",
+    "zh": "第二条批注，带标题标签，用于区分不同类型的提示。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.annotation.title1": {
     "en": "",
     "ja": "",
     "zh": "图片资产",
@@ -15,6 +21,30 @@
     "en": "",
     "ja": "",
     "zh": "用一条 npm 命令把图片压成 WebP：原始大图不进入 GitHub，站点仍输出清晰配图并控制仓库体积。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.fence.0": {
+    "en": "",
+    "ja": "",
+    "zh": "raw-assets/images/     ← 放你的原始大图（不推送）\n        ↓\n  node scripts/compress-assets.mjs\n        ↓\npublic/assets/images/  ← 压缩后 WebP（推送到 GitHub）",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.fence.1": {
+    "en": "",
+    "ja": "",
+    "zh": "npm run compress",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.fence.2": {
+    "en": "",
+    "ja": "",
+    "zh": "npm install sharp\nmkdir raw-assets/images",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.fence.3": {
+    "en": "",
+    "ja": "",
+    "zh": "raw-assets/",
     "zh-TW": ""
   },
   "post.assets-workflow.p0": {
@@ -29,64 +59,46 @@
     "zh": "准备好目录后，压缩只需一条命令：",
     "zh-TW": ""
   },
+  "post.assets-workflow.p10": {
+    "en": "",
+    "ja": "",
+    "zh": "原型阶段外链无可厚非；若要维护多年的站点，本地优化资源更稳，因为：",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p11": {
+    "en": "",
+    "ja": "",
+    "zh": "- 外链可能改政策、限流或直接失效。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p12": {
+    "en": "",
+    "ja": "",
+    "zh": "- 自托管 WebP 可按素材类型（界面图 / 照片）分别调质量。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p13": {
+    "en": "",
+    "ja": "",
+    "zh": "- 在 CI 里检测缺失的原稿目录，可当作有效的防护栏。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p14": {
+    "en": "",
+    "ja": "",
+    "zh": "忽略原稿目录，避免手滑 `git add .` 把几兆大的源图推进仓库：",
+    "zh-TW": ""
+  },
   "post.assets-workflow.p2": {
     "en": "",
     "ja": "",
     "zh": "执行 `npm run compress` 时会自动完成：",
     "zh-TW": ""
   },
-  "post.assets-workflow.p24": {
-    "en": "",
-    "ja": "",
-    "zh": "本流水线会把动画 GIF 压成单帧 WebP；若动画是关键素材，请另存或扩展脚本。",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p25": {
-    "en": "",
-    "ja": "",
-    "zh": "安装 Sharp 并创建原稿收件目录：",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p26": {
-    "en": "",
-    "ja": "",
-    "zh": "然后将 PNG/JPEG/WebP/AVIF/GIF 源文件放进 `raw-assets/images/` 再运行脚本。",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p27": {
-    "en": "",
-    "ja": "",
-    "zh": "原型阶段外链无可厚非；若要维护多年的站点，本地优化资源更稳，因为：",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p28": {
-    "en": "",
-    "ja": "",
-    "zh": "- 外链可能改政策、限流或直接失效。",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p29": {
-    "en": "",
-    "ja": "",
-    "zh": "- 自托管 WebP 可按素材类型（界面图 / 照片）分别调质量。",
-    "zh-TW": ""
-  },
   "post.assets-workflow.p3": {
     "en": "",
     "ja": "",
     "zh": "1. 扫描 `raw-assets/images/` 中新增或变更的位图文件。",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p30": {
-    "en": "",
-    "ja": "",
-    "zh": "- 在 CI 里检测缺失的原稿目录，可当作有效的防护栏。",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.p31": {
-    "en": "",
-    "ja": "",
-    "zh": "忽略原稿目录，避免手滑 `git add .` 把几兆大的源图推进仓库：",
     "zh-TW": ""
   },
   "post.assets-workflow.p4": {
@@ -105,6 +117,24 @@
     "en": "",
     "ja": "",
     "zh": "4. 不把原始大图纳入 Git，控制仓库体积。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p7": {
+    "en": "",
+    "ja": "",
+    "zh": "本流水线会把动画 GIF 压成单帧 WebP；若动画是关键素材，请另存或扩展脚本。",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p8": {
+    "en": "",
+    "ja": "",
+    "zh": "安装 Sharp 并创建原稿收件目录：",
+    "zh-TW": ""
+  },
+  "post.assets-workflow.p9": {
+    "en": "",
+    "ja": "",
+    "zh": "然后将 PNG/JPEG/WebP/AVIF/GIF 源文件放进 `raw-assets/images/` 再运行脚本。",
     "zh-TW": ""
   },
   "post.assets-workflow.pullquote": {
@@ -137,106 +167,40 @@
     "zh": "端到端流程",
     "zh-TW": ""
   },
-  "post.assets-workflow.table.cell10": {
+  "post.assets-workflow.table.row0": {
     "en": "",
     "ja": "",
-    "zh": "说明",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.assets-workflow.table.cell11": {
+  "post.assets-workflow.table.row1": {
     "en": "",
     "ja": "",
-    "zh": "PNG",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.assets-workflow.table.cell12": {
+  "post.assets-workflow.table.row2": {
     "en": "",
     "ja": "",
-    "zh": "WebP",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.assets-workflow.table.cell13": {
+  "post.assets-workflow.table.row3": {
     "en": "",
     "ja": "",
-    "zh": "90%",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.assets-workflow.table.cell14": {
+  "post.assets-workflow.table.row4": {
     "en": "",
     "ja": "",
-    "zh": "无损压缩，适合 UI 素材",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.assets-workflow.table.cell15": {
+  "post.assets-workflow.table.row5": {
     "en": "",
     "ja": "",
-    "zh": "JPEG",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell16": {
-    "en": "",
-    "ja": "",
-    "zh": "82%",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell17": {
-    "en": "",
-    "ja": "",
-    "zh": "有损压缩，适合照片",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell18": {
-    "en": "",
-    "ja": "",
-    "zh": "85%",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell19": {
-    "en": "",
-    "ja": "",
-    "zh": "统一质量",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell20": {
-    "en": "",
-    "ja": "",
-    "zh": "AVIF",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell21": {
-    "en": "",
-    "ja": "",
-    "zh": "转码",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell22": {
-    "en": "",
-    "ja": "",
-    "zh": "GIF",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell23": {
-    "en": "",
-    "ja": "",
-    "zh": "动画 GIF 转为单帧（动画不保留）",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell7": {
-    "en": "",
-    "ja": "",
-    "zh": "原始格式",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell8": {
-    "en": "",
-    "ja": "",
-    "zh": "输出格式",
-    "zh-TW": ""
-  },
-  "post.assets-workflow.table.cell9": {
-    "en": "",
-    "ja": "",
-    "zh": "质量",
+    "zh": "",
     "zh-TW": ""
   },
   "post.assets-workflow.tag.工作流": {

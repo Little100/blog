@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import {
   animate,
   motion,
+  useIsPresent,
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
@@ -14,10 +15,7 @@ import { useI18n } from '../i18n/I18nContext'
 import { FocusReader } from '../components/focus/FocusReader'
 import { BLOG_INDEX, getPostMeta } from '../data/posts'
 import { firstMarkdownImageSrc, stripFirstMarkdownH1, stripFirstMarkdownImage } from '../utils/markdownTrim'
-import {
-  preprocessMarkdownAnnotations,
-  stripMarkdownAnnotations,
-} from '../utils/annotationMarkdown'
+import { preprocessMarkdownAnnotations } from '../utils/annotationMarkdown'
 import { useArticleFocus } from '../focus/ArticleFocusContext'
 import {
   isDottedI18nKey,
@@ -35,6 +33,7 @@ import { isPostRelatedSlidePending, markPostRelatedNavigation } from '../utils/p
 import type { Locale } from '../i18n/translations'
 import { SeoHead } from '../components/seo/SeoHead'
 import { siteConfig } from '../config/site'
+import { isContentModified } from '../i18n/contentBundles'
 
 function relatedForSlug(current: string) {
   return BLOG_INDEX.filter((b) => b.slug !== current).slice(0, 3)
@@ -58,7 +57,9 @@ export function PostPage() {
   const [postMainWrap, setPostMainWrap] = useState<HTMLDivElement | null>(null)
   const articleSearchRootRef = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
+  const routeIsPresent = useIsPresent()
   const skipBodyReveal = reduceMotion || isPostRelatedSlidePending()
+  const hasModification = useMemo(() => isContentModified(safeSlug), [safeSlug])
 
   useEffect(() => {
     setArticleFocusOpener(() => setFocusOpen(true))
@@ -97,10 +98,10 @@ export function PostPage() {
     [bodyForRender, safeSlug, t],
   )
 
-  const bodyForFocus = useMemo(() => {
-    const stripped = stripFirstMarkdownImage(bodyForRender)
-    return stripMarkdownAnnotations(stripped)
-  }, [bodyForRender])
+  const bodyForFocus = useMemo(
+    () => stripFirstMarkdownImage(articleMarkdown),
+    [articleMarkdown],
+  )
 
   const coverSrc = useMemo(() => {
     if (md.status !== 'ok') return ''
@@ -324,6 +325,11 @@ export function PostPage() {
             <article ref={articleSearchRootRef} className="post-main glass-card">
               <div className="post-head">
                 <h1 className="post-title md-h1">{displayTitle}</h1>
+                {hasModification && (
+                  <span className="post-modified-badge" title="This post has modified translations that need review">
+                    ⚠️
+                  </span>
+                )}
                 <button
                   type="button"
                   className="focus-enter-btn"
@@ -338,6 +344,7 @@ export function PostPage() {
                 style={{ clipPath: bodyClipPath }}
               >
                 <PostAnnotationMarginRoot
+                  key={safeSlug}
                   idPrefix={safeSlug}
                   annotations={annotations}
                   annotationCardVisible={annotations.length > 0 ? annVisibleForUi : undefined}
@@ -411,10 +418,12 @@ export function PostPage() {
       </div>
 
       <AnnotationBridges
+        key={safeSlug}
         idPrefix={safeSlug}
         count={annotations.length}
-        active={!focusOpen}
+        active={!focusOpen && routeIsPresent}
         segmentVisible={annotations.length > 0 ? annVisibleForUi : undefined}
+        domScope={postMainWrap}
       />
 
       <FocusReader
@@ -427,6 +436,8 @@ export function PostPage() {
         tags={resolvedTags}
         coverSrc={coverSrc}
         bodyMarkdown={bodyForFocus}
+        annotations={annotations}
+        idPrefix={safeSlug}
         relatedLabel={t('post.related')}
         related={related.filter((r) => r.icon).map((r) => ({
           slug: r.slug,

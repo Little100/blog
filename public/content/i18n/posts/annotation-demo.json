@@ -2,55 +2,49 @@
   "post.annotation-demo.annotation.body": {
     "en": "",
     "ja": "",
-    "zh": "This is a **single-line** annotation with *markdown*.",
+    "zh": "This is a paragraph with a single-line annotation.",
     "zh-TW": ""
   },
-  "post.annotation-demo.annotation.title": {
-    "en": "",
-    "ja": "",
-    "zh": "单行",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.block.26": {
+  "post.annotation-demo.annotation.body1": {
     "en": "",
     "ja": "",
     "zh": "This paragraph has a multi-line annotation.",
     "zh-TW": ""
   },
-  "post.annotation-demo.block.27": {
+  "post.annotation-demo.annotation.body2": {
     "en": "",
     "ja": "",
-    "zh": "{[(This annotation spans multiple lines to show how longer text wraps naturally within the card.",
+    "zh": "A code example annotation.",
     "zh-TW": ""
   },
-  "post.annotation-demo.block.31": {
-    "en": "",
-    "ja": "",
-    "zh": "You can also use **bold** and *italic* text together.)]}",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.block.32": {
+  "post.annotation-demo.annotation.body3": {
     "en": "",
     "ja": "",
     "zh": "Mixed content annotation.",
     "zh-TW": ""
   },
-  "post.annotation-demo.block.33": {
+  "post.annotation-demo.annotation.title": {
     "en": "",
     "ja": "",
-    "zh": "{[(This shows how **bold**, *italic*, and `code` can all appear in the same annotation.",
+    "zh": "单行: This is a **single-line** annotation with *markdown*.",
     "zh-TW": ""
   },
-  "post.annotation-demo.block.38": {
+  "post.annotation-demo.annotation.title1": {
     "en": "",
     "ja": "",
-    "zh": "All rendered with proper Markdown formatting.)]}",
+    "zh": "多行: - Bullet point 1\n- Bullet point 2\n- Bullet point 3\n\nYou can also use **bold** and *italic* text together.",
     "zh-TW": ""
   },
-  "post.annotation-demo.block.39": {
+  "post.annotation-demo.annotation.title2": {
     "en": "",
     "ja": "",
-    "zh": "混合",
+    "zh": "代码: Use `inline code` for short snippets, or write longer explanations that wrap to the next line when they exceed the card width.",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.annotation.title3": {
+    "en": "",
+    "ja": "",
+    "zh": "混合: This shows how **bold**, *italic*, and `code` can all appear in the same annotation. Numbered lists (1. 2. 3.) and full Markdown work in the card.",
     "zh-TW": ""
   },
   "post.annotation-demo.description": {
@@ -68,103 +62,85 @@
   "post.annotation-demo.p1": {
     "en": "",
     "ja": "",
-    "zh": "批注现在可以跨越多行。当文本超过卡片宽度时，会自动换行。",
+    "zh": "批注现在可以跨越多行。当文本超过卡片宽度时，会自动换行。TEST",
     "zh-TW": ""
   },
   "post.annotation-demo.p10": {
     "en": "",
     "ja": "",
-    "zh": "上表显示了批注中可用的不同格式选项。",
+    "zh": "- 将长批注分成要点以提高可读性",
     "zh-TW": ""
   },
   "post.annotation-demo.p11": {
     "en": "",
     "ja": "",
-    "zh": "批注正文支持标准 Markdown 语法。下表显示了可用的功能：",
+    "zh": "- 将长批注分成要点以提高可读性",
     "zh-TW": ""
   },
-  "post.annotation-demo.p24": {
-    "en": "",
-    "ja": "",
-    "zh": "所有这些元素都可在批注卡内正确渲染。",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p25": {
-    "en": "",
-    "ja": "",
-    "zh": "向下滚动查看本页上的实际批注。",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p28": {
-    "en": "",
-    "ja": "",
-    "zh": "- Bullet point 1",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p29": {
-    "en": "",
-    "ja": "",
-    "zh": "- Bullet point 2",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p30": {
-    "en": "",
-    "ja": "",
-    "zh": "- Bullet point 3",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p34": {
-    "en": "",
-    "ja": "",
-    "zh": "You can even write multiple paragraphs.",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p35": {
-    "en": "",
-    "ja": "",
-    "zh": "1. First item",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p36": {
-    "en": "",
-    "ja": "",
-    "zh": "2. Second item",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p37": {
-    "en": "",
-    "ja": "",
-    "zh": "3. Third item",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p40": {
-    "en": "",
-    "ja": "",
-    "zh": "编写批注时请记住以下准则：",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p41": {
-    "en": "",
-    "ja": "",
-    "zh": "- 对关键术语和重要概念使用**加粗**",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.p42": {
+  "post.annotation-demo.p12": {
     "en": "",
     "ja": "",
     "zh": "- 使用*斜体*进行轻微强调或外来词",
     "zh-TW": ""
   },
-  "post.annotation-demo.p43": {
+  "post.annotation-demo.p13": {
     "en": "",
     "ja": "",
     "zh": "- 对技术术语、命令或文件名使用`代码`",
     "zh-TW": ""
   },
-  "post.annotation-demo.p44": {
+  "post.annotation-demo.p14": {
     "en": "",
     "ja": "",
     "zh": "- 将长批注分成要点以提高可读性",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p2": {
+    "en": "",
+    "ja": "",
+    "zh": "上表显示了批注中可用的不同格式选项。",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p3": {
+    "en": "",
+    "ja": "",
+    "zh": "批注正文支持标准 Markdown 语法。下表显示了可用的功能：",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p4": {
+    "en": "",
+    "ja": "",
+    "zh": "所有这些元素都可在批注卡内正确渲染。",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p5": {
+    "en": "",
+    "ja": "",
+    "zh": "向下滚动查看本页上的实际批注。",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p6": {
+    "en": "",
+    "ja": "",
+    "zh": "编写批注时请记住以下准则：",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p7": {
+    "en": "",
+    "ja": "",
+    "zh": "- 对关键术语和重要概念使用**加粗**",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p8": {
+    "en": "",
+    "ja": "",
+    "zh": "- 使用*斜体*进行轻微强调或外来词",
+    "zh-TW": ""
+  },
+  "post.annotation-demo.p9": {
+    "en": "",
+    "ja": "",
+    "zh": "- 对技术术语、命令或文件名使用`代码`",
     "zh-TW": ""
   },
   "post.annotation-demo.section.markdown.渲染": {
@@ -191,118 +167,10 @@
     "zh": "提示与最佳实践",
     "zh-TW": ""
   },
-  "post.annotation-demo.table.cell12": {
+  "post.annotation-demo.tag.功能": {
     "en": "",
     "ja": "",
     "zh": "功能",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell13": {
-    "en": "",
-    "ja": "",
-    "zh": "示例",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell14": {
-    "en": "",
-    "ja": "",
-    "zh": "加粗",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell15": {
-    "en": "",
-    "ja": "",
-    "zh": "`**bold text**`",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell16": {
-    "en": "",
-    "ja": "",
-    "zh": "斜体",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell17": {
-    "en": "",
-    "ja": "",
-    "zh": "`*italic text*`",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell18": {
-    "en": "",
-    "ja": "",
-    "zh": "行内代码",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell19": {
-    "en": "",
-    "ja": "",
-    "zh": "`` `code snippet` ``",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell2": {
-    "en": "",
-    "ja": "",
-    "zh": "**格式**",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell20": {
-    "en": "",
-    "ja": "",
-    "zh": "链接",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell21": {
-    "en": "",
-    "ja": "",
-    "zh": "`[link](https://...)`",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell22": {
-    "en": "",
-    "ja": "",
-    "zh": "列表",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell23": {
-    "en": "",
-    "ja": "",
-    "zh": "`- item 1\\n- item 2`",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell3": {
-    "en": "",
-    "ja": "",
-    "zh": "**效果**",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell5": {
-    "en": "",
-    "ja": "",
-    "zh": "普通短批注",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell6": {
-    "en": "",
-    "ja": "",
-    "zh": "多行",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell7": {
-    "en": "",
-    "ja": "",
-    "zh": "支持**换行文本**，每行自动换行",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell8": {
-    "en": "",
-    "ja": "",
-    "zh": "Markdown",
-    "zh-TW": ""
-  },
-  "post.annotation-demo.table.cell9": {
-    "en": "",
-    "ja": "",
-    "zh": "`**加粗**`、`*斜体*`、`` `代码` ``",
     "zh-TW": ""
   },
   "post.annotation-demo.tag.笔记": {

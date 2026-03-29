@@ -25,26 +25,13 @@ function gitHash() {
   }
 }
 
-function parseSemver(v) {
-  const parts = v.replace(/^v/, '').split('.')
-  return {
-    major: parseInt(parts[0] ?? '0', 10),
-    minor: parseInt(parts[1] ?? '0', 10),
-    patch: parseInt(parts[2] ?? '0', 10),
-  }
-}
-
 function buildManifest(pkg) {
   const version = pkg.version ?? '0.0.0'
-  const { major, minor, patch } = parseSemver(version)
   const buildTime = new Date().toISOString()
   const hash = gitHash()
 
   return {
     version,
-    major,
-    minor,
-    patch,
     buildTime,
     gitHash: hash,
   }

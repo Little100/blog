@@ -65,17 +65,18 @@
     "zh",
     "zh-TW"
   ],
+  "defaultLanguage": "zh",
   "giscus": {
     "enabled": true,
-    "repo": "your-username/your-repo",
-    "repoId": "YOUR_REPO_ID",
+    "repo": "Little100/blog",
+    "repoId": "R_kgDORzEtSg",
     "category": "Announcements",
-    "categoryId": "YOUR_CATEGORY_ID",
+    "categoryId": "DIC_kwDORzEtSs4C5hlR",
     "mapping": "pathname",
     "reactionsEnabled": "1",
     "emitMetadata": "0",
     "inputPosition": "bottom",
-    "lang": "en"
+    "lang": "zh-CN"
   },
   "social": [
     {

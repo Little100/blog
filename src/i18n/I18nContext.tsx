@@ -109,8 +109,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     (key: string) => {
       const contentLoc = CONTENT_STRINGS_BY_LOCALE[locale] as Record<string, string>
       const stringsLoc = STRINGS[locale] as Record<string, string>
-      const primary =
+      let primary =
         pickString(contentLoc, key) || pickString(stringsLoc, key)
+      if (!primary && locale === 'zh-TW') {
+        primary = pickString(CONTENT_STRINGS_BY_LOCALE.zh, key)
+      }
       if (primary) return primary
       const contentEn = CONTENT_STRINGS_BY_LOCALE.en as Record<string, string>
       const stringsEn = STRINGS.en as Record<string, string>
@@ -134,4 +137,9 @@ export function useI18n() {
     throw new Error('useI18n must be used within I18nProvider')
   }
   return ctx
+}
+
+/** Dev HMR can remount routes before Provider; avoid crashing the shell. */
+export function useI18nOptional() {
+  return useContext(I18nContext)
 }

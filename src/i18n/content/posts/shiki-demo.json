@@ -1,0 +1,116 @@
+{
+  "post.shiki-demo.description": {
+    "en": "",
+    "ja": "",
+    "zh": "Shiki 按需加载语法高亮与 JSON 诊断示例",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.excerpt": {
+    "en": "",
+    "ja": "",
+    "zh": "Shiki 按需加载、语言标签与图标、JSON 波浪线诊断、自定义浮层提示（非浏览器原生 title）。",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.0": {
+    "en": "",
+    "ja": "",
+    "zh": "1: \"1\"",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.1": {
+    "en": "",
+    "ja": "",
+    "zh": "{\n  \"name\": \"blog\",\n  \"version\": \"0.1.0\",\n  \"scripts\": {\n    \"dev\": \"vite\"\n  }\n}",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.2": {
+    "en": "",
+    "ja": "",
+    "zh": "interface User {\n  id: number\n  name: string\n  email?: string\n}\n\nasync function fetchUser(id: number): Promise<User> {\n  const res = await fetch(`/api/users/${id}`)\n  if (!res.ok) throw new Error('User not found')\n  return res.json()\n}",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.3": {
+    "en": "",
+    "ja": "",
+    "zh": "def fibonacci(n: int) -> list[int]:\n    a, b = 0, 1\n    result = []\n    for _ in range(n):\n        result.append(a)\n        a, b = b, a + b\n    return result\n\nprint(fibonacci(10))",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.4": {
+    "en": "",
+    "ja": "",
+    "zh": "npm install shiki\nnpm run build\ngit push origin main",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.5": {
+    "en": "",
+    "ja": "",
+    "zh": "这是一段没有任何语言标记的文本。\n保持等宽字体，但没有高亮。",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.6": {
+    "en": "",
+    "ja": "",
+    "zh": "{\n  \"name\": \"blog\",\n  // 这是注释，JSONC 允许\n  \"version\": \"0.1.0\",\n}",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.fence.7": {
+    "en": "",
+    "ja": "",
+    "zh": "{\n  \"name\": \"blog\"\n",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.bash": {
+    "en": "",
+    "ja": "",
+    "zh": "Bash",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.json.无效语法.带红色波浪线.": {
+    "en": "",
+    "ja": "",
+    "zh": "JSON（无效语法，带红色波浪线）",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.json.有效.": {
+    "en": "",
+    "ja": "",
+    "zh": "JSON（有效）",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.python": {
+    "en": "",
+    "ja": "",
+    "zh": "Python",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.typescript": {
+    "en": "",
+    "ja": "",
+    "zh": "TypeScript",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.嵌套错误.jsonc.注释": {
+    "en": "",
+    "ja": "",
+    "zh": "嵌套错误：JSONC 注释",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.嵌套错误：未闭合的对象": {
+    "en": "",
+    "ja": "",
+    "zh": "嵌套错误：未闭合的对象",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.section.无语言标签（裸围栏）": {
+    "en": "",
+    "ja": "",
+    "zh": "无语言标签（裸围栏）",
+    "zh-TW": ""
+  },
+  "post.shiki-demo.title": {
+    "en": "",
+    "ja": "",
+    "zh": "Shiki 代码高亮演示",
+    "zh-TW": ""
+  }
+}

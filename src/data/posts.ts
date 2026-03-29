@@ -15,12 +15,22 @@ export type BlogIndexItem = PostMeta
 
 export const BLOG_INDEX: PostMeta[] = [
   {
+    "slug": "shiki-demo",
+    "sourceRel": "posts/shiki-demo.md",
+    "titleKey": "post.shiki-demo.title",
+    "date": "2026-03-29",
+    "tagKeys": [],
+    "excerptKey": "post.shiki-demo.excerpt",
+    "descriptionKey": "post.shiki-demo.description",
+    "icon": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1200&q=80"
+  },
+  {
     "slug": "annotation-demo",
     "sourceRel": "posts/annotation-demo.md",
     "titleKey": "post.annotation-demo.title",
     "date": "2026-03-28",
     "tagKeys": [
-      "post.annotation-demo.table.cell12",
+      "post.annotation-demo.tag.功能",
       "post.annotation-demo.tag.笔记"
     ],
     "excerptKey": "post.annotation-demo.title",
@@ -78,16 +88,6 @@ export const BLOG_INDEX: PostMeta[] = [
     "excerptKey": "post.simplicity.title",
     "descriptionKey": "",
     "icon": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200&q=80"
-  },
-  {
-    "slug": "test",
-    "sourceRel": "posts/test.md",
-    "titleKey": "",
-    "date": "",
-    "tagKeys": [],
-    "excerptKey": "",
-    "descriptionKey": "",
-    "icon": ""
   }
 ]
 // ── AUTO-GENERATED SECTION

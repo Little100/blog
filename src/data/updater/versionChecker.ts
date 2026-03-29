@@ -1,8 +1,5 @@
 export type VersionInfo = {
   version: string
-  major: number
-  minor: number
-  patch: number
   buildTime: string
   gitHash: string | null
 }
@@ -31,8 +28,8 @@ export type UpdateStatus =
   | UpdateAvailable
   | { state: 'error'; message: string }
 
-function parseTag(tag: string): { major: number; minor: number; patch: number } {
-  const parts = tag.replace(/^v/, '').split('.')
+function parseSemver(v: string): { major: number; minor: number; patch: number } {
+  const parts = v.replace(/^v/, '').split('.')
   return {
     major: parseInt(parts[0] ?? '0', 10),
     minor: parseInt(parts[1] ?? '0', 10),
@@ -41,7 +38,7 @@ function parseTag(tag: string): { major: number; minor: number; patch: number } 
 }
 
 function isNewer(
-  current: VersionInfo,
+  current: { major: number; minor: number; patch: number },
   latest: { major: number; minor: number; patch: number },
 ): boolean {
   if (latest.major > current.major) return true
@@ -93,9 +90,10 @@ export async function checkForUpdates(repo: string): Promise<UpdateStatus> {
     return { state: 'up-to-date', info: versionInfo }
   }
 
-  const latestParsed = parseTag(latestRelease.tag_name)
+  const currentParsed = parseSemver(versionInfo.version)
+  const latestParsed = parseSemver(latestRelease.tag_name)
 
-  if (isNewer(versionInfo, latestParsed)) {
+  if (isNewer(currentParsed, latestParsed)) {
     return {
       hasUpdate: true,
       current: versionInfo,

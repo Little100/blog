@@ -12,11 +12,24 @@ export const NOTE_ID = (prefix: string, i: number) => `BLOG-anno-note-${prefix}-
 
 const MQ_WIDE = '(min-width: 1101px)'
 
+function getScopedElementById(scope: HTMLElement | null | undefined, id: string): HTMLElement | null {
+  if (scope) {
+    try {
+      return scope.querySelector(`#${CSS.escape(id)}`) as HTMLElement | null
+    } catch {
+      /* ignore */
+    }
+  }
+  return document.getElementById(id)
+}
+
 type Props = {
   idPrefix: string
   count: number
   active: boolean
   segmentVisible?: boolean[]
+  /** Prefer querying inside this subtree (avoids stale nodes during route transitions). */
+  domScope?: HTMLElement | null
 }
 
 type Segment = {
@@ -77,13 +90,15 @@ function pathCurved(
   }
 }
 
-function collectSegments(prefix: string, count: number): Segment[] {
+function collectSegments(prefix: string, count: number, scope: HTMLElement | null | undefined): Segment[] {
   const pid = sanitizeAnnoIdPrefix(prefix)
   const out: Segment[] = []
   for (let i = 0; i < count; i++) {
-    const note = document.getElementById(NOTE_ID(prefix, i))
-    const text = document.getElementById(TEXT_ID(prefix, i))
+    const note = getScopedElementById(scope, NOTE_ID(prefix, i))
+    const text = getScopedElementById(scope, TEXT_ID(prefix, i))
     if (!note || !text) continue
+    // Ignore DOM from a previous route or duplicate ids outside the current article body.
+    if (!text.closest('[data-annotation-root]')) continue
     const nr = note.getBoundingClientRect()
     const tr = text.getBoundingClientRect()
     if (nr.width < 4 || tr.width < 2) continue
@@ -105,7 +120,7 @@ function ArrowHeadFilled({ tone }: { tone: number }) {
   return <path d="M 0 0 L -9 -3.6 L -9 3.6 Z" className={cls} />
 }
 
-export function AnnotationBridges({ idPrefix, count, active, segmentVisible }: Props) {
+export function AnnotationBridges({ idPrefix, count, active, segmentVisible, domScope }: Props) {
   const [segments, setSegments] = useState<Segment[]>([])
   const [viewport, setViewport] = useState(() =>
     typeof window !== 'undefined'
@@ -124,18 +139,45 @@ export function AnnotationBridges({ idPrefix, count, active, segmentVisible }: P
       return
     }
     raf.current = requestAnimationFrame(() => {
-      const next = collectSegments(idPrefix, count)
+      const next = collectSegments(idPrefix, count, domScope)
       setSegments((prev) => (segmentsEqual(prev, next) ? prev : next))
     })
-  }, [active, count, idPrefix, wide])
+  }, [active, count, idPrefix, wide, domScope])
 
   const segShow = segmentVisible ?? null
+
+  useLayoutEffect(() => {
+    setSegments([])
+  }, [idPrefix])
 
   useLayoutEffect(() => {
     remeasure()
     const id = requestAnimationFrame(() => remeasure())
     return () => cancelAnimationFrame(id)
-  }, [remeasure, segShow])
+  }, [remeasure, segShow, idPrefix])
+
+  useEffect(() => {
+    const delays = [50, 120, 280, 520, 900, 1300, 1800]
+    const timers = delays.map((ms) => window.setTimeout(() => remeasure(), ms))
+    return () => timers.forEach(clearTimeout)
+  }, [idPrefix, remeasure])
+
+  useEffect(() => {
+    if (!active || count <= 0) return
+    const p = document.fonts?.ready?.then(() => remeasure())
+    return () => void p
+  }, [active, count, idPrefix, remeasure])
+
+  useEffect(() => {
+    if (!active || count <= 0) return
+    const root =
+      (domScope?.querySelector('[data-annotation-root]') as HTMLElement | null) ??
+      document.querySelector('[data-annotation-root]')
+    if (!root) return
+    const ro = new ResizeObserver(() => remeasure())
+    ro.observe(root)
+    return () => ro.disconnect()
+  }, [active, count, idPrefix, remeasure, domScope])
 
   useEffect(() => {
     const mq = window.matchMedia(MQ_WIDE)
@@ -157,7 +199,7 @@ export function AnnotationBridges({ idPrefix, count, active, segmentVisible }: P
     const onScroll = () => {
       cancelAnimationFrame(raf.current)
       raf.current = requestAnimationFrame(() => {
-        const next = collectSegments(idPrefix, count)
+        const next = collectSegments(idPrefix, count, domScope)
         setSegments((prev) => (segmentsEqual(prev, next) ? prev : next))
       })
     }
@@ -171,7 +213,7 @@ export function AnnotationBridges({ idPrefix, count, active, segmentVisible }: P
       ro.disconnect()
       cancelAnimationFrame(raf.current)
     }
-  }, [active, count, idPrefix, wide, segShow])
+  }, [active, count, idPrefix, wide, segShow, domScope])
 
   useEffect(() => {
     if (!active || count <= 0) return
@@ -179,8 +221,8 @@ export function AnnotationBridges({ idPrefix, count, active, segmentVisible }: P
     const bind = () => {
       for (let i = 0; i < count; i++) {
         if (segShow && segShow[i] === false) continue
-        const note = document.getElementById(NOTE_ID(idPrefix, i))
-        const text = document.getElementById(TEXT_ID(idPrefix, i))
+        const note = getScopedElementById(domScope, NOTE_ID(idPrefix, i))
+        const text = getScopedElementById(domScope, TEXT_ID(idPrefix, i))
         const enter = () => setLit(i)
         const leaveNote = (ev: MouseEvent) => {
           const r = ev.relatedTarget as Node | null
@@ -215,15 +257,15 @@ export function AnnotationBridges({ idPrefix, count, active, segmentVisible }: P
       clearTimeout(t)
       cleanups.forEach((c) => c())
     }
-  }, [active, count, idPrefix, segShow])
+  }, [active, count, idPrefix, segShow, domScope])
 
   useEffect(() => {
     for (let i = 0; i < count; i++) {
       if (segShow && segShow[i] === false) continue
-      document.getElementById(TEXT_ID(idPrefix, i))?.classList.toggle('md-anno--lit', lit === i)
-      document.getElementById(NOTE_ID(idPrefix, i))?.classList.toggle('anno-note--lit', lit === i)
+      getScopedElementById(domScope, TEXT_ID(idPrefix, i))?.classList.toggle('md-anno--lit', lit === i)
+      getScopedElementById(domScope, NOTE_ID(idPrefix, i))?.classList.toggle('anno-note--lit', lit === i)
     }
-  }, [lit, idPrefix, count, segShow])
+  }, [lit, idPrefix, count, segShow, domScope])
 
   const drawn = segShow ? segments.filter((s) => segShow[s.i] !== false) : segments
 

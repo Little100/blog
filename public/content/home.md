@@ -10,7 +10,7 @@ content.home.p3
 
 content.home.p4
 
-content.home.p13
+content.home.p5
 
 ### content.home.section.问题
 
@@ -18,7 +18,7 @@ content.home.p13
 content.home.p6
 </circle-question>
 
-content.home.p13
+content.home.p5
 
 ### content.home.section.提示
 
@@ -26,7 +26,7 @@ content.home.p13
 content.home.p8
 </lightbulb>
 
-content.home.p13
+content.home.p5
 
 ### content.home.section.重要
 
@@ -34,7 +34,7 @@ content.home.p13
 content.home.p10
 </circle-exclamation>
 
-content.home.p13
+content.home.p5
 
 ### content.home.section.评论
 
@@ -42,7 +42,7 @@ content.home.p13
 content.home.p12
 </comments>
 
-content.home.p13
+content.home.p5
 
 ### content.home.section.链接
 

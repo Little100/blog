@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -6,10 +6,14 @@ import { markPostRelatedNavigation } from '../../utils/postRelatedNav'
 import { Moon, Sun, X } from 'lucide-react'
 import { MarkdownDocument } from '../../markdown/MarkdownDocument'
 import { useTheme } from '../../theme/ThemeContext'
-import { LOCALE_LABEL, type Locale } from '../../i18n/translations'
+import { LOCALE_DEFS, type Locale } from '../../i18n/translations'
 import { useI18n } from '../../i18n/I18nContext'
 import { siteConfig } from '../../config/site'
 import clsx from 'clsx'
+import type { MarkdownAnnotation } from '../../utils/annotationMarkdown'
+import { AnnotationBubbleProvider } from '../post/AnnotationBubbleCtx'
+import { LocaleSwitcher } from '../layout/LocaleSwitcher'
+import { FocusAnnotationList } from './FocusAnnotationList'
 
 function getLocalePath(path: string, locale: Locale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
@@ -33,6 +37,8 @@ type Props = {
   tags?: string[]
   coverSrc: string
   bodyMarkdown: string
+  annotations: MarkdownAnnotation[]
+  idPrefix: string
   relatedLabel: string
   related: FocusRelatedItem[]
 }
@@ -47,11 +53,18 @@ export function FocusReader({
   tags,
   coverSrc,
   bodyMarkdown,
+  annotations,
+  idPrefix,
   relatedLabel,
   related,
 }: Props) {
   const { theme, cycleTheme } = useTheme()
   const { locale, setLocale, t, availableLocales } = useI18n()
+
+  const localeChoices = useMemo(
+    () => LOCALE_DEFS.filter((d) => availableLocales.includes(d.code)),
+    [availableLocales],
+  )
 
   const localePath = (path: string) => getLocalePath(path, locale)
 
@@ -93,20 +106,19 @@ export function FocusReader({
           transition={{ duration: 0.35 }}
         >
           <header className="focus-reader__bar">
-            <span className="focus-reader__brand">{siteConfig.title}</span>
+            <span className="focus-reader__brand" title={siteConfig.title}>
+              {siteConfig.title}
+            </span>
             <div className="focus-reader__controls">
-              <div className="focus-lang" role="group" aria-label={t('focus.lang')}>
-                {availableLocales.map((l: Locale) => (
-                  <button
-                    key={l}
-                    type="button"
-                    className={`focus-lang__btn${locale === l ? ' focus-lang__btn--active' : ''}`}
-                    onClick={() => setLocale(l)}
-                  >
-                    {LOCALE_LABEL[l]}
-                  </button>
-                ))}
-              </div>
+              {localeChoices.length > 1 ? (
+                <LocaleSwitcher
+                  locale={locale}
+                  setLocale={setLocale}
+                  choices={localeChoices}
+                  ariaLabel={t('focus.lang')}
+                  variant="compact"
+                />
+              ) : null}
               <button
                 type="button"
                 className="focus-icon-btn"
@@ -168,8 +180,14 @@ export function FocusReader({
               ) : null}
 
               <div className="focus-reader__markdown">
-                <MarkdownDocument source={bodyMarkdown} enableMediaZigzag />
+                <AnnotationBubbleProvider annotations={annotations} idPrefix={idPrefix}>
+                  <div className="post-md focus-reader__post-md" data-annotation-root>
+                    <MarkdownDocument source={bodyMarkdown} enableMediaZigzag />
+                  </div>
+                </AnnotationBubbleProvider>
               </div>
+
+              <FocusAnnotationList annotations={annotations} idPrefix={idPrefix} t={t} />
 
               {related.length > 0 ? (
                 <div className="focus-reader__related">

@@ -8,11 +8,18 @@ import {
   type UpdateStatus,
 } from '../data/updater/versionChecker'
 import { siteConfig } from '../config/site'
-import { useI18n } from '../i18n/I18nContext'
+import { useI18nOptional } from '../i18n/I18nContext'
+import { STRINGS } from '../i18n/translations'
 import { useTheme } from '../theme/ThemeContext'
 
+function tFallback(key: string): string {
+  const en = (STRINGS.en as Record<string, string>)[key]
+  return en ?? key
+}
+
 export function UpdateBanner() {
-  const { t } = useI18n()
+  const i18n = useI18nOptional()
+  const t = (key: string) => (i18n ? i18n.t(key) : tFallback(key))
   const { theme } = useTheme()
   const [status, setStatus] = useState<UpdateStatus>({ state: 'idle' })
   const [dismissed, setDismissed] = useState(false)

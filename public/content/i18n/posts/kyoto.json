@@ -23,10 +23,16 @@
     "zh": "朱红鸟居立柱近景",
     "zh-TW": ""
   },
-  "post.kyoto.p1": {
+  "post.kyoto.p0": {
     "en": "",
     "ja": "",
     "zh": "静默有颜色吗？在那条路上，灰石与朱红都显得同样安静。",
+    "zh-TW": ""
+  },
+  "post.kyoto.p1": {
+    "en": "",
+    "ja": "",
+    "zh": "石狐望着与人潮同一条路，却用着另一种时钟。",
     "zh-TW": ""
   },
   "post.kyoto.p3": {
@@ -47,52 +53,28 @@
     "zh": "小径与光线",
     "zh-TW": ""
   },
-  "post.kyoto.table.cell10": {
+  "post.kyoto.table.row0": {
     "en": "",
     "ja": "",
-    "zh": "傍晚",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.kyoto.table.cell11": {
+  "post.kyoto.table.row1": {
     "en": "",
     "ja": "",
-    "zh": "暖色、剪影",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.kyoto.table.cell4": {
+  "post.kyoto.table.row2": {
     "en": "",
     "ja": "",
-    "zh": "时段",
+    "zh": "",
     "zh-TW": ""
   },
-  "post.kyoto.table.cell5": {
+  "post.kyoto.table.row3": {
     "en": "",
     "ja": "",
-    "zh": "氛围",
-    "zh-TW": ""
-  },
-  "post.kyoto.table.cell6": {
-    "en": "",
-    "ja": "",
-    "zh": "清晨",
-    "zh-TW": ""
-  },
-  "post.kyoto.table.cell7": {
-    "en": "",
-    "ja": "",
-    "zh": "柔和、人少",
-    "zh-TW": ""
-  },
-  "post.kyoto.table.cell8": {
-    "en": "",
-    "ja": "",
-    "zh": "正午",
-    "zh-TW": ""
-  },
-  "post.kyoto.table.cell9": {
-    "en": "",
-    "ja": "",
-    "zh": "对比强烈",
+    "zh": "",
     "zh-TW": ""
   },
   "post.kyoto.tag.摄影": {

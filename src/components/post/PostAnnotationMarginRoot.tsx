@@ -21,8 +21,17 @@ import {
 import { NOTE_ID, TEXT_ID } from './AnnotationBridges'
 
 const MQ_WIDE = '(min-width: 1101px)'
-const ANNO_CARD_MIN_GAP_PX = 26
+const ANNO_CARD_MIN_GAP_PX = 20
 const ANNO_CARD_FALLBACK_HEIGHT_PX = 80
+
+function queryInHost(root: HTMLElement | null, id: string): HTMLElement | null {
+  if (!root) return document.getElementById(id)
+  try {
+    return root.querySelector(`#${CSS.escape(id)}`) as HTMLElement | null
+  } catch {
+    return document.getElementById(id)
+  }
+}
 
 type Props = {
   idPrefix: string
@@ -64,7 +73,7 @@ function MarginLayer({
         }
         return (
           <div
-            key={`${i}-${ann.body.slice(0, 24)}`}
+            key={`${i}-${ann.anchorText.slice(0, 24)}`}
             className="post-annotation-margin-card-wrap post-annotation-margin-card-wrap--free"
             style={wrapStyle}
           >
@@ -119,16 +128,19 @@ export function PostAnnotationMarginRoot({
     const root = portalMode ? marginPortalHost : wrapRef.current
     if (!root || !wide || annotations.length === 0) return
     const wr = root.getBoundingClientRect()
-    const rawTops = annotations.map((_, i) => {
-      const el = document.getElementById(TEXT_ID(idPrefix, i))
-      if (!el) return 0
-      const ar = el.getBoundingClientRect()
-      return ar.top - wr.top + root.scrollTop
-    })
     const heights = annotations.map((_, i) => {
-      const note = document.getElementById(NOTE_ID(idPrefix, i))
+      const note = queryInHost(root, NOTE_ID(idPrefix, i))
       const wrap = note?.closest('.post-annotation-margin-card-wrap') as HTMLElement | null
       return wrap?.offsetHeight ?? 0
+    })
+    const rawTops = annotations.map((_, i) => {
+      const el = queryInHost(root, TEXT_ID(idPrefix, i))
+      if (!el) return 0
+      const ar = el.getBoundingClientRect()
+      const h = heights[i]! > 8 ? heights[i]! : ANNO_CARD_FALLBACK_HEIGHT_PX
+      const anchorCenter = ar.top - wr.top + root.scrollTop + ar.height / 2
+      const topUnclamped = anchorCenter - h / 2
+      return Math.max(0, topUnclamped)
     })
     const next = packAnnotationTops(
       rawTops,

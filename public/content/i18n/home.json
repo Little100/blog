@@ -17,6 +17,12 @@
     "zh": "重要的警告或关键信息，读者不应忽略。",
     "zh-TW": ""
   },
+  "content.home.p11": {
+    "en": "",
+    "ja": "",
+    "zh": "---",
+    "zh-TW": ""
+  },
   "content.home.p12": {
     "en": "",
     "ja": "",
@@ -59,16 +65,34 @@
     "zh": "自定义标题 — 可以覆盖默认的标题文本。",
     "zh-TW": ""
   },
+  "content.home.p5": {
+    "en": "",
+    "ja": "",
+    "zh": "---",
+    "zh-TW": ""
+  },
   "content.home.p6": {
     "en": "",
     "ja": "",
     "zh": "读者可能有的常见问题，在文章流程中直接回答。",
     "zh-TW": ""
   },
+  "content.home.p7": {
+    "en": "",
+    "ja": "",
+    "zh": "---",
+    "zh-TW": ""
+  },
   "content.home.p8": {
     "en": "",
     "ja": "",
     "zh": "补充主内容的有用提示、最佳实践或额外见解。",
+    "zh-TW": ""
+  },
+  "content.home.p9": {
+    "en": "",
+    "ja": "",
+    "zh": "---",
     "zh-TW": ""
   },
   "content.home.section.提示": {

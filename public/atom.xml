@@ -5,13 +5,21 @@
   <link href="https://your-domain.com/atom.xml" rel="self"/>
   <link href="https://your-domain.com/"/>
   <id>https://your-domain.com/</id>
-  <updated>2026-03-28T00:00:00Z</updated>
+  <updated>2026-03-29T00:00:00Z</updated>
   <author>
     <name>Little100</name>
   </author>
   <generator uri="https://vitejs.dev/">Vite</generator>
   <icon>https://your-domain.com/avatar.png</icon>
   <logo>https://your-domain.com/og-image.png</logo>
+  <entry>
+    <title>post.shiki-demo.title</title>
+    <link href="https://your-domain.com/post/shiki-demo" rel="alternate"/>
+    <id>https://your-domain.com/post/shiki-demo</id>
+    <updated>2026-03-29T00:00:00Z</updated>
+    <published>2026-03-29T00:00:00Z</published>
+    <summary>Read more about post.shiki-demo.title on Little100&apos;s BLOG.</summary>
+  </entry>
   <entry>
     <title>post.annotation-demo.title</title>
     <link href="https://your-domain.com/post/annotation-demo" rel="alternate"/>

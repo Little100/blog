@@ -1,6 +1,31 @@
-import { MARKDOWN_INLINE_ANNOTATION_PATTERN } from './annotationMarkdown'
+import {
+  maskMarkdownAnnotations,
+  parseAnnotationAt,
+  preNormalizeAnnotationMarkdown,
+} from './annotationMarkdown'
 
-const DOTTED_KEY = /^[a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+$/i
+const ANNO_MASK_MARKER = /%%BLOG_ANNO_\d+%%/
+
+function normalizePipeBeforeAnno(s: string): string {
+  return s.replace(/\|\s*\|{[\[]\(/g, '|{[(')
+}
+
+function normalizeTrailingDoublePipe(s: string): string {
+  return s.replace(/\|\|(\s*)$/gm, '|$1')
+}
+
+
+/**
+ * Matches i18n keys emitted by sync-post-i18n (slugify): ASCII slugs plus CJK-only
+ * section/tag tails like `section.多行批注`, `tag.功能`.
+ * Keep in sync with `DOTTED_KEY` in scripts/sync-post-i18n.mjs and
+ * `DOTTED_I18N_KEY` in annotationMarkdown.ts.
+ */
+/** CJK 等片段中允许全角/半角冒号与全角括号（如 `无语言标签（裸围栏）`），ASCII 片段不允许含点。 */
+const I18N_KEY_SEGMENT = '(?:[a-z0-9][\\w-]*|[\\p{L}\\p{M}\\p{N}_\\-:：.（）]+)'
+/** Optional trailing `.` matches sync slugify tails like `section....带红色波浪线.` */
+const DOTTED_KEY_BODY = `(?:post|content)\\.${I18N_KEY_SEGMENT}(?:\\.${I18N_KEY_SEGMENT})*\\.?`
+const DOTTED_KEY = new RegExp(`^${DOTTED_KEY_BODY}$`, 'iu')
 
 function annoPlaceholder(i: number) {
   return `\u2060%%BLOG_ANNO_${i}%%\u2060`
@@ -19,32 +44,24 @@ export function resolveTagLabel(
   return isDottedI18nKey(s) ? translate(s) : s
 }
 
-const IMG_ALT_KEY = /!\[([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)\]\(([^)\s]+)\)/gi
+const IMG_ALT_KEY = new RegExp(`!\\[(${DOTTED_KEY_BODY})\\]\\(([^)\\s]+)\\)`, 'gi')
 
-const LINE_KEY_ONLY = /^[\t ]*([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)[\t ]*$/i
+const LINE_KEY_ONLY = new RegExp(`^[\\t ]*(${DOTTED_KEY_BODY})[\\t ]*$`, 'iu')
 
-const HEADING_KEY = /^(#{1,6})[\t ]+([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)[\t ]*$/i
+const HEADING_KEY = new RegExp(`^(#{1,6})[\\t ]+(${DOTTED_KEY_BODY})[\\t ]*$`, 'iu')
 
-const BLOCKQUOTE_KEY_ONLY = /^([\t ]*>\s*)([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)[\t ]*$/i
+const BLOCKQUOTE_KEY_ONLY = new RegExp(`^([\\t ]*>\\s*)(${DOTTED_KEY_BODY})[\\t ]*$`, 'iu')
 
-const OL_ITEM_KEY = /^([\t ]*\d+\.\s+)([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)[\t ]*$/i
+const OL_ITEM_KEY = new RegExp(`^([\\t ]*\\d+\\.\\s+)(${DOTTED_KEY_BODY})[\\t ]*$`, 'iu')
 
-const UL_ITEM_KEY = /^([\t ]*[-*]\s+)([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)[\t ]*$/i
+const UL_ITEM_KEY = new RegExp(`^([\\t ]*[-*]\\s+)(${DOTTED_KEY_BODY})[\\t ]*$`, 'iu')
 
 export function expandMarkdownI18nKeys(
   source: string,
   translate: (key: string) => string,
 ): string {
-  const annoSlices: string[] = []
-  const annoRe = new RegExp(
-    MARKDOWN_INLINE_ANNOTATION_PATTERN.source,
-    MARKDOWN_INLINE_ANNOTATION_PATTERN.flags,
-  )
-  const withoutAnno = source.replace(annoRe, (full) => {
-    const i = annoSlices.length
-    annoSlices.push(full)
-    return annoPlaceholder(i)
-  })
+  source = preNormalizeAnnotationMarkdown(source)
+  const { masked: withoutAnno, slices: annoSlices } = maskMarkdownAnnotations(source)
 
   const withAlt = withoutAnno.replace(IMG_ALT_KEY, (full, key: string, url: string) => {
     if (!isDottedI18nKey(key)) return full
@@ -56,22 +73,56 @@ export function expandMarkdownI18nKeys(
   let inFence = false
   const out: string[] = []
 
-  for (const line of lines) {
+  let lineIdx = 0
+  while (lineIdx < lines.length) {
+    let line = lines[lineIdx]!
+    let advanceBy = 1
+    if (!inFence && (line.includes('|{[(') || /\{[\[]\(\s*(?:post|content)\./.test(line))) {
+      let buf = line
+      let j = lineIdx
+      let merged: string | null = null
+      while (true) {
+        const prepared = preNormalizeAnnotationMarkdown(buf)
+        const at = prepared.indexOf('|{[(')
+        if (at === -1) break
+        if (parseAnnotationAt(prepared, at)) {
+          merged = prepared
+          break
+        }
+        j++
+        if (j >= lines.length) break
+        buf += '\n' + lines[j]!
+      }
+      if (merged !== null) {
+        line = merged
+      } else if (j > lineIdx) {
+        line = preNormalizeAnnotationMarkdown(buf)
+      }
+      advanceBy = j - lineIdx + 1
+    }
+    lineIdx += advanceBy
+
     const trimmedStart = line.trimStart()
     if (trimmedStart.startsWith('```')) {
       inFence = !inFence
       out.push(line)
       continue
     }
+    /* 围栏内保持源码字面量，不做 i18n（避免切换语言时代码块内容被翻译） */
     if (inFence) {
       out.push(line)
       continue
     }
 
     const processedLine = line.replace(
-      /\btitle:([a-z][a-z0-9]*(?:\.[a-z0-9][\w.-]*)+)(?=\s|>)/gi,
+      new RegExp(`\\btitle:(${DOTTED_KEY_BODY})(?=\\s|>)`, 'giu'),
       (_m: string, key: string) => `title:${translate(key)}`,
     )
+
+    if (!inFence && ANNO_MASK_MARKER.test(processedLine)) {
+      out.push(processedLine)
+      continue
+    }
 
     const trimmedLine = processedLine.trim()
     if (!trimmedLine) {
@@ -90,7 +141,17 @@ export function expandMarkdownI18nKeys(
       continue
     }
     if (/^\|.*\|\s*$/.test(trimmedLine) && trimmedLine.includes('|')) {
-      out.push(processedLine)
+      const parts = processedLine.split('|')
+      const anyKey = parts.some((seg: string) => isDottedI18nKey(seg.trim()))
+      if (anyKey) {
+        const rebuilt = parts.map((seg: string) => {
+          const trimmed = seg.trim()
+          return isDottedI18nKey(trimmed) ? translate(trimmed) : seg
+        })
+        out.push(rebuilt.join('|'))
+      } else {
+        out.push(processedLine)
+      }
       continue
     }
 
@@ -150,5 +211,5 @@ export function expandMarkdownI18nKeys(
   for (let i = annoSlices.length - 1; i >= 0; i--) {
     result = result.split(annoPlaceholder(i)).join(annoSlices[i]!)
   }
-  return result
+  return normalizeTrailingDoublePipe(normalizePipeBeforeAnno(result))
 }

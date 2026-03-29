@@ -7,7 +7,15 @@ import { SocialLinks } from './SocialLinks'
 import { useRightRail } from './RightRailContext'
 import { getRoutePathname } from '../../utils/useLocalePath'
 
-const INFO_ROUTES = new Set(['/about', '/changelog', '/contact', '/tags', '/privacy'])
+/** Routes where the right rail (category sidebar + social strip) is omitted */
+const RIGHT_RAIL_HIDDEN_ROUTES = new Set([
+  '/about',
+  '/changelog',
+  '/contact',
+  '/tags',
+  '/privacy',
+  '/404',
+])
 
 export function RightRail() {
   const { pathname } = useLocation()
@@ -15,8 +23,8 @@ export function RightRail() {
   const { t } = useI18n()
   const reduce = useReducedMotion()
 
-  /** Info pages, tags, and privacy pages: no category sidebar collapse and no right-rail social links (these pages have their own navigation or need a simpler layout) */
-  if (INFO_ROUTES.has(getRoutePathname(pathname))) {
+  /** Info pages, tags, privacy, and 404: no right-rail social strip (simpler layout) */
+  if (RIGHT_RAIL_HIDDEN_ROUTES.has(getRoutePathname(pathname))) {
     return null
   }
 

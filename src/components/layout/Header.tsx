@@ -12,7 +12,8 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { useEffect, useId, useRef, useState, useMemo } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
+import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTheme } from '../../theme/ThemeContext'
 import { useI18n } from '../../i18n/I18nContext'
@@ -61,7 +62,13 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [localSearchQ, setLocalSearchQ] = useState('')
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const desktopSearchRef = useRef<HTMLDivElement>(null)
+  const mobileToggleRef = useRef<HTMLButtonElement>(null)
+  const mobileSearchRowRef = useRef<HTMLDivElement>(null)
   const headerSearchId = useId()
+  const narrowHeader = useMediaQuery('(max-width: 900px)')
+  const searchInputIdDesktop = `${headerSearchId}-d`
+  const searchInputIdMobile = `${headerSearchId}-m`
 
   // Clean path without locale prefix for comparison
   const cleanPath = useMemo(() => getCleanPath(pathname), [pathname])
@@ -90,6 +97,20 @@ export function Header() {
     if (isBlogList && blogQ) setSearchOpen(true)
   }, [isBlogList, blogQ])
 
+  const handleSearchBlur = useCallback(() => {
+    requestAnimationFrame(() => {
+      const el = document.activeElement
+      if (!(el instanceof Node)) {
+        setSearchOpen(false)
+        return
+      }
+      if (desktopSearchRef.current?.contains(el)) return
+      if (mobileToggleRef.current?.contains(el)) return
+      if (mobileSearchRowRef.current?.contains(el)) return
+      setSearchOpen(false)
+    })
+  }, [])
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Valid pattern: sync UI state with URL params
     if (isBlogList) setLocalSearchQ(blogQ)
@@ -98,10 +119,13 @@ export function Header() {
   const toggleHeaderSearch = () => {
     if (searchOpen) {
       setSearchOpen(false)
+      searchInputRef.current?.blur()
       return
     }
     setSearchOpen(true)
-    requestAnimationFrame(() => searchInputRef.current?.focus())
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => searchInputRef.current?.focus())
+    })
   }
 
   const submitHeaderSearch = () => {
@@ -121,7 +145,8 @@ export function Header() {
         'bg-[color-mix(in_srgb,var(--page-bg)_78%,transparent)]',
       )}
     >
-      <div className="site-header__main flex w-full flex-wrap items-center gap-x-4 gap-y-2 max-[900px]:grid max-[900px]:grid-cols-[48px_1fr_auto] max-[900px]:items-start max-[900px]:gap-x-2 max-[900px]:gap-y-1">
+      <div className="site-header__main flex w-full flex-wrap items-center gap-x-4 gap-y-2 max-[900px]:flex-col max-[900px]:items-stretch max-[900px]:gap-2">
+        <div className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 min-[901px]:contents max-[900px]:grid max-[900px]:grid-cols-[48px_1fr_auto] max-[900px]:items-center max-[900px]:gap-x-2 max-[900px]:gap-y-1">
         <button
           type="button"
           className={clsx(
@@ -144,7 +169,7 @@ export function Header() {
 
         <Link
           to={localePath('/')}
-          className="site-brand inline-flex items-center gap-3 text-[var(--heading)] no-underline max-[900px]:col-start-2 max-[900px]:row-start-1 max-[900px]:flex max-[900px]:max-w-[16rem] max-[900px]:flex-col max-[900px]:items-center max-[900px]:justify-self-center max-[900px]:gap-2 max-[900px]:px-1 max-[900px]:text-center"
+          className="site-brand inline-flex min-w-0 items-center gap-3 text-[var(--heading)] no-underline max-[900px]:col-start-2 max-[900px]:row-start-1 max-[900px]:flex max-[900px]:max-w-[16rem] max-[900px]:flex-col max-[900px]:items-center max-[900px]:justify-self-center max-[900px]:gap-2 max-[900px]:px-1 max-[900px]:text-center"
           onClick={() => setMenuOpen(false)}
         >
           <img
@@ -159,7 +184,7 @@ export function Header() {
           </span>
         </Link>
 
-        <div className="site-header__end ml-auto flex flex-wrap items-center gap-2 sm:gap-3 max-[900px]:col-start-3 max-[900px]:row-start-1 max-[900px]:ml-0 max-[900px]:self-center">
+        <div className="site-header__end ml-auto flex min-w-0 flex-wrap items-center justify-end gap-2 sm:gap-3 max-[900px]:col-start-3 max-[900px]:row-start-1 max-[900px]:ml-0 max-[900px]:self-center">
           <nav
             className="site-nav site-nav--desktop hidden min-[901px]:flex min-[901px]:flex-wrap min-[901px]:justify-end gap-2"
             aria-label="Main"
@@ -188,12 +213,7 @@ export function Header() {
             })}
           </nav>
 
-          <div
-            className={clsx(
-              'site-header__tools flex items-center gap-1.5',
-              searchOpen && 'site-header__tools--search-open',
-            )}
-          >
+          <div className="site-header__tools flex shrink-0 items-center gap-1.5">
             {localeChoices.length > 1 ? (
               <LocaleSwitcher
                 locale={locale}
@@ -203,36 +223,58 @@ export function Header() {
                 variant="compact"
               />
             ) : null}
-            <div className="header-inline-search">
-              <input
-                ref={searchInputRef}
-                id={headerSearchId}
-                type="search"
-                className={clsx('header-inline-search__input', searchOpen && 'header-inline-search__input--open')}
-                placeholder={t('blog.searchPlaceholder')}
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    submitHeaderSearch()
-                  }
-                  if (e.key === 'Escape') setSearchOpen(false)
-                }}
-                aria-label={t('blog.searchPlaceholder')}
-                autoComplete="off"
-              />
+            {narrowHeader ? (
               <button
+                ref={mobileToggleRef}
                 type="button"
                 className="icon-btn header-inline-search__toggle inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-transparent bg-[var(--pill-bg)] text-[var(--text)] transition-colors hover:border-[var(--glass-border)]"
                 aria-label={t('nav.search')}
                 aria-expanded={searchOpen}
-                aria-controls={headerSearchId}
+                aria-controls={searchInputIdMobile}
                 onClick={() => toggleHeaderSearch()}
               >
                 <Search size={20} strokeWidth={2} aria-hidden />
               </button>
-            </div>
+            ) : (
+              <div ref={desktopSearchRef} className="header-inline-search">
+                <input
+                  ref={searchInputRef}
+                  id={searchInputIdDesktop}
+                  type="search"
+                  className={clsx(
+                    'header-inline-search__input',
+                    searchOpen && 'header-inline-search__input--open',
+                  )}
+                  placeholder={t('blog.searchPlaceholder')}
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  onFocus={() => setSearchOpen(true)}
+                  onBlur={handleSearchBlur}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      submitHeaderSearch()
+                    }
+                    if (e.key === 'Escape') {
+                      setSearchOpen(false)
+                      e.currentTarget.blur()
+                    }
+                  }}
+                  aria-label={t('blog.searchPlaceholder')}
+                  autoComplete="off"
+                />
+                <button
+                  type="button"
+                  className="icon-btn header-inline-search__toggle inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-transparent bg-[var(--pill-bg)] text-[var(--text)] transition-colors hover:border-[var(--glass-border)]"
+                  aria-label={t('nav.search')}
+                  aria-expanded={searchOpen}
+                  aria-controls={searchInputIdDesktop}
+                  onClick={() => toggleHeaderSearch()}
+                >
+                  <Search size={20} strokeWidth={2} aria-hidden />
+                </button>
+              </div>
+            )}
             {!isHome ? (
               <button
                 type="button"
@@ -273,13 +315,63 @@ export function Header() {
             </a>
           </div>
         </div>
+        </div>
+
+        <AnimatePresence mode="sync">
+          {narrowHeader && searchOpen ? (
+            <motion.div
+              key="header-mobile-search"
+              ref={mobileSearchRowRef}
+              className="site-header__search-row flex w-full min-w-0 items-center gap-2 overflow-hidden"
+              initial={reduce ? { height: 0, opacity: 0 } : { height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={reduce ? { height: 0, opacity: 0 } : { height: 0, opacity: 0 }}
+              transition={
+                reduce
+                  ? { duration: 0.12 }
+                  : {
+                      height: { type: 'spring', stiffness: 420, damping: 34, mass: 0.85 },
+                      opacity: { duration: 0.22, ease: [0.22, 1, 0.36, 1] },
+                    }
+              }
+            >
+              <input
+                ref={searchInputRef}
+                id={searchInputIdMobile}
+                type="search"
+                className="site-header__search-row-input min-w-0 flex-1"
+                placeholder={t('blog.searchPlaceholder')}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                onFocus={() => setSearchOpen(true)}
+                onBlur={handleSearchBlur}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    submitHeaderSearch()
+                  }
+                  if (e.key === 'Escape') {
+                    setSearchOpen(false)
+                    e.currentTarget.blur()
+                  }
+                }}
+                aria-label={t('blog.searchPlaceholder')}
+                autoComplete="off"
+              />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
 
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             id="site-mobile-nav"
-            className="site-mobile-panel w-full min-[901px]:hidden"
+            className={clsx(
+              'site-mobile-panel w-full min-[901px]:hidden',
+              /* CSS accordion uses grid 0fr→1fr; without --open the row stays collapsed */
+              menuOpen && 'site-mobile-panel--open',
+            )}
             initial={reduce ? { height: 0 } : { height: 0, clipPath: 'inset(100% 0 0 0)' }}
             animate={{ height: 'auto', clipPath: 'inset(0 0 0 0)' }}
             exit={
@@ -297,16 +389,51 @@ export function Header() {
             }
           >
             <div className="site-mobile-panel__inner pb-3">
-              <nav className="site-nav site-nav--mobile flex flex-col items-stretch gap-2 pt-2" aria-label="Mobile">
-                {nav.map((item, i) => {
-                  const active =
-                    item.to === '/'
-                      ? cleanPath === '/'
-                      : cleanPath === item.to || cleanPath.startsWith(`${item.to}/`)
-                  const { Icon } = item
-                  return (
+              <nav className="site-nav site-nav--mobile pt-2" aria-label="Mobile">
+                <div className="site-nav--mobile__primary">
+                  {nav.map((item, i) => {
+                    const active =
+                      item.to === '/'
+                        ? cleanPath === '/'
+                        : cleanPath === item.to || cleanPath.startsWith(`${item.to}/`)
+                    const { Icon } = item
+                    return (
+                      <motion.div
+                        key={item.to}
+                        className="max-w-full min-w-0"
+                        initial={reduce ? { x: 0 } : { x: -36 }}
+                        animate={{ x: 0 }}
+                        transition={
+                          reduce
+                            ? { duration: 0 }
+                            : {
+                                type: 'spring',
+                                stiffness: 360,
+                                damping: 20,
+                                mass: 0.8,
+                                delay: i * 0.045,
+                              }
+                        }
+                      >
+                        <Link
+                          to={localePath(item.to)}
+                          className={clsx(
+                            'nav-pill nav-pill--mobile-tile inline-flex max-w-full min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full px-3 py-2 text-[0.9rem] no-underline',
+                            active
+                              ? 'bg-[var(--pill-active)] text-[var(--pill-active-fg)]'
+                              : 'border border-transparent bg-[var(--pill-bg)] text-[var(--text)]',
+                          )}
+                          onClick={() => setMenuOpen(false)}
+                        >
+                          <Icon size={18} strokeWidth={2} className="shrink-0 opacity-90" aria-hidden />
+                          <span className="min-w-0 truncate">{t(item.key)}</span>
+                        </Link>
+                      </motion.div>
+                    )
+                  })}
+                  {!isHome ? (
                     <motion.div
-                      key={item.to}
+                      className="max-w-full min-w-0"
                       initial={reduce ? { x: 0 } : { x: -36 }}
                       animate={{ x: 0 }}
                       transition={
@@ -317,59 +444,28 @@ export function Header() {
                               stiffness: 360,
                               damping: 20,
                               mass: 0.8,
-                              delay: i * 0.045,
+                              delay: nav.length * 0.045,
                             }
                       }
                     >
-                      <Link
-                        to={localePath(item.to)}
-                        className={clsx(
-                          'nav-pill inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-center text-[0.95rem] no-underline',
-                          active
-                            ? 'bg-[var(--pill-active)] text-[var(--pill-active-fg)]'
-                            : 'border border-transparent bg-[var(--pill-bg)] text-[var(--text)]',
-                        )}
-                        onClick={() => setMenuOpen(false)}
+                      <button
+                        type="button"
+                        className="nav-pill nav-pill--mobile-tile inline-flex max-w-full min-w-0 items-center justify-center gap-2 overflow-hidden rounded-full border border-transparent bg-[var(--pill-bg)] px-3 py-2 text-[0.9rem] disabled:cursor-not-allowed disabled:opacity-45"
+                        disabled={!focusAvailable}
+                        onClick={() => {
+                          openArticleFocus()
+                          setMenuOpen(false)
+                        }}
                       >
-                        <Icon size={18} strokeWidth={2} className="shrink-0 opacity-90" aria-hidden />
-                        {t(item.key)}
-                      </Link>
+                        <BookOpen size={18} strokeWidth={2} className="shrink-0 opacity-90" aria-hidden />
+                        <span className="min-w-0 truncate">{t('nav.focusMode')}</span>
+                      </button>
                     </motion.div>
-                  )
-                })}
-                {!isHome ? (
-                  <motion.div
-                    initial={reduce ? { x: 0 } : { x: -36 }}
-                    animate={{ x: 0 }}
-                    transition={
-                      reduce
-                        ? { duration: 0 }
-                        : {
-                            type: 'spring',
-                            stiffness: 360,
-                            damping: 20,
-                            mass: 0.8,
-                            delay: nav.length * 0.045,
-                          }
-                    }
-                  >
-                    <button
-                      type="button"
-                      className="nav-pill inline-flex items-center justify-center gap-2 rounded-full border border-transparent bg-[var(--pill-bg)] px-4 py-2 text-[0.95rem] disabled:cursor-not-allowed disabled:opacity-45"
-                      disabled={!focusAvailable}
-                      onClick={() => {
-                        openArticleFocus()
-                        setMenuOpen(false)
-                      }}
-                    >
-                      <BookOpen size={18} strokeWidth={2} className="shrink-0 opacity-90" aria-hidden />
-                      {t('nav.focusMode')}
-                    </button>
-                  </motion.div>
-                ) : null}
+                  ) : null}
+                </div>
                 {localeChoices.length > 1 ? (
                   <motion.div
-                    className="flex flex-col gap-1 px-1"
+                    className="site-nav--mobile__full flex w-full flex-col gap-1 px-0.5"
                     initial={reduce ? { x: 0 } : { x: -36 }}
                     animate={{ x: 0 }}
                     transition={
@@ -399,7 +495,7 @@ export function Header() {
                 ) : null}
                 <motion.button
                   type="button"
-                  className="nav-pill theme-toggle flex items-center justify-center gap-2 rounded-full border border-[var(--glass-border)] bg-[var(--pill-bg)] px-4 py-2 font-[inherit] text-[var(--text)]"
+                  className="nav-pill theme-toggle site-nav--mobile__full flex w-full items-center justify-center gap-2 rounded-full border border-[var(--glass-border)] bg-[var(--pill-bg)] px-4 py-2 font-[inherit] text-[0.9rem] text-[var(--text)]"
                   onClick={cycleTheme}
                   initial={reduce ? { x: 0 } : { x: -36 }}
                   animate={{ x: 0 }}

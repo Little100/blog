@@ -9,8 +9,10 @@
 ---
 
 post.assets-workflow.p0
-|{[(post.assets-workflow.annotation.body)]}||
-|{[(post.assets-workflow.annotation.body)]}|post.assets-workflow.annotation.title|
+
+|{[(post.assets-workflow.annotation.body)]}|
+
+|{[(post.assets-workflow.annotation.body1)]}post.assets-workflow.annotation.title1|
 
 ## post.assets-workflow.section.端到端流程
 
@@ -19,7 +21,7 @@ raw-assets/images/     ← 放你的原始大图（不推送）
         ↓
   node scripts/compress-assets.mjs
         ↓
-public/assets/images/  ← 压缩后 post.assets-workflow.table.cell12（推送到 GitHub）
+public/assets/images/  ← 压缩后 WebP（推送到 GitHub）
 ```
 
 post.assets-workflow.p1
@@ -35,40 +37,40 @@ post.assets-workflow.p4
 post.assets-workflow.p5
 post.assets-workflow.p6
 
-| post.assets-workflow.table.cell7 | post.assets-workflow.table.cell8 | post.assets-workflow.table.cell9 | post.assets-workflow.table.cell10 |
+| 原始格式 | 输出格式 | 质量 | 说明 |
 | ------ | ------ | ---- | ---- |
-| post.assets-workflow.table.cell11    | post.assets-workflow.table.cell12   | post.assets-workflow.table.cell13  | post.assets-workflow.table.cell14 |
-| post.assets-workflow.table.cell15   | post.assets-workflow.table.cell12   | post.assets-workflow.table.cell16  | post.assets-workflow.table.cell17 |
-| post.assets-workflow.table.cell12   | post.assets-workflow.table.cell12   | post.assets-workflow.table.cell18  | post.assets-workflow.table.cell19 |
-| post.assets-workflow.table.cell20   | post.assets-workflow.table.cell12   | post.assets-workflow.table.cell18  | post.assets-workflow.table.cell21 |
-| post.assets-workflow.table.cell22    | post.assets-workflow.table.cell12   | post.assets-workflow.table.cell18  | post.assets-workflow.table.cell23|
+| PNG    | WebP   | 90%  | 无损压缩，适合 UI 素材 |
+| JPEG   | WebP   | 82%  | 有损压缩，适合照片 |
+| WebP   | WebP   | 85%  | 统一质量 |
+| AVIF   | WebP   | 85%  | 转码 |
+| GIF    | WebP   | 85%  | 动画 GIF 转为单帧（动画不保留）|
 
 <circle-question>
-post.assets-workflow.p24
+post.assets-workflow.p7
 </circle-question>
 
 ## post.assets-workflow.section.一次性准备
 
-post.assets-workflow.p25
+post.assets-workflow.p8
 
 ```bash
 npm install sharp
 mkdir raw-assets/images
 ```
 
-post.assets-workflow.p26
+post.assets-workflow.p9
 
 ## post.assets-workflow.section.为什么不一直用.unsplash.外链.
 
-post.assets-workflow.p27
+post.assets-workflow.p10
 
-post.assets-workflow.p28
-post.assets-workflow.p29
-post.assets-workflow.p30
+post.assets-workflow.p11
+post.assets-workflow.p12
+post.assets-workflow.p13
 
 ## post.assets-workflow.section.用.gitignore.排除原稿
 
-post.assets-workflow.p31
+post.assets-workflow.p14
 
 ```gitignore
 raw-assets/

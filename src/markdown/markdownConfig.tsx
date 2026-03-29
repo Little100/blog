@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import { defaultSchema } from 'rehype-sanitize'
-import { PreWithCopy } from './PreWithCopy'
+import { MarkdownFenceBlock } from './MarkdownFenceBlock'
 import { useMdInsidePre } from './MdPreContext'
 import { AnnotationAnchor } from '../components/post/AnnotationAnchor'
 
@@ -50,7 +50,7 @@ const markdownComponents: Components = {
   li: (props) => <li className="md-li" {...props} />,
   blockquote: (props) => <blockquote className="md-bq" {...props} />,
   code: (props) => <MarkdownCode {...props} />,
-  pre: (props) => <PreWithCopy {...props} />,
+  pre: (props) => <MarkdownFenceBlock {...props} />,
   img: ({ className, alt, ...props }) => (
     <img className={`md-img${className ? ` ${className}` : ''}`} loading="lazy" alt={alt ?? ''} {...props} />
   ),
@@ -75,7 +75,14 @@ const sanitizeSchema = {
     '*': [...((defaultSchema.attributes?.['*']) ?? []), 'dataAnnoIndex'],
     code: [...(defaultSchema.attributes?.code ?? []), 'className'],
     img: [...(defaultSchema.attributes?.img ?? []), 'src', 'alt', 'title', 'loading'],
-    span: [...(defaultSchema.attributes?.span ?? []), 'className', 'class'],
+    span: [
+      ...(defaultSchema.attributes?.span ?? []),
+      'className',
+      'class',
+      'id',
+      'dataAnnoIndex',
+      'dataAnnoTone',
+    ],
     div: [
       ...(defaultSchema.attributes?.div ?? []),
     ],

@@ -7,7 +7,7 @@ import { Header } from './Header'
 import { RightRail } from './RightRail'
 import { RightRailProvider, useRightRail } from './RightRailContext'
 import { resolveLocalized, siteConfig } from '../../config/site'
-import { useI18n } from '../../i18n/I18nContext'
+import { useI18nOptional } from '../../i18n/I18nContext'
 import { UpdateBanner } from '../UpdateBanner'
 import { UpdateNotice } from '../UpdateNotice'
 import { BackToTop } from '../BackToTop'
@@ -54,10 +54,8 @@ function SiteMain() {
     >
       {/* Annotation bridges portal: same stacking context as article page; below margin cards to avoid covering sidebar annotations */}
       <div className="annotation-bridges-mount" id="annotation-bridges-mount" aria-hidden />
-      <AnimatePresence
-        mode={postRelatedSlide && !reduceMotion ? 'sync' : 'wait'}
-        onExitComplete={clearPostRelatedNavigationFlag}
-      >
+      {/* `sync` keeps two routes mounted briefly; duplicate post layout breaks annotation bridges / ids */}
+      <AnimatePresence mode="wait" onExitComplete={clearPostRelatedNavigationFlag}>
         <motion.div
           key={location.pathname}
           className={isPostPage ? 'site-outlet-root--post' : undefined}
@@ -98,7 +96,8 @@ function SiteMain() {
 const MINIMAL_FOOTER_ROUTES = new Set(['/tags', '/privacy'])
 
 export function SiteShell() {
-  const { locale } = useI18n()
+  const i18n = useI18nOptional()
+  const locale: Locale = i18n?.locale ?? 'zh'
   const location = useLocation()
   const r = (v: import('../../config/site').LocalizedString | undefined, fb: string) =>
     resolveLocalized(v, locale, fb)
