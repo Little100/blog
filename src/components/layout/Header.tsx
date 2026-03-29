@@ -35,12 +35,12 @@ function siteRepoUrl(): string {
 
 function getLocalePath(path: string, locale: Locale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
-  if (locale === 'en') return normalized
   return `/${locale}${normalized}`
 }
 
 function getCleanPath(pathname: string): string {
-  return pathname.replace(/^\/(en|ja|zh|zh-TW)/, '') || '/'
+  // Note: zh-TW must appear before zh so the alternation matches the longer variant first.
+  return pathname.replace(/^\/(en|ja|zh-TW|zh)/, '') || '/'
 }
 
 const nav: readonly { to: string; key: string; Icon: LucideIcon }[] = [

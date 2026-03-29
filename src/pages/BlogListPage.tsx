@@ -13,7 +13,6 @@ const BLOG_PAGE_SIZE = 20
 
 function getLocalePath(path: string, locale: Locale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
-  if (locale === 'en') return normalized
   return `/${locale}${normalized}`
 }
 

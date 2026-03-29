@@ -42,7 +42,6 @@ function relatedForSlug(current: string) {
 
 function getLocalePath(path: string, locale: Locale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
-  if (locale === 'en') return normalized
   return `/${locale}${normalized}`
 }
 

@@ -32,8 +32,8 @@ function createPageRoutes() {
   return (
     <>
       <Route index element={<HomePage />} />
-      <Route path="about" element={<AboutPage />} />
       <Route path="blog" element={<BlogListPage />} />
+      <Route path="about" element={<AboutPage />} />
       <Route path="changelog" element={<ChangelogPage />} />
       <Route path="contact" element={<ContactPage />} />
       <Route path="post/:slug" element={<PostPage />} />
@@ -46,30 +46,33 @@ function createPageRoutes() {
   )
 }
 
+/**
+ * All locales (including English) use a /{locale} prefix in the URL:
+ *   /en/, /en/blog, /en/post/:slug
+ *   /zh/, /zh/blog, /zh/post/:slug
+ *
+ * This makes language-switching and locale-based canonical paths unambiguous.
+ */
 export default function App() {
   return (
     <Routes>
-      <Route element={<SiteShell />}>
-        <Route element={<LocaleRoute locale="en" />}>
-          {createPageRoutes()}
-        </Route>
-      </Route>
+      {/* Redirect root to first available locale so every URL carries a locale prefix */}
+      <Route path="/" element={<Navigate to={`/${availableLocales[0] ?? 'en'}/`} replace />} />
 
-      {availableLocales
-        .filter((l) => l !== 'en')
-        .map((locale) => (
-          <Route
-            key={locale}
-            path={`/${locale}`}
-            element={<SiteShell />}
-          >
-            <Route element={<LocaleRoute locale={locale} />}>
-              {createPageRoutes()}
-            </Route>
+      {availableLocales.map((locale) => (
+        <Route
+          key={locale}
+          path={`/${locale}`}
+          element={<SiteShell />}
+        >
+          <Route element={<LocaleRoute locale={locale} />}>
+            {createPageRoutes()}
           </Route>
-        ))}
+        </Route>
+      ))}
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* Fallback for any URL that doesn't match a locale prefix */}
+      <Route path="*" element={<Navigate to={`/${availableLocales[0] ?? 'en'}/`} replace />} />
     </Routes>
   )
 }

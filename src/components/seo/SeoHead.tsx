@@ -37,7 +37,6 @@ function docLangTag(locale: Locale): string {
 }
 
 function localePathPrefix(locale: Locale): string {
-  if (locale === 'en') return ''
   return `/${locale}`
 }
 

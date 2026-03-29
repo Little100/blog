@@ -19,11 +19,10 @@ import type { Locale } from '../../i18n/translations'
 import { getRoutePathname } from '../../utils/useLocalePath'
 
 /**
- * Get the locale-prefixed path
+ * Get the locale-prefixed path (always includes the locale, including for English).
  */
 function getLocalePath(path: string, locale: Locale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
-  if (locale === 'en') return normalized
   return `/${locale}${normalized}`
 }
 

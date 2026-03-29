@@ -5,26 +5,15 @@ import { SeoHead } from '../seo/SeoHead'
 import type { Locale } from '../../i18n/translations'
 
 /**
- * Extracts the locale prefix from the URL path
- */
-function getLocaleFromPath(pathname: string): Locale | null {
-  const match = pathname.match(/^\/(en|ja|zh|zh-TW)(\/|$)/)
-  if (match) {
-    return match[1] as Locale
-  }
-  return null
-}
-
-/**
- * Strips the locale prefix from the URL path
- */
-function getCleanPath(pathname: string): string {
-  return pathname.replace(/^\/(en|ja|zh|zh-TW)/, '') || '/'
-}
-
-/**
  * LocaleRoute wraps routes with language prefix support.
- * It syncs the URL locale with the i18n context and ensures proper SEO handling.
+ *
+ * All locales (including English) have a /{locale} prefix in the URL:
+ *   /en/, /en/blog, /en/post/:slug
+ *   /zh/, /zh/blog, /zh/post/:slug
+ *   etc.
+ *
+ * This component syncs the URL locale with the i18n context and ensures the URL
+ * always carries the correct locale prefix (no orphan routes).
  */
 export function LocaleRoute({
   locale,
@@ -44,28 +33,26 @@ export function LocaleRoute({
   const { pathname } = useLocation()
   const { setLocale } = useI18n()
 
-  // Sync locale from URL when this route mounts
   useEffect(() => {
-    const urlLocale = getLocaleFromPath(pathname)
+    // Extract locale from the first path segment
+    const segments = pathname.split('/')
+    const urlLocale = segments[1] as Locale | undefined
     if (urlLocale && urlLocale !== locale) {
       setLocale(urlLocale)
     }
   }, [pathname, locale, setLocale])
 
-  // Redirect to correct locale if URL doesn't match
-  const actualLocale = getLocaleFromPath(pathname)
-  const cleanPath = getCleanPath(pathname)
+  // Ensure URL carries the correct locale prefix.
+  // If pathname starts with a different locale (or none), redirect to the correct path.
+  const segments = pathname.split('/')
+  const actualLocale = (segments[1] as Locale) || null
 
-  // If locale doesn't match, redirect
-  if (locale !== 'en') {
-    if (actualLocale !== locale) {
-      return <Navigate to={`/${locale}${cleanPath}`} replace />
-    }
-  } else {
-    // English should have no prefix
-    if (actualLocale !== null) {
-      return <Navigate to={cleanPath} replace />
-    }
+  // Strip the locale prefix to get the inner route path
+  const cleanPath = segments.slice(2).join('/') || '/'
+
+  if (actualLocale !== locale) {
+    // Redirect to the correct locale-prefixed URL
+    return <Navigate to={`/${locale}/${cleanPath}`} replace />
   }
 
   return (

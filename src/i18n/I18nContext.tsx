@@ -32,7 +32,8 @@ function enabledLocales(): Locale[] {
 }
 
 function getLocaleFromPath(pathname: string): Locale | null {
-  const match = pathname.match(/^\/(en|ja|zh|zh-TW)(\/|$)/)
+  // Note: zh-TW must appear before zh so the alternation matches the longer variant first.
+  const match = pathname.match(/^\/(en|ja|zh-TW|zh)(\/|$)/)
   if (match) {
     return match[1] as Locale
   }

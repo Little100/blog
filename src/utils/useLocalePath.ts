@@ -9,9 +9,6 @@ export function useLocalePath() {
   const getLocalePath = useCallback(
     (path: string): string => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      if (locale === 'en') {
-        return normalized
-      }
       return `/${locale}${normalized}`
     },
     [locale]
@@ -22,7 +19,7 @@ export function useLocalePath() {
       const normalized = path.startsWith('/') ? path : `/${path}`
       return availableLocales.map((loc) => ({
         locale: loc,
-        path: loc === 'en' ? normalized : `/${loc}${normalized}`,
+        path: `/${loc}${normalized}`,
       }))
     },
     []
@@ -32,7 +29,8 @@ export function useLocalePath() {
 }
 
 export function getLocaleFromPath(pathname: string): Locale | null {
-  const match = pathname.match(/^\/(en|ja|zh|zh-TW)(\/|$)/)
+  // Note: zh-TW must appear before zh so the alternation matches the longer variant first.
+  const match = pathname.match(/^\/(en|ja|zh-TW|zh)(\/|$)/)
   if (match) {
     return match[1] as Locale
   }
@@ -72,8 +70,7 @@ export function useLocaleNavigate() {
   const navigateWithLocale = useCallback(
     (path: string, options?: { replace?: boolean }) => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      const localePath = locale === 'en' ? normalized : `/${locale}${normalized}`
-      navigate(localePath, options)
+      navigate(`/${locale}${normalized}`, options)
     },
     [locale, navigate]
   )
@@ -81,8 +78,7 @@ export function useLocaleNavigate() {
   const navigateToLocale = useCallback(
     (targetLocale: Locale, path?: string) => {
       const normalized = path?.startsWith('/') ? path : (path ? `/${path}` : '/')
-      const localePath = targetLocale === 'en' ? normalized : `/${targetLocale}${normalized}`
-      navigate(localePath)
+      navigate(`/${targetLocale}${normalized}`)
     },
     [navigate]
   )
