@@ -68,18 +68,13 @@ function docLangTag(locale: Locale): string {
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const availableLocales = useMemo(() => enabledLocales(), [])
-  const [initialPath, setInitialPath] = useState<string | null>(null)
 
-  useEffect(() => {
-    setInitialPath(window.location.pathname)
-  }, [])
-
+  // Initialize synchronously from window so the locale is correct on first render.
+  // This avoids the flash-of-wrong-language issue that useEffect would introduce.
   const [locale, setLocaleState] = useState<Locale>(() => {
-    if (initialPath) {
-      const urlLocale = getLocaleFromPath(initialPath)
-      if (urlLocale && availableLocales.includes(urlLocale)) {
-        return urlLocale
-      }
+    const urlLocale = getLocaleFromPath(window.location.pathname)
+    if (urlLocale && availableLocales.includes(urlLocale)) {
+      return urlLocale
     }
     const stored = localStorage.getItem('BLOG-locale')
     if (stored && availableLocales.includes(stored as Locale)) {

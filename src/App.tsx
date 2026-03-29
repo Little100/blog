@@ -11,6 +11,7 @@ import { PostPage } from './pages/PostPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { TagsPage } from './pages/TagsPage'
 import { LOCALE_DEFS } from './i18n/translations'
+import { localeFromNavigatorOrHeader } from './i18n/parseAcceptLanguage'
 import type { Locale } from './i18n/translations'
 import rawConfig from '../config.json'
 
@@ -27,6 +28,19 @@ function enabledLocales(): Locale[] {
 }
 
 const availableLocales = enabledLocales()
+
+/** Redirects / to the user's preferred locale based on browser settings or stored preference. */
+function RootRedirect() {
+  const stored = localStorage.getItem('BLOG-locale')
+  if (stored && availableLocales.includes(stored as Locale)) {
+    return <Navigate to={`/${stored}/`} replace />
+  }
+  const detected = localeFromNavigatorOrHeader()
+  if (availableLocales.includes(detected)) {
+    return <Navigate to={`/${detected}/`} replace />
+  }
+  return <Navigate to={`/${availableLocales[0] ?? 'en'}/`} replace />
+}
 
 function createPageRoutes() {
   return (
@@ -54,25 +68,40 @@ function createPageRoutes() {
  * This makes language-switching and locale-based canonical paths unambiguous.
  */
 export default function App() {
+  // Handle GitHub Pages 404 fallback BEFORE rendering routes.
+  // Reading sessionStorage here (before Routes) ensures the ?origin= redirect
+  // fires synchronously and takes priority over RootRedirect's Navigate.
+  const originRedirect = (() => {
+    const stored = sessionStorage.getItem('__spa_origin__')
+    if (stored) {
+      sessionStorage.removeItem('__spa_origin__')
+      return <Navigate to={stored} replace />
+    }
+    return null
+  })()
+
   return (
-    <Routes>
-      {/* Redirect root to first available locale so every URL carries a locale prefix */}
-      <Route path="/" element={<Navigate to={`/${availableLocales[0] ?? 'en'}/`} replace />} />
+    <>
+      {originRedirect}
+      <Routes>
+        {/* Redirect root to user's preferred locale so every URL carries a locale prefix */}
+        <Route path="/" element={<RootRedirect />} />
 
-      {availableLocales.map((locale) => (
-        <Route
-          key={locale}
-          path={`/${locale}`}
-          element={<SiteShell />}
-        >
-          <Route element={<LocaleRoute locale={locale} />}>
-            {createPageRoutes()}
+        {availableLocales.map((locale) => (
+          <Route
+            key={locale}
+            path={`/${locale}`}
+            element={<SiteShell />}
+          >
+            <Route element={<LocaleRoute locale={locale} />}>
+              {createPageRoutes()}
+            </Route>
           </Route>
-        </Route>
-      ))}
+        ))}
 
-      {/* Fallback for any URL that doesn't match a locale prefix */}
-      <Route path="*" element={<Navigate to={`/${availableLocales[0] ?? 'en'}/`} replace />} />
-    </Routes>
+        {/* Fallback for any URL that doesn't match a locale prefix */}
+        <Route path="*" element={<Navigate to={`/${availableLocales[0] ?? 'en'}/`} replace />} />
+      </Routes>
+    </>
   )
 }
