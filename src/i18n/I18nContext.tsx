@@ -17,6 +17,7 @@ import {
   STRINGS,
   type Locale,
 } from './translations'
+import { stripBasePath } from '../config/basePath'
 import rawConfig from '../../config.json'
 
 const ALL_LOCALES: Locale[] = LOCALE_DEFS.map((d) => d.code) as Locale[]
@@ -72,7 +73,11 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   // Initialize synchronously from window so the locale is correct on first render.
   // This avoids the flash-of-wrong-language issue that useEffect would introduce.
   const [locale, setLocaleState] = useState<Locale>(() => {
-    const urlLocale = getLocaleFromPath(window.location.pathname)
+    // Strip the Vite base path (e.g. /blog/) before extracting the locale.
+    // window.location.pathname includes the base path; without stripping it,
+    // the first segment would be "blog" instead of "en" or "zh", breaking detection.
+    const cleanPath = stripBasePath(window.location.pathname)
+    const urlLocale = getLocaleFromPath(cleanPath)
     if (urlLocale && availableLocales.includes(urlLocale)) {
       return urlLocale
     }
