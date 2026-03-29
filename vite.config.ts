@@ -104,6 +104,8 @@ function watchConfigJsonPlugin(): Plugin {
 }
 
 export default defineConfig({
+  // GitHub Pages project site: https://user.github.io/repo/ — set VITE_BASE=/repo/ in CI (see deploy workflow).
+  base: process.env.VITE_BASE ?? '/',
   plugins: [
     react(),
     syncPostI18nPlugin(),

@@ -8,6 +8,7 @@ import { defaultSchema } from 'rehype-sanitize'
 import { MarkdownFenceBlock } from './MarkdownFenceBlock'
 import { useMdInsidePre } from './MdPreContext'
 import { AnnotationAnchor } from '../components/post/AnnotationAnchor'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 interface MarkdownCodeProps extends ComponentProps<'code'> {
   node?: unknown
@@ -51,8 +52,14 @@ const markdownComponents: Components = {
   blockquote: (props) => <blockquote className="md-bq" {...props} />,
   code: (props) => <MarkdownCode {...props} />,
   pre: (props) => <MarkdownFenceBlock {...props} />,
-  img: ({ className, alt, ...props }) => (
-    <img className={`md-img${className ? ` ${className}` : ''}`} loading="lazy" alt={alt ?? ''} {...props} />
+  img: ({ className, alt, src, ...props }) => (
+    <img
+      className={`md-img${className ? ` ${className}` : ''}`}
+      loading="lazy"
+      alt={alt ?? ''}
+      src={src != null ? publicAssetUrl(String(src)) : undefined}
+      {...props}
+    />
   ),
   hr: (props) => <hr className="md-hr" {...props} />,
   span: (props) => {

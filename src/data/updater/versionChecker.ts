@@ -48,6 +48,8 @@ function isNewer(
   return latest.patch > current.patch
 }
 
+import { publicAssetUrl } from '../../utils/publicAssetUrl'
+
 const GH_API = 'https://api.github.com'
 const GH_HEADERS: HeadersInit = {
   Accept: 'application/vnd.github+json',
@@ -71,7 +73,10 @@ export async function checkForUpdates(repo: string): Promise<UpdateStatus> {
   let versionInfo: VersionInfo
 
   try {
-    const res = await fetch('/version.json?t=' + Date.now(), { cache: 'no-store' })
+    const res = await fetch(
+      publicAssetUrl('/version.json') + '?t=' + Date.now(),
+      { cache: 'no-store' },
+    )
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     versionInfo = (await res.json()) as VersionInfo
   } catch {

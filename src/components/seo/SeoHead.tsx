@@ -5,6 +5,7 @@
 import { useEffect, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { siteConfig, resolveLocalized } from '../../config/site'
+import { publicAssetUrl } from '../../utils/publicAssetUrl'
 import { useI18n } from '../../i18n/I18nContext'
 import { LOCALE_DEFS } from '../../i18n/translations'
 import type { Locale } from '../../i18n/translations'
@@ -130,7 +131,7 @@ export function SeoHead({
         iconLink.rel = 'icon'
         document.head.appendChild(iconLink)
       }
-      iconLink.href = icons.favicon
+      iconLink.href = publicAssetUrl(icons.favicon)
       const mime = iconMimeFromHref(icons.favicon)
       if (mime) iconLink.type = mime
       else iconLink.removeAttribute('type')
@@ -143,7 +144,7 @@ export function SeoHead({
         apple.rel = 'apple-touch-icon'
         document.head.appendChild(apple)
       }
-      apple.href = appleHref
+      apple.href = publicAssetUrl(appleHref)
       const mime = iconMimeFromHref(appleHref)
       if (mime) apple.type = mime
       else apple.removeAttribute('type')
@@ -155,7 +156,7 @@ export function SeoHead({
         mask.rel = 'mask-icon'
         document.head.appendChild(mask)
       }
-      mask.href = icons.maskIcon
+      mask.href = publicAssetUrl(icons.maskIcon)
     }
     const theme = icons?.themeColor?.trim()
     if (theme) {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 type State =
   | { status: 'loading' }
@@ -12,7 +13,7 @@ export function useFetchedMarkdown(url: string): State {
     let cancelled = false
     setState({ status: 'loading' })
 
-    fetch(url)
+    fetch(publicAssetUrl(url))
       .then((res) => {
         if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
         return res.text()

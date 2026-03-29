@@ -20,6 +20,7 @@ import { useI18n } from '../../i18n/I18nContext'
 import { LOCALE_DEFS } from '../../i18n/translations'
 import { useArticleFocus } from '../../focus/ArticleFocusContext'
 import { siteConfig } from '../../config/site'
+import { publicAssetUrl } from '../../utils/publicAssetUrl'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import type { Locale } from '../../i18n/translations'
 
@@ -174,7 +175,7 @@ export function Header() {
         >
           <img
             className="site-avatar-img h-11 w-11 max-[900px]:h-12 max-[900px]:w-12 border-2 border-[var(--glass-border)] object-cover"
-            src={siteConfig.avatar}
+            src={publicAssetUrl(siteConfig.avatar)}
             width={44}
             height={44}
             alt=""

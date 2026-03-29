@@ -33,6 +33,7 @@ import { isPostRelatedSlidePending, markPostRelatedNavigation } from '../utils/p
 import type { Locale } from '../i18n/translations'
 import { SeoHead } from '../components/seo/SeoHead'
 import { siteConfig } from '../config/site'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 import { isContentModified } from '../i18n/contentBundles'
 
 function relatedForSlug(current: string) {
@@ -253,7 +254,7 @@ export function PostPage() {
                         className="related-row"
                         onClick={() => markPostRelatedNavigation()}
                       >
-                        <img src={r.icon} alt="" className="related-row__img" loading="lazy" />
+                        <img src={publicAssetUrl(r.icon)} alt="" className="related-row__img" loading="lazy" />
                         <span className="related-row__label">{t(r.titleKey)}</span>
                       </Link>
                     </li>
@@ -396,7 +397,7 @@ export function PostPage() {
                       className="related-row"
                       onClick={() => markPostRelatedNavigation()}
                     >
-                      <img src={r.icon} alt="" className="related-row__img" loading="lazy" />
+                      <img src={publicAssetUrl(r.icon)} alt="" className="related-row__img" loading="lazy" />
                       <span className="related-row__label">{t(r.titleKey)}</span>
                     </Link>
                   </li>

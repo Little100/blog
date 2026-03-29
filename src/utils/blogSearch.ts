@@ -1,3 +1,4 @@
+import { publicAssetUrl } from './publicAssetUrl'
 import { parseFrontmatter } from './frontmatter'
 import { expandMarkdownI18nKeys } from './i18nKeys'
 import { stripMarkdownAnnotations } from './annotationMarkdown'
@@ -19,7 +20,9 @@ export async function loadPostSearchHaystack(
   const hit = haystackCache.get(key)
   if (hit !== undefined) return hit
 
-  const res = await fetch(`/content/posts/${encodeURIComponent(slug)}.md`)
+  const res = await fetch(
+    publicAssetUrl(`/content/posts/${encodeURIComponent(slug)}.md`),
+  )
   if (!res.ok) {
     haystackCache.set(key, '')
     return ''

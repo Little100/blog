@@ -1,5 +1,6 @@
 import { useI18n } from '../i18n/I18nContext'
 import { siteConfig } from '../config/site'
+import { publicAssetUrl } from '../utils/publicAssetUrl'
 
 const skills = [
   { key: 'skill.coding', icon: 'fas fa-code' },
@@ -24,7 +25,7 @@ export function AboutPage() {
         <h1 className="page-hero-title about-page__title">{t('about.title')}</h1>
 
         <div className="about-hero glass-card about-page__hero">
-          <img className="about-avatar" src={siteConfig.avatar} width={120} height={120} alt="" />
+          <img className="about-avatar" src={publicAssetUrl(siteConfig.avatar)} width={120} height={120} alt="" />
           <div className="about-hero__text">
             <h2 className="about-section-title">{t('about.story')}</h2>
             <p className="md-p">{t('about.story.p1')}</p>

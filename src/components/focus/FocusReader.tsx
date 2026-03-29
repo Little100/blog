@@ -9,6 +9,7 @@ import { useTheme } from '../../theme/ThemeContext'
 import { LOCALE_DEFS, type Locale } from '../../i18n/translations'
 import { useI18n } from '../../i18n/I18nContext'
 import { siteConfig } from '../../config/site'
+import { publicAssetUrl } from '../../utils/publicAssetUrl'
 import clsx from 'clsx'
 import type { MarkdownAnnotation } from '../../utils/annotationMarkdown'
 import { AnnotationBubbleProvider } from '../post/AnnotationBubbleCtx'
@@ -147,7 +148,7 @@ export function FocusReader({
             <div className="focus-reader__inner">
               <div className="focus-reader__meta">
                 <img
-                  src={siteConfig.avatar}
+                  src={publicAssetUrl(siteConfig.avatar)}
                   width={56}
                   height={56}
                   className="focus-reader__meta-avatar"
@@ -175,7 +176,7 @@ export function FocusReader({
 
               {coverSrc ? (
                 <div className="focus-reader__hero">
-                  <img src={coverSrc} alt="" loading="lazy" />
+                  <img src={publicAssetUrl(coverSrc)} alt="" loading="lazy" />
                 </div>
               ) : null}
 
@@ -204,7 +205,7 @@ export function FocusReader({
                           }}
                         >
                           {r.icon && (
-                            <img src={r.icon} alt="" className="related-row__img" loading="lazy" />
+                            <img src={publicAssetUrl(r.icon)} alt="" className="related-row__img" loading="lazy" />
                           )}
                           <span className="related-row__label">{r.title}</span>
                         </Link>
