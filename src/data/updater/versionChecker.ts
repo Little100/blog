@@ -1,7 +1,5 @@
 export type VersionInfo = {
   version: string
-  buildTime: string
-  gitHash: string | null
 }
 
 export type ReleaseInfo = {
@@ -78,7 +76,8 @@ export async function checkForUpdates(repo: string): Promise<UpdateStatus> {
       { cache: 'no-store' },
     )
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    versionInfo = (await res.json()) as VersionInfo
+    const text = await res.text()
+    versionInfo = { version: text.trim() }
   } catch {
     return { state: 'offline' }
   }
