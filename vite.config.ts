@@ -103,6 +103,53 @@ function watchConfigJsonPlugin(): Plugin {
   }
 }
 
+/**
+ * GitHub Pages **project** sites (`/repo/`) do not reliably serve a custom 404 by copying `index.html` alone.
+ * Use the rafgraph/spa-github-pages redirect: 404.html sends the browser to `/{base}/?/rest/of/path&query`,
+ * then the inline script in index.html calls `history.replaceState` to restore the real URL before the SPA boots.
+ * @see https://github.com/rafgraph/spa-github-pages
+ */
+function githubPagesSpaFallbackPlugin(): Plugin {
+  return {
+    name: 'github-pages-spa-fallback',
+    closeBundle() {
+      const base = process.env.VITE_BASE ?? '/'
+      const trimmed = base.replace(/^\//, '').replace(/\/$/, '')
+      const pathSegmentsToKeep = trimmed ? trimmed.split('/').filter(Boolean).length : 0
+      const outDir = path.join(projectRoot, 'dist')
+      const notFoundPath = path.join(outDir, '404.html')
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redirecting…</title>
+  <script>
+    var pathSegmentsToKeep = ${pathSegmentsToKeep};
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
+</head>
+<body>
+  <p>Redirecting…</p>
+  <!-- padding: GitHub Pages SPA 404 redirect; keep file reasonably sized for very old clients -->
+</body>
+</html>
+`
+      fs.writeFileSync(notFoundPath, html, 'utf-8')
+      console.log(
+        `[github-pages-spa-fallback] wrote 404.html (pathSegmentsToKeep=${pathSegmentsToKeep} for base ${JSON.stringify(base)})`,
+      )
+    },
+  }
+}
+
 export default defineConfig({
   // GitHub Pages project site: https://user.github.io/repo/ — set VITE_BASE=/repo/ in CI (see deploy workflow).
   base: process.env.VITE_BASE ?? '/',
@@ -112,6 +159,7 @@ export default defineConfig({
     acceptLanguageCookiePlugin(),
     watchConfigJsonPlugin(),
     compressAssetsPlugin(),
+    githubPagesSpaFallbackPlugin(),
   ],
   resolve: {
     alias: {
