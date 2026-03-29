@@ -41,8 +41,14 @@ export function LocaleSwitcher({
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  // Strip locale prefix from current path to get the clean path
-  const cleanPath = pathname.replace(/^\/(en|ja|zh|zh-TW)/, '') || '/'
+  // Strip locale prefix AND the /blog "section" prefix from current path to get the
+  // "inner" route path.  All page routes (blog/post/:slug, about, etc.) are defined once
+  // under /blog in config, then reused for every locale.  Stripping /blog ensures
+  // language-switching navigates to the correct inner route without duplication.
+  const cleanPath = pathname
+    .replace(/^\/(en|ja|zh|zh-TW)/, '') // strip locale prefix
+    .replace(/^\/blog/, '')              // strip /blog section wrapper
+    .replace(/^\/*/, '/') || '/'
 
   const navigateToLocale = (targetLocale: Locale) => {
     const targetPath = targetLocale === 'en' ? cleanPath : `/${targetLocale}${cleanPath}`

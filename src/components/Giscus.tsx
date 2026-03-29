@@ -4,9 +4,12 @@ import { siteConfig } from '../config/site'
 
 const PLACEHOLDER_REPOS = ['your-username/your-repo', '']
 
-/** Strips the locale prefix (en/ja/zh/zh-TW) from a pathname to produce a stable canonical path. */
+/** Strips the locale prefix (en/ja/zh/zh-TW) and the /blog section wrapper from a pathname to produce a stable canonical path. */
 function canonicalPath(pathname: string): string {
-  return pathname.replace(/^\/(en|ja|zh|zh-TW)/, '') || '/'
+  return pathname
+    .replace(/^\/(en|ja|zh|zh-TW)/, '') // strip locale prefix
+    .replace(/^\/blog/, '')              // strip /blog section wrapper
+    .replace(/^\/*/, '/') || '/'
 }
 
 export function Giscus() {

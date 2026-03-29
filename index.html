@@ -2,19 +2,43 @@
 <html lang="zh-CN" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <!-- GitHub Pages project-site SPA: restore real path from /{base}/?/route… (rafgraph/spa-github-pages, MIT) -->
+    <!--
+      GitHub Pages 404 redirect restoration.
+      Priority:
+      1. ?origin=... (our custom ?origin=... pattern)
+         → decode the stored URL, extract its pathname, navigate via React Router to the
+           correct route (e.g. /blog/post/nonexistent → PostPage)
+           Giscus reads from useLocation() which has the correct pathname.
+      2. ?/path?query                       (legacy rafgraph/spa-github-pages pattern, MIT)
+         → restore via history.replaceState
+    -->
     <script>
       ;(function (l) {
-        if (l.search.length <= 1 || l.search.charAt(1) !== '/') return
-        var decoded = l.search
-          .slice(1)
-          .split('&')
-          .map(function (s) {
-            return s.replace(/~and~/g, '&')
-          })
-          .join('?')
-        var base = l.pathname.endsWith('/') ? l.pathname.slice(0, -1) : l.pathname
-        window.history.replaceState(null, null, base + decoded + l.hash)
+        var search = l.search
+        // 1. Our ?origin=... pattern: full URL encoded as origin param
+        if (search.indexOf('origin=') !== -1) {
+          var match = search.match(/[?&]origin=([^&]+)/)
+          if (match) {
+            try {
+              var decoded = decodeURIComponent(match[1])
+              // Parse as URL so we can extract just the pathname regardless of the
+              // current base path (handles both root-site and project-site repos).
+              var u = new URL(decoded)
+              sessionStorage.setItem('__spa_origin__', u.pathname + u.search + u.hash)
+            } catch (e) {}
+          }
+          return
+        }
+        // 2. Legacy ?/path pattern (rafgraph/spa-github-pages, MIT)
+        if (search.length > 1 && search.charAt(1) === '/') {
+          var decoded = search
+            .slice(1)
+            .split('&')
+            .map(function (s) { return s.replace(/~and~/g, '&') })
+            .join('?')
+          var base = l.pathname.endsWith('/') ? l.pathname.slice(0, -1) : l.pathname
+          window.history.replaceState(null, null, base + decoded + l.hash)
+        }
       })(window.location)
     </script>
     <meta name="color-scheme" content="light dark" />

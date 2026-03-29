@@ -105,8 +105,14 @@ function watchConfigJsonPlugin(): Plugin {
 
 /**
  * GitHub Pages **project** sites (`/repo/`) do not reliably serve a custom 404 by copying `index.html` alone.
- * Use the rafgraph/spa-github-pages redirect: 404.html sends the browser to `/{base}/?/rest/of/path&query`,
- * then the inline script in index.html calls `history.replaceState` to restore the real URL before the SPA boots.
+ *
+ * We use a custom redirect instead of the rafgraph `?/...` pattern so that:
+ * 1. The original full URL (pathname + search + hash) is preserved in the `origin` query param.
+ * 2. After `index.html` loads, a router-level `<Navigate>` component reads `?origin=...`
+ *    and navigates to the real path, which matches React Router routes exactly.
+ * 3. All Giscus instances can read the canonical path from `window.location` directly,
+ *    avoiding any double-normalization issues.
+ *
  * @see https://github.com/rafgraph/spa-github-pages
  */
 function githubPagesSpaFallbackPlugin(): Plugin {
@@ -114,10 +120,15 @@ function githubPagesSpaFallbackPlugin(): Plugin {
     name: 'github-pages-spa-fallback',
     closeBundle() {
       const base = process.env.VITE_BASE ?? '/'
-      const trimmed = base.replace(/^\//, '').replace(/\/$/, '')
-      const pathSegmentsToKeep = trimmed ? trimmed.split('/').filter(Boolean).length : 0
+      // Ensure base always ends with / (it's written to the build as the Vite `base` option)
+      const baseWithSlash = base.endsWith('/') ? base : base + '/'
       const outDir = path.join(projectRoot, 'dist')
       const notFoundPath = path.join(outDir, '404.html')
+
+      // Encode the original full URL (pathname + search + hash) as `origin` query param.
+      // When index.html is served for /nonexistent, l.pathname = /blog/ (base) and
+      // l.search = ?origin=https%3A%2F%2Flittle100.github.io%2Fblog%2Fpost%2Fnonexistent
+      // After replace: https://little100.github.io/blog/?origin=https://little100.github.io/blog/post/nonexistent
       const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,26 +136,27 @@ function githubPagesSpaFallbackPlugin(): Plugin {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Redirecting…</title>
   <script>
-    var pathSegmentsToKeep = ${pathSegmentsToKeep};
-    var l = window.location;
-    l.replace(
-      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash
-    );
+    (function () {
+      var l = window.location;
+      var encoded = encodeURIComponent(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname + l.search + l.hash
+      );
+      // Replace with ?origin=... pointing to the base path with the encoded original URL.
+      // The SPA will pick this up via <Navigate origin={...} /> in App.tsx.
+      var target = '${baseWithSlash}' + '?origin=' + encoded;
+      window.location.replace(target);
+    })();
   </script>
 </head>
 <body>
   <p>Redirecting…</p>
-  <!-- padding: GitHub Pages SPA 404 redirect; keep file reasonably sized for very old clients -->
 </body>
 </html>
 `
       fs.writeFileSync(notFoundPath, html, 'utf-8')
       console.log(
-        `[github-pages-spa-fallback] wrote 404.html (pathSegmentsToKeep=${pathSegmentsToKeep} for base ${JSON.stringify(base)})`,
+        `[github-pages-spa-fallback] wrote 404.html (base=${JSON.stringify(base)})`,
       )
     },
   }
