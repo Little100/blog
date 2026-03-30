@@ -29,7 +29,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Project site: https://<user>.github.io/<repo>/  → Vite base must be /repo/
+      # User/org site: repo named <user>.github.io      → base stays /
       - name: Build
+        env:
+          VITE_BASE: ${{ endsWith(github.event.repository.name, '.github.io') && '/' || format('/{0}/', github.event.repository.name) }}
         run: npm run build
 
       - name: Upload artifact

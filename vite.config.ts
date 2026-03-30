@@ -144,6 +144,10 @@ function githubPagesSpaFallbackPlugin(): Plugin {
     closeBundle() {
       const outDir = path.join(projectRoot, 'dist')
       const notFoundPath = path.join(outDir, '404.html')
+      const rawBase = process.env.VITE_BASE ?? '/'
+      const baseWithSlash =
+        rawBase === '/' ? '/' : (rawBase.endsWith('/') ? rawBase : `${rawBase}/`)
+      const redirectBaseJson = JSON.stringify(baseWithSlash)
 
       const html = `<!DOCTYPE html>
 <html lang="en">
@@ -158,8 +162,8 @@ function githubPagesSpaFallbackPlugin(): Plugin {
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
         l.pathname + l.search + l.hash
       );
-      var target = '/' + '?origin=' + encoded;
-      window.location.replace(target);
+      var base = ${redirectBaseJson};
+      window.location.replace(base + '?origin=' + encoded);
     })();
   </script>
 </head>
