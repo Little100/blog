@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import { useI18n } from '../../i18n/I18nContext'
+import { useLocalePath, getRoutePathname } from '../../utils/useLocalePath'
 
 const ITEMS = [
   { to: '/', key: 'cat.home', icon: 'fas fa-home' },
@@ -31,7 +32,9 @@ const itemVariants = {
 export function CategorySidebar() {
   const { pathname } = useLocation()
   const { t } = useI18n()
+  const { getLocalePath } = useLocalePath()
   const reduce = useReducedMotion()
+  const routePath = getRoutePathname(pathname)
 
   return (
     <div className="sidebar-card">
@@ -44,11 +47,11 @@ export function CategorySidebar() {
         variants={listVariants}
       >
         {ITEMS.map((item) => {
-          const active = pathname === item.to
+          const active = routePath === item.to
           return (
             <motion.li key={item.to} custom={reduce ?? false} variants={itemVariants}>
               <Link
-                to={item.to}
+                to={getLocalePath(item.to)}
                 className={`cat-link${active ? ' cat-link--active' : ''}`}
               >
                 <i className={`${item.icon} cat-list__icon`} aria-hidden />

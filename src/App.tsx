@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { SiteShell } from './components/layout/SiteShell'
+import { DefaultLocalePrefixRedirect } from './components/locale/DefaultLocalePrefixRedirect'
 import { LocaleRoute } from './components/locale/LocaleRoute'
 import { AboutPage } from './pages/AboutPage'
 import { BlogListPage } from './pages/BlogListPage'
@@ -11,10 +12,9 @@ import { PostPage } from './pages/PostPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { TagsPage } from './pages/TagsPage'
 import { LOCALE_DEFS } from './i18n/translations'
-import { localeFromNavigatorOrHeader } from './i18n/parseAcceptLanguage'
-import { stripBasePath, VITE_BASE } from './config/basePath'
 import type { Locale } from './i18n/translations'
 import rawConfig from '../config.json'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 const ALL_LOCALES: Locale[] = LOCALE_DEFS.map((d) => d.code) as Locale[]
 
@@ -28,87 +28,110 @@ function enabledLocales(): Locale[] {
   return ALL_LOCALES
 }
 
+function getDefaultLocale(): Locale {
+  const dl = (rawConfig as Record<string, unknown>).defaultLanguage
+  if (dl && ALL_LOCALES.includes(dl as Locale)) return dl as Locale
+  return enabledLocales()[0] ?? 'en'
+}
+
 const availableLocales = enabledLocales()
 
-/** Redirects / to the user's preferred locale based on browser settings or stored preference.
- *  Only fires when the clean pathname (stripped of base) is exactly "/".
- */
-function RootRedirect() {
-  const cleanPath = stripBasePath(window.location.pathname)
-  if (cleanPath !== '/') return null
-
-  const stored = localStorage.getItem('BLOG-locale')
-  if (stored && availableLocales.includes(stored as Locale)) {
-    return <Navigate to={`${VITE_BASE}${stored}/`} replace />
-  }
-  const detected = localeFromNavigatorOrHeader()
-  if (availableLocales.includes(detected)) {
-    return <Navigate to={`${VITE_BASE}${detected}/`} replace />
-  }
-  return <Navigate to={`${VITE_BASE}${availableLocales[0] ?? 'en'}/`} replace />
-}
-
-function createPageRoutes() {
-  return (
-    <>
-      <Route index element={<HomePage />} />
-      <Route path="blog" element={<BlogListPage />} />
-      <Route path="about" element={<AboutPage />} />
-      <Route path="changelog" element={<ChangelogPage />} />
-      <Route path="contact" element={<ContactPage />} />
-      <Route path="post/:slug" element={<PostPage />} />
-      <Route path="tags" element={<TagsPage />} />
-      <Route path="privacy" element={<PrivacyPage />} />
-      <Route path="terms" element={<ContactPage />} />
-      <Route path="404" element={<NotFoundPage />} />
-      <Route path="*" element={<Navigate to="/404" replace />} />
-    </>
-  )
-}
-
 /**
- * All locales (including English) use a /{locale} prefix in the URL:
- *   /{base}{locale}/, /{base}{locale}/blog, /{base}{locale}/post/:slug
- *   /{base}{locale}/, /{base}{locale}/blog, /{base}{locale}/post/:slug
+ * Routing layout:
  *
- * This makes language-switching and locale-based canonical paths unambiguous.
+ *   /                     → default locale home (no prefix)
+ *   /blog, /post/:slug   → default locale pages
+ *   /404                 → NotFoundPage for default locale
+ *
+ *   /{locale}/           → other locales (always prefixed)
+ *   /{locale}/blog       → other locale blog
+ *   /{locale}/post/:slug  → other locale post
+ *   /{locale}/404         → NotFoundPage for non-default locale
+ *
+ * The I18nProvider detects locale from the URL by checking for locale prefix
+ * first, then falls back to localStorage and finally the first configured locale.
+ *
+ * This layout gives clean root URLs for the default language while ensuring
+ * every language has proper SEO-friendly URLs with a locale prefix.
  */
 export default function App() {
-  // Handle GitHub Pages 404 fallback BEFORE rendering routes.
-  // sessionStorage stores the full pathname WITH the base path (e.g. '/blog/post/nonexistent').
   const originRedirect = (() => {
     const stored = sessionStorage.getItem('__spa_origin__')
     if (stored) {
       sessionStorage.removeItem('__spa_origin__')
-      // stored already contains the base path — use it directly.
       return <Navigate to={stored} replace />
     }
     return null
   })()
 
+  const defaultLocale = getDefaultLocale()
+  const otherLocales = availableLocales.filter((l) => l !== defaultLocale)
+
   return (
     <>
       {originRedirect}
       <Routes>
-        {/* Redirect root to user's preferred locale so every URL carries a locale prefix.
-            Only fire when the clean pathname (stripped of base) is exactly "/" to avoid
-            redirect loops when already on a locale-prefixed path like /{base}{locale}/. */}
-        <Route path="/" element={<RootRedirect />} />
+        {/* Default language should live at / — redirect /{defaultLocale}/… bookmarks */}
+        <Route
+          path={`/${defaultLocale}`}
+          element={<Navigate to="/" replace />}
+        />
+        <Route
+          path={`/${defaultLocale}/*`}
+          element={<DefaultLocalePrefixRedirect defaultLocale={defaultLocale} />}
+        />
 
-        {availableLocales.map((locale) => (
+        {/* Default locale: no /{locale} prefix in URL, serves at root */}
+        <Route path="/" element={<SiteShell />}>
+          <Route element={<LocaleRoute locale={defaultLocale} />}>
+            <Route index element={<ErrorBoundary><HomePage /></ErrorBoundary>} />
+            <Route path="blog" element={<ErrorBoundary><BlogListPage /></ErrorBoundary>} />
+            <Route path="about" element={<ErrorBoundary><AboutPage /></ErrorBoundary>} />
+            <Route path="changelog" element={<ErrorBoundary><ChangelogPage /></ErrorBoundary>} />
+            <Route path="contact" element={<ErrorBoundary><ContactPage /></ErrorBoundary>} />
+            <Route path="post/:slug" element={<ErrorBoundary><PostPage /></ErrorBoundary>} />
+            <Route path="tags" element={<ErrorBoundary><TagsPage /></ErrorBoundary>} />
+            <Route path="privacy" element={<ErrorBoundary><PrivacyPage /></ErrorBoundary>} />
+            <Route path="terms" element={<ErrorBoundary><ContactPage /></ErrorBoundary>} />
+            <Route path="404" element={<NotFoundPage />} />
+            <Route
+              path="*"
+              element={<Navigate to="/404" replace />}
+            />
+          </Route>
+        </Route>
+
+        {/* Other locales: always carry /{locale} prefix */}
+        {otherLocales.map((locale) => (
           <Route
             key={locale}
             path={`/${locale}`}
             element={<SiteShell />}
           >
             <Route element={<LocaleRoute locale={locale} />}>
-              {createPageRoutes()}
+              <Route index element={<ErrorBoundary><HomePage /></ErrorBoundary>} />
+              <Route path="blog" element={<ErrorBoundary><BlogListPage /></ErrorBoundary>} />
+              <Route path="about" element={<ErrorBoundary><AboutPage /></ErrorBoundary>} />
+              <Route path="changelog" element={<ErrorBoundary><ChangelogPage /></ErrorBoundary>} />
+              <Route path="contact" element={<ErrorBoundary><ContactPage /></ErrorBoundary>} />
+              <Route path="post/:slug" element={<ErrorBoundary><PostPage /></ErrorBoundary>} />
+              <Route path="tags" element={<ErrorBoundary><TagsPage /></ErrorBoundary>} />
+              <Route path="privacy" element={<ErrorBoundary><PrivacyPage /></ErrorBoundary>} />
+              <Route path="terms" element={<ErrorBoundary><ContactPage /></ErrorBoundary>} />
+              <Route path="404" element={<NotFoundPage />} />
+              <Route
+                path="*"
+                element={<Navigate to={`/${locale}/404`} replace />}
+              />
             </Route>
           </Route>
         ))}
 
-        {/* Fallback for any URL that doesn't match a locale prefix */}
-        <Route path="*" element={<Navigate to={`${VITE_BASE}${availableLocales[0] ?? 'en'}/`} replace />} />
+        {/* Outer catch-all: any unmapped path → default locale 404 */}
+        <Route
+          path="*"
+          element={<Navigate to="/404" replace />}
+        />
       </Routes>
     </>
   )

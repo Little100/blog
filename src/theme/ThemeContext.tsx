@@ -25,16 +25,20 @@ function readPreference(): ColorPreference {
   if (typeof window === 'undefined') {
     return 'system'
   }
-  const stored = window.localStorage.getItem(PREF_KEY)
-  if (stored === 'system' || stored === 'light' || stored === 'dark') {
-    return stored
-  }
-  const legacy = window.localStorage.getItem(LEGACY_KEY)
-  if (legacy === 'light' || legacy === 'dark') {
-    return legacy
-  }
-  if (legacy === 'focus') {
-    return 'system'
+  try {
+    const stored = window.localStorage.getItem(PREF_KEY)
+    if (stored === 'system' || stored === 'light' || stored === 'dark') {
+      return stored
+    }
+    const legacy = window.localStorage.getItem(LEGACY_KEY)
+    if (legacy === 'light' || legacy === 'dark') {
+      return legacy
+    }
+    if (legacy === 'focus') {
+      return 'system'
+    }
+  } catch {
+    // localStorage may be unavailable in private browsing or strict sandbox mode
   }
   return 'system'
 }

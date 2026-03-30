@@ -1,4 +1,3 @@
-import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import path from 'node:path'
@@ -6,35 +5,69 @@ import { fileURLToPath, URL } from 'node:url'
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin, type PreviewServer } from 'vite'
 import { compressAssetsPlugin } from './src/vite-plugin/compress-assets'
+import { i18nAuditPlugin } from './src/vite-plugin/i18n-audit'
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url))
 
-function syncPostI18nPlugin(): Plugin {
-  const run = () => {
-    try {
-      execSync('node scripts/sync-post-i18n.mjs', {
-        cwd: projectRoot,
-        stdio: 'inherit',
-      })
-    } catch {
-      console.warn('[sync-post-i18n] script failed (continuing)')
+const VIRTUAL_POST_INDEX = 'virtual:post-index'
+
+/**
+ * Reads markdown post files directly via Node.js fs and exposes them as a Vite
+ * virtual module. This avoids Vite's "assets in public directory cannot be imported
+ * from JavaScript" warning that occurs when using import.meta.glob on public/.
+ */
+function virtualPostIndexPlugin(): Plugin {
+  const LOCALE_POSTS_DIR = path.join(projectRoot, 'public', 'content')
+  const SUPPORTED_LOCALES = ['en', 'ja', 'zh', 'zh-TW']
+
+  function buildIndex(): string {
+    // Rolldown does not transpile TypeScript in virtual modules, so emit plain JS.
+    const entries: string[] = []
+    for (const locale of SUPPORTED_LOCALES) {
+      const localeDir = path.join(LOCALE_POSTS_DIR, locale, 'posts')
+      if (!fs.existsSync(localeDir)) continue
+      const files = fs.readdirSync(localeDir).filter((f) => f.endsWith('.md'))
+      for (const file of files) {
+        const slug = file.replace(/\.md$/, '')
+        const filePath = path.join(localeDir, file)
+        const raw = fs.readFileSync(filePath, 'utf8')
+        // Escape for a JS template literal: \ ` $ and \
+        const escaped = raw
+          .replace(/\\/g, '\\\\')
+          .replace(/`/g, '\\`')
+          .replace(/\$/g, '\\$')
+        entries.push(
+          `"${locale}/${slug}": \`${escaped}\``,
+        )
+      }
     }
+    // Plain JS object — Rolldown won't accept TypeScript here.
+    return `export const POST_INDEX_RAW = {\n${entries.join(',\n')}\n};`
   }
+
+  let lastIndex = ''
+  function getIndex() {
+    const current = buildIndex()
+    if (current !== lastIndex) {
+      lastIndex = current
+    }
+    return current
+  }
+
   return {
-    name: 'sync-post-i18n',
-    buildStart() {
-      run()
+    name: 'virtual-post-index',
+    resolveId(id) {
+      if (id === VIRTUAL_POST_INDEX) return VIRTUAL_POST_INDEX
+    },
+    load(id) {
+      if (id === VIRTUAL_POST_INDEX) return getIndex()
     },
     configureServer(server) {
-      run()
-      const sourceDir = path.join(projectRoot, 'public', 'content', 'source')
-      if (fs.existsSync(sourceDir)) {
-        server.watcher.add(sourceDir)
-      }
+      server.watcher.add(path.join(LOCALE_POSTS_DIR))
       server.watcher.on('change', (file) => {
-        const norm = file.split(path.sep).join('/')
-        if (norm.includes('/public/content/source/') && norm.endsWith('.md')) {
-          run()
+        if (String(file).includes(path.join('public', 'content'))) {
+          lastIndex = '' // force rebuild on next load
+          server.ws.send({ type: 'full-reload', path: '*' })
         }
       })
     },
@@ -45,24 +78,14 @@ const COOKIE_NAME = 'BLOG_accept_language'
 
 function attachAcceptLanguageCookie(req: IncomingMessage, res: ServerResponse) {
   const rawUrl = req.url
-  if (!rawUrl) {
-    return
-  }
+  if (!rawUrl) return
   const pathname = rawUrl.split('?')[0]
-  if (!pathname) {
-    return
-  }
-  if (pathname !== '/' && pathname !== '/index.html') {
-    return
-  }
+  if (!pathname) return
+  if (pathname !== '/' && pathname !== '/index.html') return
   const raw = req.headers['accept-language']
-  if (!raw) {
-    return
-  }
+  if (!raw) return
   const headerValue = typeof raw === 'string' ? raw : raw[0]
-  if (!headerValue) {
-    return
-  }
+  if (!headerValue) return
   const encoded = encodeURIComponent(headerValue)
   res.setHeader(
     'Set-Cookie',
@@ -119,16 +142,9 @@ function githubPagesSpaFallbackPlugin(): Plugin {
   return {
     name: 'github-pages-spa-fallback',
     closeBundle() {
-      const base = process.env.VITE_BASE ?? '/'
-      // Ensure base always ends with / (it's written to the build as the Vite `base` option)
-      const baseWithSlash = base.endsWith('/') ? base : base + '/'
       const outDir = path.join(projectRoot, 'dist')
       const notFoundPath = path.join(outDir, '404.html')
 
-      // Encode the original full URL (pathname + search + hash) as `origin` query param.
-      // When index.html is served for /nonexistent, l.pathname = /blog/ (base) and
-      // l.search = ?origin=https%3A%2F%2Flittle100.github.io%2Fblog%2Fpost%2Fnonexistent
-      // After replace: https://little100.github.io/blog/?origin=https://little100.github.io/blog/post/nonexistent
       const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -142,9 +158,7 @@ function githubPagesSpaFallbackPlugin(): Plugin {
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
         l.pathname + l.search + l.hash
       );
-      // Replace with ?origin=... pointing to the base path with the encoded original URL.
-      // The SPA will pick this up via <Navigate origin={...} /> in App.tsx.
-      var target = '${baseWithSlash}' + '?origin=' + encoded;
+      var target = '/' + '?origin=' + encoded;
       window.location.replace(target);
     })();
   </script>
@@ -155,23 +169,24 @@ function githubPagesSpaFallbackPlugin(): Plugin {
 </html>
 `
       fs.writeFileSync(notFoundPath, html, 'utf-8')
-      console.log(
-        `[github-pages-spa-fallback] wrote 404.html (base=${JSON.stringify(base)})`,
-      )
+      if (process.env.BLOG_BUILD_VERBOSE === '1') {
+        console.log('[github-pages-spa-fallback] wrote 404.html')
+      }
     },
   }
 }
 
 export default defineConfig({
-  // GitHub Pages project site: https://user.github.io/repo/ — set VITE_BASE=/repo/ in CI (see deploy workflow).
+  // Root site deployment. Set VITE_BASE=/repo/ in CI only if deploying to GitHub Pages project site.
   base: process.env.VITE_BASE ?? '/',
   plugins: [
     react(),
-    syncPostI18nPlugin(),
     acceptLanguageCookiePlugin(),
     watchConfigJsonPlugin(),
     compressAssetsPlugin(),
     githubPagesSpaFallbackPlugin(),
+    i18nAuditPlugin(),
+    virtualPostIndexPlugin(),
   ],
   resolve: {
     alias: {

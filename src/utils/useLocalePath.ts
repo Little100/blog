@@ -4,14 +4,16 @@ import { useI18n } from '../i18n/I18nContext'
 import type { Locale } from '../i18n/translations'
 
 export function useLocalePath() {
-  const { locale } = useI18n()
+  const { locale, defaultLocale } = useI18n()
 
   const getLocalePath = useCallback(
     (path: string): string => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      return `/${locale}${normalized}`
+      return locale === defaultLocale
+        ? normalized
+        : `/${locale}${normalized}`
     },
-    [locale]
+    [locale, defaultLocale],
   )
 
   const getAllLocalePaths = useCallback(
@@ -19,10 +21,12 @@ export function useLocalePath() {
       const normalized = path.startsWith('/') ? path : `/${path}`
       return availableLocales.map((loc) => ({
         locale: loc,
-        path: `/${loc}${normalized}`,
+        path: loc === defaultLocale
+          ? normalized
+          : `/${loc}${normalized}`,
       }))
     },
-    []
+    [defaultLocale],
   )
 
   return { getLocalePath, getAllLocalePaths }
@@ -64,23 +68,28 @@ export function useLocaleFromUrl() {
 }
 
 export function useLocaleNavigate() {
-  const { locale } = useI18n()
+  const { locale, defaultLocale } = useI18n()
   const navigate = useNavigate()
 
   const navigateWithLocale = useCallback(
     (path: string, options?: { replace?: boolean }) => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      navigate(`/${locale}${normalized}`, options)
+      navigate(
+        locale === defaultLocale ? normalized : `/${locale}${normalized}`,
+        options,
+      )
     },
-    [locale, navigate]
+    [locale, defaultLocale, navigate],
   )
 
   const navigateToLocale = useCallback(
     (targetLocale: Locale, path?: string) => {
       const normalized = path?.startsWith('/') ? path : (path ? `/${path}` : '/')
-      navigate(`/${targetLocale}${normalized}`)
+      navigate(
+        targetLocale === defaultLocale ? normalized : `/${targetLocale}${normalized}`,
+      )
     },
-    [navigate]
+    [defaultLocale, navigate],
   )
 
   return { navigateWithLocale, navigateToLocale }

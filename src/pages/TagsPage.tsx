@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom'
 import { useMemo } from 'react'
 import { useI18n } from '../i18n/I18nContext'
-import { useLocalePath } from '../utils/useLocalePath'
-import { BLOG_INDEX } from '../data/posts'
+import { POST_INDEX_BY_LOCALE } from '../i18n/postIndex'
 import { aggregateTagsFromPosts } from '../utils/blogTags'
 
 export function TagsPage() {
-  const { t } = useI18n()
-  const { getLocalePath } = useLocalePath()
-  const tags = useMemo(() => aggregateTagsFromPosts(BLOG_INDEX), [])
+  const { t, locale, defaultLocale } = useI18n()
+  const posts = POST_INDEX_BY_LOCALE[locale] ?? []
+
+  const tags = useMemo(() => aggregateTagsFromPosts(posts), [posts])
+
+  const getLocalePath = (path: string) =>
+    locale === defaultLocale
+      ? path.startsWith('/') ? path : `/${path}`
+      : `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   return (
     <div className="page page--tags">
@@ -27,7 +32,7 @@ export function TagsPage() {
                 padding: `${0.3 + tag.count * 0.1}rem ${0.6 + tag.count * 0.2}rem`,
               }}
             >
-              {t(tag.labelKey)}
+              {tag.label}
               <span className="tags-cloud__count">{tag.count}</span>
             </Link>
           ))}

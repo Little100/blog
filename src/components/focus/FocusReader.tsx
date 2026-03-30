@@ -33,6 +33,7 @@ type Props = {
   title: string
   author: string
   date: string
+  lastEdited?: string
   readMinutes: number
   tags?: string[]
   coverSrc: string
@@ -49,6 +50,7 @@ export function FocusReader({
   title,
   author,
   date,
+  lastEdited,
   readMinutes,
   tags,
   coverSrc,
@@ -159,7 +161,15 @@ export function FocusReader({
                   </p>
                   {date ? (
                     <p className="focus-reader__meta-line">
-                      <time dateTime={date}>{date}</time>
+                      {lastEdited && lastEdited !== date ? (
+                        <>
+                          {t('post.created')} <time dateTime={date}>{date}</time>
+                          {' · '}
+                          {t('post.lastEdited')} <time dateTime={lastEdited}>{lastEdited}</time>
+                        </>
+                      ) : (
+                        <time dateTime={date}>{date}</time>
+                      )}
                     </p>
                   ) : null}
                   <p className="focus-reader__meta-line">

@@ -13,15 +13,11 @@ import { MarkdownDocument } from '../markdown/MarkdownDocument'
 import { useParsedMarkdown } from '../hooks/useParsedMarkdown'
 import { useI18n } from '../i18n/I18nContext'
 import { FocusReader } from '../components/focus/FocusReader'
-import { BLOG_INDEX, getPostMeta } from '../data/posts'
+import { POST_INDEX_BY_LOCALE, type PostMeta } from '../i18n/postIndex'
+import type { Locale } from '../i18n/translations'
 import { firstMarkdownImageSrc, stripFirstMarkdownH1, stripFirstMarkdownImage } from '../utils/markdownTrim'
 import { preprocessMarkdownAnnotations } from '../utils/annotationMarkdown'
 import { useArticleFocus } from '../focus/ArticleFocusContext'
-import {
-  isDottedI18nKey,
-  expandMarkdownI18nKeys,
-  resolveTagLabel,
-} from '../utils/i18nKeys'
 import { Giscus } from '../components/Giscus'
 import { AnnotationBridges, TEXT_ID } from '../components/post/AnnotationBridges'
 import { PostReadingRailCard } from '../components/post/PostReadingRailCard'
@@ -30,28 +26,21 @@ import { AnnotationBubbleProvider } from '../components/post/AnnotationBubbleCtx
 import { CategorySidebar } from '../components/layout/CategorySidebar'
 import { SocialLinks } from '../components/layout/SocialLinks'
 import { isPostRelatedSlidePending, markPostRelatedNavigation } from '../utils/postRelatedNav'
-import type { Locale } from '../i18n/translations'
 import { SeoHead } from '../components/seo/SeoHead'
 import { siteConfig } from '../config/site'
 import { publicAssetUrl } from '../utils/publicAssetUrl'
-import { isContentModified } from '../i18n/contentBundles'
 
-function relatedForSlug(current: string) {
-  return BLOG_INDEX.filter((b) => b.slug !== current).slice(0, 3)
-}
-
-function getLocalePath(path: string, locale: Locale): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`
-  return `/${locale}${normalized}`
+function relatedForSlug(current: string, loc: Locale): PostMeta[] {
+  const posts = POST_INDEX_BY_LOCALE[loc] ?? []
+  return posts.filter((b) => b.slug !== current).slice(0, 3)
 }
 
 export function PostPage() {
   const { slug } = useParams()
   const safeSlug = slug?.replace(/[^a-zA-Z0-9-_]/g, '') ?? 'kyoto'
-  const url = `/content/posts/${safeSlug}.md`
+  const { locale, t, defaultLocale } = useI18n()
+  const url = `/content/${locale}/posts/${safeSlug}.md`
   const md = useParsedMarkdown(url)
-  const { locale, t } = useI18n()
-  const indexEntry = useMemo(() => getPostMeta(safeSlug), [safeSlug])
   const { setArticleFocusOpener } = useArticleFocus()
   const [focusOpen, setFocusOpen] = useState(false)
   const [postMainWrap, setPostMainWrap] = useState<HTMLDivElement | null>(null)
@@ -59,7 +48,6 @@ export function PostPage() {
   const reduceMotion = useReducedMotion()
   const routeIsPresent = useIsPresent()
   const skipBodyReveal = reduceMotion || isPostRelatedSlidePending()
-  const hasModification = useMemo(() => isContentModified(safeSlug), [safeSlug])
 
   useEffect(() => {
     setArticleFocusOpener(() => setFocusOpen(true))
@@ -68,34 +56,22 @@ export function PostPage() {
 
   const resolvedTags = useMemo(() => {
     if (md.status !== 'ok') return []
-    return md.meta.tags.map((tag) => resolveTagLabel(tag, t))
-  }, [md, t])
+    return md.meta.tags ?? []
+  }, [md])
 
   const displayTitle = useMemo(() => {
     if (md.status !== 'ok') return ''
-    const { title, titleEn } = md.meta
-    if (title && isDottedI18nKey(title)) return t(title)
-    if (locale === 'en' && titleEn) return titleEn
-    if (title) return title
-    const hit = BLOG_INDEX.find((b) => b.slug === safeSlug)
-    return hit ? t(hit.titleKey) : safeSlug
-  }, [md, locale, safeSlug, t])
-
-  const bodyExpanded = useMemo(() => {
-    if (md.status !== 'ok') return ''
-    return expandMarkdownI18nKeys(md.body, t)
-  }, [md, t])
+    return md.meta.title || safeSlug
+  }, [md, safeSlug])
 
   const bodyForRender = useMemo(() => {
     if (md.status !== 'ok') return ''
-    const raw = bodyExpanded
-    if (md.meta.title) return stripFirstMarkdownH1(raw)
-    return raw
-  }, [md, bodyExpanded])
+    return md.meta.title ? stripFirstMarkdownH1(md.body) : md.body
+  }, [md])
 
   const { body: articleMarkdown, annotations } = useMemo(
-    () => preprocessMarkdownAnnotations(bodyForRender, { idPrefix: safeSlug, translate: t }),
-    [bodyForRender, safeSlug, t],
+    () => preprocessMarkdownAnnotations(bodyForRender, { idPrefix: safeSlug, translate: (s) => s }),
+    [bodyForRender, safeSlug],
   )
 
   const bodyForFocus = useMemo(
@@ -110,61 +86,26 @@ export function PostPage() {
     return firstMarkdownImageSrc(bodyForRender)
   }, [md, bodyForRender])
 
-  const related = useMemo(() => relatedForSlug(safeSlug), [safeSlug])
-
-  const seoDescriptionKey = useMemo(() => {
-    if (md.status !== 'ok') {
-      return ''
-    }
-    const fmDesc = md.meta.description
-    let k = ''
-    if (fmDesc) {
-      const trimmed = fmDesc.trim()
-      if (trimmed && isDottedI18nKey(trimmed)) {
-        k = trimmed
-      }
-    }
-    if (!k && indexEntry) {
-      const dk = indexEntry.descriptionKey
-      if (dk) {
-        const trimmed = dk.trim()
-        if (trimmed && isDottedI18nKey(trimmed)) {
-          k = trimmed
-        }
-      }
-    }
-    return k
-  }, [md, indexEntry])
+  const related = useMemo(() => relatedForSlug(safeSlug, locale), [safeSlug, locale])
 
   const seoDescriptionText = useMemo(() => {
-    if (!seoDescriptionKey) {
-      return ''
-    }
-    const s = t(seoDescriptionKey)
-    if (s === seoDescriptionKey) {
-      return ''
-    }
-    return s
-  }, [seoDescriptionKey, t])
+    if (md.status !== 'ok') return ''
+    return md.meta.description?.trim() ?? ''
+  }, [md])
 
   const seoOgImage = useMemo(() => {
     const fromCover = coverSrc.trim()
-    if (fromCover) {
-      return fromCover
-    }
-    if (indexEntry) {
-      const ic = indexEntry.icon
-      if (ic) {
-        const trimmed = ic.trim()
-        if (trimmed) {
-          return trimmed
-        }
-      }
-    }
+    if (fromCover) return fromCover
+    if (md.status !== 'ok') return ''
+    const icon = md.meta.icon?.trim()
+    if (icon) return icon
     return ''
-  }, [coverSrc, indexEntry])
+  }, [coverSrc, md])
 
-  const localePath = (path: string) => getLocalePath(path, locale)
+  const getLocalePath = (path: string) =>
+    locale === defaultLocale
+      ? path.startsWith('/') ? path : `/${path}`
+      : `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   const bodyRevealRef = useRef<HTMLDivElement>(null)
   const bodyProgress = useMotionValue(skipBodyReveal ? 1 : 0)
@@ -212,18 +153,18 @@ export function PostPage() {
     }
     bodyProgress.set(0)
     const ctrl = animate(bodyProgress, 1, { duration: 0.72, ease: [0.22, 1, 0.36, 1] })
+    syncAnnVisibility()
     return () => ctrl.stop()
-  }, [md.status, skipBodyReveal, safeSlug, bodyProgress])
+  }, [md.status, skipBodyReveal, safeSlug, bodyProgress, syncAnnVisibility])
 
   useLayoutEffect(() => {
     if (md.status !== 'ok') return
-    syncAnnVisibility()
     const id = requestAnimationFrame(syncAnnVisibility)
     return () => cancelAnimationFrame(id)
   }, [md.status, articleMarkdown, syncAnnVisibility])
 
   if (md.status === 'loading') {
-    const relatedLoading = relatedForSlug(safeSlug)
+    const relatedLoading = relatedForSlug(safeSlug, locale)
     return (
       <div className="page page--post">
         <div className="post-3col">
@@ -249,12 +190,12 @@ export function PostPage() {
                   {relatedLoading.filter((r) => r.icon).map((r) => (
                     <li key={r.slug}>
                       <Link
-                        to={localePath(`/post/${r.slug}`)}
+                        to={getLocalePath(`/post/${r.slug}`)}
                         className="related-row"
                         onClick={() => markPostRelatedNavigation()}
                       >
                         <img src={publicAssetUrl(r.icon)} alt="" className="related-row__img" loading="lazy" />
-                        <span className="related-row__label">{t(r.titleKey)}</span>
+                        <span className="related-row__label">{r.title}</span>
                       </Link>
                     </li>
                   ))}
@@ -293,19 +234,8 @@ export function PostPage() {
 
   const railEntrance = true
 
-  let seoDescriptionProp: string | undefined
-  if (seoDescriptionText.trim()) {
-    seoDescriptionProp = seoDescriptionText.trim()
-  } else {
-    seoDescriptionProp = undefined
-  }
-
-  let seoImageProp: string | undefined
-  if (seoOgImage.trim()) {
-    seoImageProp = seoOgImage.trim()
-  } else {
-    seoImageProp = undefined
-  }
+  const seoDescriptionProp = seoDescriptionText.trim() || undefined
+  const seoImageProp = seoOgImage.trim() || undefined
 
   return (
     <>
@@ -325,11 +255,15 @@ export function PostPage() {
             <article ref={articleSearchRootRef} className="post-main glass-card">
               <div className="post-head">
                 <h1 className="post-title md-h1">{displayTitle}</h1>
-                {hasModification && (
-                  <span className="post-modified-badge" title="This post has modified translations that need review">
-                    ⚠️
-                  </span>
-                )}
+                <div className="post-head__dates">
+                  <time dateTime={meta.date}>{meta.date}</time>
+                  {meta.lastEdited && meta.lastEdited !== meta.date ? (
+                    <>
+                      {' — '}
+                      <time dateTime={meta.lastEdited}>{t('post.lastEdited')} {meta.lastEdited}</time>
+                    </>
+                  ) : null}
+                </div>
                 <button
                   type="button"
                   className="focus-enter-btn"
@@ -392,12 +326,12 @@ export function PostPage() {
                 {related.filter((r) => r.icon).map((r) => (
                   <li key={r.slug}>
                     <Link
-                      to={localePath(`/post/${r.slug}`)}
+                      to={getLocalePath(`/post/${r.slug}`)}
                       className="related-row"
                       onClick={() => markPostRelatedNavigation()}
                     >
                       <img src={publicAssetUrl(r.icon)} alt="" className="related-row__img" loading="lazy" />
-                      <span className="related-row__label">{t(r.titleKey)}</span>
+                      <span className="related-row__label">{r.title}</span>
                     </Link>
                   </li>
                 ))}
@@ -432,6 +366,7 @@ export function PostPage() {
         title={displayTitle}
         author={meta.author}
         date={meta.date}
+        lastEdited={meta.lastEdited}
         readMinutes={meta.readMinutes}
         tags={resolvedTags}
         coverSrc={coverSrc}
@@ -441,7 +376,7 @@ export function PostPage() {
         relatedLabel={t('post.related')}
         related={related.filter((r) => r.icon).map((r) => ({
           slug: r.slug,
-          title: t(r.titleKey),
+          title: r.title,
           icon: r.icon,
         }))}
       />

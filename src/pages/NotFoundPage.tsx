@@ -2,11 +2,10 @@ import { Link } from 'react-router-dom'
 import { useI18n } from '../i18n/I18nContext'
 
 export function NotFoundPage() {
-  const { t, locale } = useI18n()
+  const { t, locale, defaultLocale } = useI18n()
 
-  // Build locale-prefixed paths (English also has /en prefix).
-  const homePath = `/${locale}/`
-  const blogPath = `/${locale}/blog`
+  const homePath = locale === defaultLocale ? '/' : `/${locale}/`
+  const blogPath = locale === defaultLocale ? '/blog' : `/${locale}/blog`
 
   return (
     <div className="page page--not-found">

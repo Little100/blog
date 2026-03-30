@@ -40,6 +40,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'home.welcome': 'Welcome',
     'home.featured': 'Latest Posts',
+    'home.viewAll': 'All posts',
+    'home.noPosts': 'No posts yet — add markdown under public/content/{locale}/posts/.',
 
     'rail.expand': 'Show navigation',
     'rail.collapse': 'Hide navigation',
@@ -81,6 +83,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'post.by': 'By',
     'post.minRead': 'min read',
+    'post.created': 'Created',
+    'post.lastEdited': 'Last edited',
     'post.related': 'Related Posts',
     'post.related.kyoto': 'Kyoto Temples',
     'post.related.abstract': 'Abstract Projects',
@@ -169,6 +173,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'home.welcome': 'ようこそ',
     'home.featured': '最新記事',
+    'home.viewAll': '記事一覧',
+    'home.noPosts': 'まだ記事がありません。public/content/{locale}/posts/ に Markdown を追加してください。',
 
     'rail.expand': 'ナビを表示',
     'rail.collapse': 'ナビを隠す',
@@ -210,6 +216,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'post.by': '著者',
     'post.minRead': '分で読める',
+    'post.created': '作成日',
+    'post.lastEdited': '更新日',
     'post.related': '関連記事',
     'post.related.kyoto': '京都の寺社',
     'post.related.abstract': '抽象プロジェクト',
@@ -298,6 +306,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'home.welcome': '欢迎',
     'home.featured': '最新博文',
+    'home.viewAll': '全部文章',
+    'home.noPosts': '暂无文章。请在 public/content/{locale}/posts/ 下添加 Markdown。',
 
     'rail.expand': '展开导航',
     'rail.collapse': '收起导航',
@@ -339,6 +349,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'post.by': '作者',
     'post.minRead': '分钟阅读',
+    'post.created': '创建于',
+    'post.lastEdited': '最后编辑于',
     'post.related': '相关文章',
     'post.related.kyoto': '京都寺庙',
     'post.related.abstract': '抽象项目',
@@ -427,6 +439,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'home.welcome': '歡迎',
     'home.featured': '最新博文',
+    'home.viewAll': '全部文章',
+    'home.noPosts': '暫無文章。請在 public/content/{locale}/posts/ 下新增 Markdown。',
 
     'rail.expand': '展開導航',
     'rail.collapse': '收合導航',
@@ -468,6 +482,8 @@ export const STRINGS: Record<Locale, Record<string, string>> = {
 
     'post.by': '作者',
     'post.minRead': '分鐘閱讀',
+    'post.created': '創建於',
+    'post.lastEdited': '最後編輯於',
     'post.related': '相關文章',
     'post.related.kyoto': '京都寺社',
     'post.related.abstract': '抽象專案',

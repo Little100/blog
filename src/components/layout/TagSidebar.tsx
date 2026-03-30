@@ -3,15 +3,18 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useMemo } from 'react'
 import { useI18n } from '../../i18n/I18nContext'
 import { useLocalePath } from '../../utils/useLocalePath'
-import { BLOG_INDEX } from '../../data/posts'
+import { POST_INDEX_BY_LOCALE } from '../../i18n/postIndex'
 import { aggregateTagsFromPosts } from '../../utils/blogTags'
 
 export function TagSidebar() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const { getLocalePath } = useLocalePath()
   const reduce = useReducedMotion()
 
-  const tags = useMemo(() => aggregateTagsFromPosts(BLOG_INDEX), [])
+  const tags = useMemo(
+    () => aggregateTagsFromPosts(POST_INDEX_BY_LOCALE[locale] ?? []),
+    [locale],
+  )
 
   const listVariants = {
     hidden: {},
@@ -53,7 +56,7 @@ export function TagSidebar() {
               to={`${getLocalePath('/blog')}?tag=${encodeURIComponent(tag.slug)}`}
               className="tag-sidebar-link"
             >
-              <span className="tag-sidebar-link__name">{t(tag.labelKey)}</span>
+              <span className="tag-sidebar-link__name">{tag.label}</span>
               <span className="tag-sidebar-link__count">{tag.count}</span>
             </Link>
           </motion.li>

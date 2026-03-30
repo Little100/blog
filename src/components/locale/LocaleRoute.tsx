@@ -2,18 +2,20 @@ import { useEffect } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useI18n } from '../../i18n/I18nContext'
 import { SeoHead } from '../seo/SeoHead'
+import { stripBasePath } from '../../config/basePath'
 import type { Locale } from '../../i18n/translations'
 
 /**
- * LocaleRoute wraps routes with language prefix support.
+ * LocaleRoute syncs the i18n context with the current route's locale.
  *
- * All locales (including English) have a /{locale} prefix in the URL:
- *   /en/, /en/blog, /en/post/:slug
- *   /zh/, /zh/blog, /zh/post/:slug
- *   etc.
+ * For the default locale (e.g. /), the URL has no locale prefix.
+ * For non-default locales (e.g. /ja/), the URL carries the /{locale} prefix.
  *
- * This component syncs the URL locale with the i18n context and ensures the URL
- * always carries the correct locale prefix (no orphan routes).
+ * This component:
+ * 1. Reads the locale from the URL (stripping base path first).
+ * 2. Syncs the i18n context so `useI18n()` returns the correct locale.
+ * 3. Redirects if the URL doesn't match the expected route locale.
+ * 4. Renders the nested routes via <Outlet /> with optional SeoHead props.
  */
 export function LocaleRoute({
   locale,
@@ -31,28 +33,48 @@ export function LocaleRoute({
   }
 }) {
   const { pathname } = useLocation()
-  const { setLocale } = useI18n()
+  const { setLocale, locale: activeLocale, availableLocales } = useI18n()
+
+  const cleanPathname = stripBasePath(pathname)
+  const segments = cleanPathname.split('/').filter(Boolean)
+  const firstSeg = segments[0]
+  const urlLocalePrefix =
+    firstSeg && availableLocales.includes(firstSeg as Locale)
+      ? (firstSeg as Locale)
+      : null
+
+  /** Paths like /, /blog, /404 — first segment is not a locale code. */
+  const isUnprefixedPath = urlLocalePrefix === null
 
   useEffect(() => {
-    // Extract locale from the first path segment
-    const segments = pathname.split('/')
-    const urlLocale = segments[1] as Locale | undefined
-    if (urlLocale && urlLocale !== locale) {
-      setLocale(urlLocale)
+    if (isUnprefixedPath) {
+      if (locale !== activeLocale && availableLocales.includes(locale)) {
+        setLocale(locale)
+      }
+      return
     }
-  }, [pathname, locale, setLocale])
+    if (
+      urlLocalePrefix &&
+      availableLocales.includes(urlLocalePrefix) &&
+      urlLocalePrefix !== activeLocale
+    ) {
+      setLocale(urlLocalePrefix)
+    }
+  }, [
+    cleanPathname,
+    activeLocale,
+    availableLocales,
+    setLocale,
+    locale,
+    isUnprefixedPath,
+    urlLocalePrefix,
+  ])
 
-  // Ensure URL carries the correct locale prefix.
-  // If pathname starts with a different locale (or none), redirect to the correct path.
-  const segments = pathname.split('/')
-  const actualLocale = (segments[1] as Locale) || null
-
-  // Strip the locale prefix to get the inner route path
-  const cleanPath = segments.slice(2).join('/') || '/'
-
-  if (actualLocale !== locale) {
-    // Redirect to the correct locale-prefixed URL
-    return <Navigate to={`/${locale}/${cleanPath}`} replace />
+  // Prefixed URL (/ja/blog) but this layout expects a different locale → fix path.
+  if (!isUnprefixedPath && urlLocalePrefix !== locale) {
+    const rest = segments.slice(1).join('/')
+    const target = rest ? `/${locale}/${rest}` : `/${locale}/`
+    return <Navigate to={target} replace />
   }
 
   return (

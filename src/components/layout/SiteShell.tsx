@@ -18,14 +18,6 @@ import {
 import type { Locale } from '../../i18n/translations'
 import { getRoutePathname } from '../../utils/useLocalePath'
 
-/**
- * Get the locale-prefixed path (always includes the locale, including for English).
- */
-function getLocalePath(path: string, locale: Locale): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`
-  return `/${locale}${normalized}`
-}
-
 function SiteMain() {
   const location = useLocation()
   const { isHomePage, isPostPage } = useRightRail()
@@ -96,13 +88,16 @@ const MINIMAL_FOOTER_ROUTES = new Set(['/tags', '/privacy'])
 
 export function SiteShell() {
   const i18n = useI18nOptional()
-  const locale: Locale = i18n?.locale ?? 'zh'
+  const locale: Locale = i18n?.locale ?? 'en'
+  const defaultLocale: Locale = i18n?.defaultLocale ?? 'en'
   const location = useLocation()
   const r = (v: import('../../config/site').LocalizedString | undefined, fb: string) =>
     resolveLocalized(v, locale, fb)
 
-  // Helper to get locale-prefixed path
-  const localePath = (path: string) => getLocalePath(path, locale)
+  const localePath = (path: string) => {
+    const normalized = path.startsWith('/') ? path : `/${path}`
+    return locale === defaultLocale ? normalized : `/${locale}${normalized}`
+  }
   const hideSiteFooter = MINIMAL_FOOTER_ROUTES.has(getRoutePathname(location.pathname))
 
   return (

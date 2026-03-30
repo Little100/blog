@@ -32,8 +32,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Project Pages live at https://<user>.github.io/<repo>/; Vite must use matching base.
-          VITE_BASE: /${{ github.event.repository.name }}/
+          # Root site deployment (no base path).
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,17 +1,10 @@
-import { useMemo } from 'react'
 import { MarkdownDocument } from '../markdown/MarkdownDocument'
 import { useParsedMarkdown } from '../hooks/useParsedMarkdown'
 import { useI18n } from '../i18n/I18nContext'
-import { expandMarkdownI18nKeys } from '../utils/i18nKeys'
 
 export function PrivacyPage() {
-  const md = useParsedMarkdown('/content/privacy.md')
-  const { t } = useI18n()
-
-  const body = useMemo(() => {
-    if (md.status !== 'ok') return ''
-    return expandMarkdownI18nKeys(md.body, t)
-  }, [md, t])
+  const { locale, t } = useI18n()
+  const md = useParsedMarkdown(`/content/${locale}/privacy.md`)
 
   if (md.status === 'loading') {
     return <p className="page-state">{t('state.loading')}</p>
@@ -29,7 +22,7 @@ export function PrivacyPage() {
       <h1 className="page-hero-title">{t('privacy.title')}</h1>
       <p className="tags-page__lead">{t('privacy.lead')}</p>
       <div className="glass-card contact-card contact-card--full privacy-page__body">
-        <MarkdownDocument source={body} />
+        <MarkdownDocument source={md.body} />
       </div>
     </div>
   )

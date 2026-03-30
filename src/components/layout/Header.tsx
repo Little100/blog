@@ -16,12 +16,13 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTheme } from '../../theme/ThemeContext'
-import { useI18n } from '../../i18n/I18nContext'
+import { useI18nOptional } from '../../i18n/I18nContext'
 import { LOCALE_DEFS } from '../../i18n/translations'
 import { useArticleFocus } from '../../focus/ArticleFocusContext'
 import { siteConfig } from '../../config/site'
 import { publicAssetUrl } from '../../utils/publicAssetUrl'
 import { LocaleSwitcher } from './LocaleSwitcher'
+import { stripBasePath, VITE_BASE } from '../../config/basePath'
 import type { Locale } from '../../i18n/translations'
 
 const UPDATE_CFG = (siteConfig as Record<string, unknown>).updates as
@@ -35,12 +36,14 @@ function siteRepoUrl(): string {
 
 function getLocalePath(path: string, locale: Locale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`
-  return `/${locale}${normalized}`
+  return `${VITE_BASE}${locale}${normalized}`
 }
 
 function getCleanPath(pathname: string): string {
+  // Strip base path first (dev/prod), then strip locale prefix.
+  const afterBase = stripBasePath(pathname)
   // Note: zh-TW must appear before zh so the alternation matches the longer variant first.
-  return pathname.replace(/^\/(en|ja|zh-TW|zh)/, '') || '/'
+  return afterBase.replace(/^\/(en|ja|zh-TW|zh)/, '') || '/'
 }
 
 const nav: readonly { to: string; key: string; Icon: LucideIcon }[] = [
@@ -56,7 +59,12 @@ export function Header() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const { theme, cycleTheme } = useTheme()
-  const { t, locale, setLocale, availableLocales } = useI18n()
+  // useI18nOptional: Header may render before I18nProvider is fully mounted during fast HMR reconnections.
+  const ctx = useI18nOptional()
+  const t = ctx?.t ?? ((k: string) => k)
+  const locale: Locale = ctx?.locale ?? 'en'
+  const setLocale = ctx?.setLocale ?? (() => {})
+  const availableLocales = ctx?.availableLocales ?? (['en'] as Locale[])
   const localeChoices = LOCALE_DEFS.filter((d) => availableLocales.includes(d.code))
   const { focusAvailable, openArticleFocus } = useArticleFocus()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -124,9 +132,7 @@ export function Header() {
       return
     }
     setSearchOpen(true)
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => searchInputRef.current?.focus())
-    })
+    requestAnimationFrame(() => searchInputRef.current?.focus())
   }
 
   const submitHeaderSearch = () => {

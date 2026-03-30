@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { stripBasePath } from '../../config/basePath'
 import type { Locale } from '../../i18n/translations'
 
 type LocaleChoice = { code: Locale; label: string; flag: string }
@@ -13,9 +14,7 @@ type LocaleSwitcherProps = {
   setLocale: (next: Locale) => void
   choices: LocaleChoice[]
   ariaLabel: string
-  /** Wider touch targets and full-width menu (mobile drawer) */
   variant?: 'compact' | 'full'
-  /** e.g. close mobile nav after picking a locale */
   onAfterPick?: () => void
 }
 
@@ -41,21 +40,27 @@ export function LocaleSwitcher({
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  // Strip locale prefix from current path to get the clean inner route path.
-  // All page routes are under /{locale} prefix, so stripping the first segment
-  // gives the canonical route (e.g. /{locale}/blog/post/xxx → /blog/post/xxx).
-  const cleanPath = '/' + pathname.split('/').slice(2).join('/') || '/'
+  // Strip base path first, then extract the clean path (without locale prefix).
+  // Default locale: no locale prefix in URL (e.g. /blog, /post/xxx)
+  // Non-default locale (/ja/): /ja/blog → cleanPath = /blog
+  const afterBase = stripBasePath(pathname)
+  const segments = afterBase.split('/').filter(Boolean)
+  const hasLocalePrefix =
+    segments.length > 0 && choices.some((c) => c.code === segments[0])
+  const cleanPath =
+    hasLocalePrefix
+      ? '/' + segments.slice(1).join('/') || '/'
+      : '/' + segments.join('/') || '/'
 
   const navigateToLocale = (targetLocale: Locale) => {
-    // All locales (including English) have a /{locale} prefix in the URL.
     const targetPath = `/${targetLocale}${cleanPath}`
-    navigate(targetPath)
     setLocale(targetLocale)
+    navigate(targetPath)
     setOpen(false)
     onAfterPick?.()
   }
 
-  /** Portalled to body with fixed positioning; avoids being nested inside the header backdrop-blur so backdrop-filter samples the sidebar/main content correctly */
+  /** Portalled to body with fixed positioning */
   useLayoutEffect(() => {
     if (!open) return
     const update = () => {
@@ -150,8 +155,8 @@ export function LocaleSwitcher({
                 'border-[color-mix(in_srgb,var(--glass-border)_92%,transparent)]',
                 'bg-[color-mix(in_srgb,var(--glass-bg)_72%,transparent)]',
                 'backdrop-blur-xl backdrop-saturate-[1.35]',
-                '[box-shadow:var(--glass-shadow),inset_0_1px_0_0_color-mix(in_srgb,white_8%,transparent)]',
-                'dark:[box-shadow:var(--glass-shadow),inset_0_1px_0_0_color-mix(in_srgb,white_6%,transparent)]',
+                'shadow-[var(--glass-shadow),inset_0_1px_0_0_color-mix(in_srgb,white_8%,transparent)]',
+                'dark:shadow-[var(--glass-shadow),inset_0_1px_0_0_color-mix(in_srgb,white_6%,transparent)]',
                 !full && 'min-w-[11rem]',
               )}
               style={{

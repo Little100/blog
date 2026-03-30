@@ -4,12 +4,15 @@ export type PostMeta = {
   title: string
   titleEn?: string
   date: string
+  lastEdited?: string
   author: string
   readMinutes: number
   tags: string[]
+  icon?: string
   description?: string
   hero?: string
   related?: string
+  excerpt?: string
 }
 
 const DEFAULT_META: PostMeta = {
@@ -20,6 +23,24 @@ const DEFAULT_META: PostMeta = {
   tags: [],
 }
 
+/** Strip YAML double/single quotes from scalar values (e.g. icon: "https://..."). */
+function unquoteYamlScalar(value: string): string {
+  const s = value.trim()
+  if (s.length < 2) return s
+  if (
+    (s.startsWith('"') && s.endsWith('"')) ||
+    (s.startsWith("'") && s.endsWith("'"))
+  ) {
+    return s.slice(1, -1)
+  }
+  return s
+}
+
+function optionalUnquoted(raw: string | undefined): string | undefined {
+  if (raw === undefined || !String(raw).trim()) return undefined
+  return unquoteYamlScalar(String(raw))
+}
+
 function parseTagsValue(raw: string | undefined): string[] {
   if (raw === undefined || !String(raw).trim()) return []
   const t = String(raw).trim()
@@ -28,11 +49,20 @@ function parseTagsValue(raw: string | undefined): string[] {
       const parsed = JSON.parse(t) as unknown
       if (Array.isArray(parsed)) return parsed.map((x) => String(x))
     } catch {
+      // YAML-style [foo, bar, baz] without JSON quotes
+      if (t.endsWith(']')) {
+        const inner = t.slice(1, -1).trim()
+        if (inner.length === 0) return []
+        return inner
+          .split(/\s*,\s*/)
+          .map((s) => unquoteYamlScalar(s))
+          .filter(Boolean)
+      }
     }
   }
   return t
     .split(/\s*[·,，]\s*/)
-    .map((s) => s.trim())
+    .map((s) => unquoteYamlScalar(s))
     .filter(Boolean)
 }
 
@@ -60,18 +90,21 @@ export function parseFrontmatter(source: string): {
     if (p) raw[p[0]] = p[1]
   }
 
-  const readMinutes = Number.parseInt(raw.readMinutes ?? '5', 10)
+  const readMinutes = Number.parseInt(unquoteYamlScalar(raw.readMinutes ?? '5'), 10)
   const meta: PostMeta = {
     ...DEFAULT_META,
-    title: raw.title ?? DEFAULT_META.title,
-    titleEn: raw.titleEn,
-    date: raw.date ?? DEFAULT_META.date,
-    author: raw.author ?? DEFAULT_META.author,
+    title: raw.title !== undefined ? unquoteYamlScalar(raw.title) : DEFAULT_META.title,
+    titleEn: optionalUnquoted(raw.titleEn),
+    date: raw.date !== undefined ? unquoteYamlScalar(raw.date) : DEFAULT_META.date,
+    lastEdited: optionalUnquoted(raw.lastEdited),
+    author: raw.author !== undefined ? unquoteYamlScalar(raw.author) : DEFAULT_META.author,
     readMinutes: Number.isFinite(readMinutes) ? readMinutes : 5,
     tags: parseTagsValue(raw.tags),
-    description: raw.description,
-    hero: raw.hero,
-    related: raw.related,
+    icon: optionalUnquoted(raw.icon),
+    description: optionalUnquoted(raw.description),
+    hero: optionalUnquoted(raw.hero),
+    related: optionalUnquoted(raw.related),
+    excerpt: optionalUnquoted(raw.excerpt),
   }
 
   return { meta, body }

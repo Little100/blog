@@ -7,11 +7,8 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import {
-  localeFromNavigatorOrHeader,
-  writeStoredLocale,
-} from './parseAcceptLanguage'
-import { CONTENT_STRINGS_BY_LOCALE } from './contentBundles'
+import { useLocation } from 'react-router-dom'
+import { writeStoredLocale } from './parseAcceptLanguage'
 import {
   LOCALE_DEFS,
   STRINGS,
@@ -33,7 +30,6 @@ function enabledLocales(): Locale[] {
 }
 
 function getLocaleFromPath(pathname: string): Locale | null {
-  // Note: zh-TW must appear before zh so the alternation matches the longer variant first.
   const match = pathname.match(/^\/(en|ja|zh-TW|zh)(\/|$)/)
   if (match) {
     return match[1] as Locale
@@ -41,11 +37,20 @@ function getLocaleFromPath(pathname: string): Locale | null {
   return null
 }
 
+function resolveDefaultLocale(avail: Locale[]): Locale {
+  const dl = (rawConfig as { defaultLanguage?: string }).defaultLanguage
+  if (dl && ALL_LOCALES.includes(dl as Locale) && avail.includes(dl as Locale)) {
+    return dl as Locale
+  }
+  return avail[0] ?? 'en'
+}
+
 interface I18nContextValue {
   locale: Locale
   setLocale: (l: Locale) => void
   t: (key: string) => string
   availableLocales: Locale[]
+  defaultLocale: Locale
 }
 
 const I18nContext = createContext<I18nContextValue | null>(null)
@@ -67,66 +72,89 @@ function docLangTag(locale: Locale): string {
   return tag[locale] ?? 'en'
 }
 
+/**
+ * I18nProvider keeps `locale` in sync with the URL.
+ *
+ * - Paths without a locale segment (`/`, `/blog`, …) always use
+ *   `config.defaultLanguage` (not localStorage). That matches SEO: the root
+ *   URL is the canonical default language.
+ * - Paths with a prefix (`/ja/blog`, …) use that locale.
+ *
+ * `t()` only handles UI strings. Markdown content uses `/content/{locale}/…`.
+ */
 export function I18nProvider({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
   const availableLocales = useMemo(() => enabledLocales(), [])
+  const defaultLocale = useMemo(
+    () => resolveDefaultLocale(availableLocales),
+    [availableLocales],
+  )
 
-  // Initialize synchronously from window so the locale is correct on first render.
-  // This avoids the flash-of-wrong-language issue that useEffect would introduce.
   const [locale, setLocaleState] = useState<Locale>(() => {
-    // Strip the Vite base path (e.g. /blog/) before extracting the locale.
-    // window.location.pathname includes the base path; without stripping it,
-    // the first segment would be "blog" instead of "en" or "zh", breaking detection.
+    const avail = enabledLocales()
+    const def = resolveDefaultLocale(avail)
     const cleanPath = stripBasePath(window.location.pathname)
     const urlLocale = getLocaleFromPath(cleanPath)
-    if (urlLocale && availableLocales.includes(urlLocale)) {
+    if (urlLocale && avail.includes(urlLocale)) {
       return urlLocale
     }
-    const stored = localStorage.getItem('BLOG-locale')
-    if (stored && availableLocales.includes(stored as Locale)) {
-      return stored as Locale
-    }
-    const detected = localeFromNavigatorOrHeader()
-    if (availableLocales.includes(detected)) {
-      return detected
-    }
-    return availableLocales[0] ?? 'en'
+    return def
   })
 
   useEffect(() => {
     document.documentElement.lang = docLangTag(locale)
   }, [locale])
 
+  useEffect(() => {
+    const cleanPath = stripBasePath(pathname)
+    const urlLocale = getLocaleFromPath(cleanPath)
+    const target: Locale =
+      urlLocale && availableLocales.includes(urlLocale)
+        ? urlLocale
+        : defaultLocale
+    setLocaleState((prev) => {
+      if (prev === target) return prev
+      writeStoredLocale(target)
+      return target
+    })
+  }, [pathname, defaultLocale, availableLocales])
+
   const setLocale = useCallback(
     (l: Locale) => {
-      if (availableLocales.includes(l)) {
-        setLocaleState(l)
+      if (!availableLocales.includes(l)) return
+      setLocaleState((prev) => {
+        if (prev === l) return prev
         writeStoredLocale(l)
-      }
+        return l
+      })
     },
     [availableLocales],
   )
 
   const t = useCallback(
     (key: string) => {
-      const contentLoc = CONTENT_STRINGS_BY_LOCALE[locale] as Record<string, string>
       const stringsLoc = STRINGS[locale] as Record<string, string>
-      let primary =
-        pickString(contentLoc, key) || pickString(stringsLoc, key)
-      if (!primary && locale === 'zh-TW') {
-        primary = pickString(CONTENT_STRINGS_BY_LOCALE.zh, key)
+      const found = pickString(stringsLoc, key)
+      if (found) return found
+
+      if (locale === 'zh-TW') {
+        const zh = STRINGS.zh as Record<string, string>
+        const zhFound = pickString(zh, key)
+        if (zhFound) return zhFound
       }
-      if (primary) return primary
-      const contentEn = CONTENT_STRINGS_BY_LOCALE.en as Record<string, string>
-      const stringsEn = STRINGS.en as Record<string, string>
-      const en = pickString(contentEn, key) || pickString(stringsEn, key)
-      return en || key
+
+      const en = STRINGS.en as Record<string, string>
+      const enFound = pickString(en, key)
+      if (enFound) return enFound
+
+      return key
     },
     [locale],
   )
 
   const value = useMemo(
-    () => ({ locale, setLocale, t, availableLocales }),
-    [locale, setLocale, t, availableLocales],
+    () => ({ locale, setLocale, t, availableLocales, defaultLocale }),
+    [locale, setLocale, t, availableLocales, defaultLocale],
   )
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>

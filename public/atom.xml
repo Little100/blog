@@ -5,7 +5,7 @@
   <link href="https://your-domain.com/atom.xml" rel="self"/>
   <link href="https://your-domain.com/"/>
   <id>https://your-domain.com/</id>
-  <updated>2026-03-29T00:00:00Z</updated>
+  <updated>2026-03-30T00:00:00Z</updated>
   <author>
     <name>Little100</name>
   </author>
@@ -13,51 +13,51 @@
   <icon>https://your-domain.com/avatar.png</icon>
   <logo>https://your-domain.com/og-image.png</logo>
   <entry>
-    <title>post.shiki-demo.title</title>
-    <link href="https://your-domain.com/post/shiki-demo" rel="alternate"/>
-    <id>https://your-domain.com/post/shiki-demo</id>
-    <updated>2026-03-29T00:00:00Z</updated>
-    <published>2026-03-29T00:00:00Z</published>
-    <summary>Read more about post.shiki-demo.title on Little100&apos;s BLOG.</summary>
-  </entry>
-  <entry>
-    <title>post.annotation-demo.title</title>
+    <title>批注功能演示</title>
     <link href="https://your-domain.com/post/annotation-demo" rel="alternate"/>
     <id>https://your-domain.com/post/annotation-demo</id>
     <updated>2026-03-28T00:00:00Z</updated>
     <published>2026-03-28T00:00:00Z</published>
-    <summary>Read more about post.annotation-demo.title on Little100&apos;s BLOG.</summary>
+    <summary>Read more about 批注功能演示 on Little100&apos;s BLOG.</summary>
   </entry>
   <entry>
-    <title>post.assets-workflow.title</title>
+    <title>图片工作流：全自动压缩与 GitHub 体积管理</title>
     <link href="https://your-domain.com/post/assets-workflow" rel="alternate"/>
     <id>https://your-domain.com/post/assets-workflow</id>
     <updated>2026-03-27T00:00:00Z</updated>
     <published>2026-03-27T00:00:00Z</published>
-    <summary>Read more about post.assets-workflow.title on Little100&apos;s BLOG.</summary>
+    <summary>Read more about 图片工作流：全自动压缩与 GitHub 体积管理 on Little100&apos;s BLOG.</summary>
   </entry>
   <entry>
-    <title>post.kyoto.title</title>
+    <title>摄影师手记：伏见稻荷的静默与鸟居</title>
     <link href="https://your-domain.com/post/kyoto" rel="alternate"/>
     <id>https://your-domain.com/post/kyoto</id>
     <updated>2023-10-26T00:00:00Z</updated>
     <published>2023-10-26T00:00:00Z</published>
-    <summary>Read more about post.kyoto.title on Little100&apos;s BLOG.</summary>
+    <summary>Read more about 摄影师手记：伏见稻荷的静默与鸟居 on Little100&apos;s BLOG.</summary>
   </entry>
   <entry>
-    <title>post.literature.title</title>
+    <title>文学与逻辑：慢读与结构</title>
     <link href="https://your-domain.com/post/literature" rel="alternate"/>
     <id>https://your-domain.com/post/literature</id>
     <updated>2023-09-12T00:00:00Z</updated>
     <published>2023-09-12T00:00:00Z</published>
-    <summary>Read more about post.literature.title on Little100&apos;s BLOG.</summary>
+    <summary>Read more about 文学与逻辑：慢读与结构 on Little100&apos;s BLOG.</summary>
   </entry>
   <entry>
-    <title>post.simplicity.title</title>
+    <title>Shiki 代码高亮演示</title>
+    <link href="https://your-domain.com/post/shiki-demo" rel="alternate"/>
+    <id>https://your-domain.com/post/shiki-demo</id>
+    <updated>2026-03-29T00:00:00Z</updated>
+    <published>2026-03-29T00:00:00Z</published>
+    <summary>Read more about Shiki 代码高亮演示 on Little100&apos;s BLOG.</summary>
+  </entry>
+  <entry>
+    <title>简约之美</title>
     <link href="https://your-domain.com/post/simplicity" rel="alternate"/>
     <id>https://your-domain.com/post/simplicity</id>
     <updated>2023-08-01T00:00:00Z</updated>
     <published>2023-08-01T00:00:00Z</published>
-    <summary>Read more about post.simplicity.title on Little100&apos;s BLOG.</summary>
+    <summary>Read more about 简约之美 on Little100&apos;s BLOG.</summary>
   </entry>
 </feed>
