@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { CategorySidebar } from '../components/layout/CategorySidebar'
 import { TagSidebar } from '../components/layout/TagSidebar'
 import { SocialLinks } from '../components/layout/SocialLinks'
 import { useI18n } from '../i18n/I18nContext'
 import { POST_INDEX_BY_LOCALE } from '../i18n/postIndex'
+import { postMatchesTagSlug } from '../utils/blogTags'
 import { useLocalePath } from '../utils/useLocalePath'
 
 const BLOG_PAGE_SIZE = 20
@@ -52,12 +53,14 @@ function useInView(options?: IntersectionObserverInit) {
 export function BlogListPage() {
   const { t, locale } = useI18n()
   const { getLocalePath } = useLocalePath()
+  const [searchParams] = useSearchParams()
+  const tagSlug = (searchParams.get('tag') ?? '').trim()
 
   const posts = POST_INDEX_BY_LOCALE[locale] ?? []
 
   const filtered = useMemo(() => {
-    return posts
-  }, [posts])
+    return posts.filter((p) => postMatchesTagSlug(p, tagSlug))
+  }, [posts, tagSlug])
 
   const filteredKey = useMemo(() => filtered.map((p) => p.slug).join('\0'), [filtered])
   const [visibleCount, setVisibleCount] = useState(BLOG_PAGE_SIZE)

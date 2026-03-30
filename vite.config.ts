@@ -138,15 +138,22 @@ function watchConfigJsonPlugin(): Plugin {
  *
  * @see https://github.com/rafgraph/spa-github-pages
  */
+// Store the resolved base across hooks — `configResolved` runs before `closeBundle`.
+let _resolvedBase = '/'
+
 function githubPagesSpaFallbackPlugin(): Plugin {
   return {
     name: 'github-pages-spa-fallback',
+    configResolved(config) {
+      _resolvedBase =
+        config.base === '/' ? '/' : (config.base.endsWith('/') ? config.base : `${config.base}/`)
+    },
     closeBundle() {
       const outDir = path.join(projectRoot, 'dist')
       const notFoundPath = path.join(outDir, '404.html')
-      const rawBase = process.env.VITE_BASE ?? '/'
-      const baseWithSlash =
-        rawBase === '/' ? '/' : (rawBase.endsWith('/') ? rawBase : `${rawBase}/`)
+      // Use the base resolved from defineConfig's `base` option — always consistent,
+      // unlike process.env.VITE_BASE which is not set during local builds.
+      const baseWithSlash = _resolvedBase
       const redirectBaseJson = JSON.stringify(baseWithSlash)
 
       const html = `<!DOCTYPE html>
