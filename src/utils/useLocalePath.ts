@@ -2,34 +2,31 @@ import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useI18n } from '../i18n/I18nContext'
 import type { Locale } from '../i18n/translations'
-import { VITE_BASE } from '../config/basePath'
+
+/** Pathnames for `<Link to>` / `navigate()` — relative to `BrowserRouter` basename, never include `BASE_URL`. */
+export function localePathForRouter(
+  path: string,
+  locale: Locale,
+  defaultLocale: Locale,
+): string {
+  const normalized = path.startsWith('/') ? path : `/${path}`
+  return locale === defaultLocale ? normalized : `/${locale}${normalized}`
+}
 
 export function useLocalePath() {
   const { locale, defaultLocale } = useI18n()
 
   const getLocalePath = useCallback(
-    (path: string): string => {
-      const normalized = path.startsWith('/') ? path : `/${path}`
-      const prefixed = locale === defaultLocale
-        ? normalized
-        : `/${locale}${normalized}`
-      return `${VITE_BASE}${prefixed.slice(1)}`
-    },
+    (path: string): string => localePathForRouter(path, locale, defaultLocale),
     [locale, defaultLocale],
   )
 
   const getAllLocalePaths = useCallback(
     (path: string, availableLocales: Locale[]): { locale: Locale; path: string }[] => {
-      const normalized = path.startsWith('/') ? path : `/${path}`
-      return availableLocales.map((loc) => {
-        const prefixed = loc === defaultLocale
-          ? normalized
-          : `/${loc}${normalized}`
-        return {
-          locale: loc,
-          path: `${VITE_BASE}${prefixed.slice(1)}`,
-        }
-      })
+      return availableLocales.map((loc) => ({
+        locale: loc,
+        path: localePathForRouter(path, loc, defaultLocale),
+      }))
     },
     [defaultLocale],
   )
@@ -78,9 +75,7 @@ export function useLocaleNavigate() {
 
   const navigateWithLocale = useCallback(
     (path: string, options?: { replace?: boolean }) => {
-      const normalized = path.startsWith('/') ? path : `/${path}`
-      const prefixed = locale === defaultLocale ? normalized : `/${locale}${normalized}`
-      navigate(`${VITE_BASE}${prefixed.slice(1)}`, options)
+      navigate(localePathForRouter(path, locale, defaultLocale), options)
     },
     [locale, defaultLocale, navigate],
   )
@@ -88,8 +83,7 @@ export function useLocaleNavigate() {
   const navigateToLocale = useCallback(
     (targetLocale: Locale, path?: string) => {
       const normalized = path?.startsWith('/') ? path : (path ? `/${path}` : '/')
-      const prefixed = targetLocale === defaultLocale ? normalized : `/${targetLocale}${normalized}`
-      navigate(`${VITE_BASE}${prefixed.slice(1)}`)
+      navigate(localePathForRouter(normalized, targetLocale, defaultLocale))
     },
     [defaultLocale, navigate],
   )

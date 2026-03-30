@@ -57,7 +57,7 @@ export function FocusReader({
   related,
 }: Props) {
   const { theme, cycleTheme } = useTheme()
-  const { locale, setLocale, t, availableLocales } = useI18n()
+  const { locale, defaultLocale, setLocale, t, availableLocales } = useI18n()
   const { getLocalePath } = useLocalePath()
 
   const localeChoices = useMemo(
@@ -110,6 +110,7 @@ export function FocusReader({
               {localeChoices.length > 1 ? (
                 <LocaleSwitcher
                   locale={locale}
+                  defaultLocale={defaultLocale}
                   setLocale={setLocale}
                   choices={localeChoices}
                   ariaLabel={t('focus.lang')}

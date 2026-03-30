@@ -16,8 +16,7 @@ import {
   isPostRelatedSlidePending,
 } from '../../utils/postRelatedNav'
 import type { Locale } from '../../i18n/translations'
-import { getRoutePathname } from '../../utils/useLocalePath'
-import { VITE_BASE } from '../../config/basePath'
+import { getRoutePathname, localePathForRouter } from '../../utils/useLocalePath'
 
 function SiteMain() {
   const location = useLocation()
@@ -95,11 +94,7 @@ export function SiteShell() {
   const r = (v: import('../../config/site').LocalizedString | undefined, fb: string) =>
     resolveLocalized(v, locale, fb)
 
-  const localePath = (path: string) => {
-    const normalized = path.startsWith('/') ? path : `/${path}`
-    const prefixed = locale === defaultLocale ? normalized : `/${locale}${normalized}`
-    return `${VITE_BASE}${prefixed.slice(1)}`
-  }
+  const localePath = (path: string) => localePathForRouter(path, locale, defaultLocale)
   const hideSiteFooter = MINIMAL_FOOTER_ROUTES.has(getRoutePathname(location.pathname))
 
   return (

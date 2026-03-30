@@ -22,7 +22,8 @@ import { useArticleFocus } from '../../focus/ArticleFocusContext'
 import { siteConfig } from '../../config/site'
 import { publicAssetUrl } from '../../utils/publicAssetUrl'
 import { LocaleSwitcher } from './LocaleSwitcher'
-import { stripBasePath, VITE_BASE } from '../../config/basePath'
+import { stripBasePath } from '../../config/basePath'
+import { localePathForRouter } from '../../utils/useLocalePath'
 import type { Locale } from '../../i18n/translations'
 
 const UPDATE_CFG = (siteConfig as Record<string, unknown>).updates as
@@ -32,11 +33,6 @@ const UPDATE_CFG = (siteConfig as Record<string, unknown>).updates as
 function siteRepoUrl(): string {
   const repo = UPDATE_CFG?.repo ?? 'Little100/blog'
   return `https://github.com/${repo}`
-}
-
-function getLocalePath(path: string, locale: Locale): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`
-  return `${VITE_BASE}${locale}${normalized}`
 }
 
 function getCleanPath(pathname: string): string {
@@ -63,6 +59,7 @@ export function Header() {
   const ctx = useI18nOptional()
   const t = ctx?.t ?? ((k: string) => k)
   const locale: Locale = ctx?.locale ?? 'en'
+  const defaultLocale: Locale = ctx?.defaultLocale ?? 'en'
   const setLocale = ctx?.setLocale ?? (() => {})
   const availableLocales = ctx?.availableLocales ?? (['en'] as Locale[])
   const localeChoices = LOCALE_DEFS.filter((d) => availableLocales.includes(d.code))
@@ -87,8 +84,7 @@ export function Header() {
   const searchValue = isBlogList ? blogQ : localSearchQ
   const reduce = useReducedMotion()
 
-  // Helper to get locale-prefixed path
-  const localePath = (path: string) => getLocalePath(path, locale)
+  const localePath = (path: string) => localePathForRouter(path, locale, defaultLocale)
 
   const setSearchValue = (v: string) => {
     if (isBlogList) {
@@ -224,6 +220,7 @@ export function Header() {
             {localeChoices.length > 1 ? (
               <LocaleSwitcher
                 locale={locale}
+                defaultLocale={defaultLocale}
                 setLocale={setLocale}
                 choices={localeChoices}
                 ariaLabel={t('nav.language')}
@@ -492,6 +489,7 @@ export function Header() {
                     </span>
                     <LocaleSwitcher
                       locale={locale}
+                      defaultLocale={defaultLocale}
                       setLocale={setLocale}
                       choices={localeChoices}
                       ariaLabel={t('nav.language')}

@@ -5,12 +5,14 @@ import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { stripBasePath } from '../../config/basePath'
+import { localePathForRouter } from '../../utils/useLocalePath'
 import type { Locale } from '../../i18n/translations'
 
 type LocaleChoice = { code: Locale; label: string; flag: string }
 
 type LocaleSwitcherProps = {
   locale: Locale
+  defaultLocale: Locale
   setLocale: (next: Locale) => void
   choices: LocaleChoice[]
   ariaLabel: string
@@ -20,6 +22,7 @@ type LocaleSwitcherProps = {
 
 export function LocaleSwitcher({
   locale,
+  defaultLocale,
   setLocale,
   choices,
   ariaLabel,
@@ -53,7 +56,7 @@ export function LocaleSwitcher({
       : '/' + segments.join('/') || '/'
 
   const navigateToLocale = (targetLocale: Locale) => {
-    const targetPath = `/${targetLocale}${cleanPath}`
+    const targetPath = localePathForRouter(cleanPath, targetLocale, defaultLocale)
     setLocale(targetLocale)
     navigate(targetPath)
     setOpen(false)
