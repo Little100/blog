@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
+import { CategorySidebar } from '../components/layout/CategorySidebar'
+import { TagSidebar } from '../components/layout/TagSidebar'
 import { SocialLinks } from '../components/layout/SocialLinks'
 import { useI18n } from '../i18n/I18nContext'
 import { POST_INDEX_BY_LOCALE } from '../i18n/postIndex'
+import { useLocalePath } from '../utils/useLocalePath'
 
 const BLOG_PAGE_SIZE = 20
 
@@ -47,7 +50,8 @@ function useInView(options?: IntersectionObserverInit) {
 }
 
 export function BlogListPage() {
-  const { t, locale, defaultLocale } = useI18n()
+  const { t, locale } = useI18n()
+  const { getLocalePath } = useLocalePath()
 
   const posts = POST_INDEX_BY_LOCALE[locale] ?? []
 
@@ -74,11 +78,6 @@ export function BlogListPage() {
   const loadMoreRef = useLoadMoreSentinel(hasMore, loadMore)
   const { ref: listRef, inView: listInView } = useInView()
   const reduce = useReducedMotion()
-
-  const getLocalePath = (path: string) =>
-    locale === defaultLocale
-      ? path.startsWith('/') ? path : `/${path}`
-      : `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   return (
     <div className="page page--blog">
@@ -137,8 +136,12 @@ export function BlogListPage() {
           </ul>
         </div>
 
-        <aside className="layout-split__aside">
-          <SocialLinks variant="spread" />
+        <aside className="layout-split__aside" aria-label={t('sidebar.categories')}>
+          <section className="glass-card home-rail">
+            <CategorySidebar />
+            <TagSidebar />
+            <SocialLinks variant="spread" />
+          </section>
         </aside>
       </div>
     </div>

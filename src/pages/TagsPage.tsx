@@ -3,17 +3,14 @@ import { useMemo } from 'react'
 import { useI18n } from '../i18n/I18nContext'
 import { POST_INDEX_BY_LOCALE } from '../i18n/postIndex'
 import { aggregateTagsFromPosts } from '../utils/blogTags'
+import { useLocalePath } from '../utils/useLocalePath'
 
 export function TagsPage() {
-  const { t, locale, defaultLocale } = useI18n()
+  const { t, locale } = useI18n()
+  const { getLocalePath } = useLocalePath()
   const posts = POST_INDEX_BY_LOCALE[locale] ?? []
 
   const tags = useMemo(() => aggregateTagsFromPosts(posts), [posts])
-
-  const getLocalePath = (path: string) =>
-    locale === defaultLocale
-      ? path.startsWith('/') ? path : `/${path}`
-      : `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   return (
     <div className="page page--tags">

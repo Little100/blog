@@ -29,6 +29,7 @@ import { isPostRelatedSlidePending, markPostRelatedNavigation } from '../utils/p
 import { SeoHead } from '../components/seo/SeoHead'
 import { siteConfig } from '../config/site'
 import { publicAssetUrl } from '../utils/publicAssetUrl'
+import { useLocalePath } from '../utils/useLocalePath'
 
 function relatedForSlug(current: string, loc: Locale): PostMeta[] {
   const posts = POST_INDEX_BY_LOCALE[loc] ?? []
@@ -38,7 +39,8 @@ function relatedForSlug(current: string, loc: Locale): PostMeta[] {
 export function PostPage() {
   const { slug } = useParams()
   const safeSlug = slug?.replace(/[^a-zA-Z0-9-_]/g, '') ?? 'kyoto'
-  const { locale, t, defaultLocale } = useI18n()
+  const { locale, t } = useI18n()
+  const { getLocalePath } = useLocalePath()
   const url = `/content/${locale}/posts/${safeSlug}.md`
   const md = useParsedMarkdown(url)
   const { setArticleFocusOpener } = useArticleFocus()
@@ -101,11 +103,6 @@ export function PostPage() {
     if (icon) return icon
     return ''
   }, [coverSrc, md])
-
-  const getLocalePath = (path: string) =>
-    locale === defaultLocale
-      ? path.startsWith('/') ? path : `/${path}`
-      : `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   const bodyRevealRef = useRef<HTMLDivElement>(null)
   const bodyProgress = useMotionValue(skipBodyReveal ? 1 : 0)

@@ -17,6 +17,7 @@ import {
 } from '../../utils/postRelatedNav'
 import type { Locale } from '../../i18n/translations'
 import { getRoutePathname } from '../../utils/useLocalePath'
+import { VITE_BASE } from '../../config/basePath'
 
 function SiteMain() {
   const location = useLocation()
@@ -96,7 +97,8 @@ export function SiteShell() {
 
   const localePath = (path: string) => {
     const normalized = path.startsWith('/') ? path : `/${path}`
-    return locale === defaultLocale ? normalized : `/${locale}${normalized}`
+    const prefixed = locale === defaultLocale ? normalized : `/${locale}${normalized}`
+    return `${VITE_BASE}${prefixed.slice(1)}`
   }
   const hideSiteFooter = MINIMAL_FOOTER_ROUTES.has(getRoutePathname(location.pathname))
 

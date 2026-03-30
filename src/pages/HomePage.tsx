@@ -8,9 +8,11 @@ import { CategorySidebar } from '../components/layout/CategorySidebar'
 import { TagSidebar } from '../components/layout/TagSidebar'
 import { SocialLinks } from '../components/layout/SocialLinks'
 import { publicAssetUrl } from '../utils/publicAssetUrl'
+import { useLocalePath } from '../utils/useLocalePath'
 
 export function HomePage() {
-  const { locale, t, defaultLocale } = useI18n()
+  const { locale, t } = useI18n()
+  const { getLocalePath } = useLocalePath()
   const md = useParsedMarkdown(`/content/${locale}/home.md`)
 
   const latestPosts = useMemo(() => {
@@ -19,11 +21,6 @@ export function HomePage() {
       .sort((a, b) => String(b.date).localeCompare(String(a.date)))
       .slice(0, 6)
   }, [locale])
-
-  const getLocalePath = (path: string) =>
-    locale === defaultLocale
-      ? path.startsWith('/') ? path : `/${path}`
-      : `/${locale}${path.startsWith('/') ? path : `/${path}`}`
 
   if (md.status === 'loading') {
     return <p className="page-state">{t('state.loading')}</p>

@@ -6,7 +6,7 @@ import { markPostRelatedNavigation } from '../../utils/postRelatedNav'
 import { Moon, Sun, X } from 'lucide-react'
 import { MarkdownDocument } from '../../markdown/MarkdownDocument'
 import { useTheme } from '../../theme/ThemeContext'
-import { LOCALE_DEFS, type Locale } from '../../i18n/translations'
+import { LOCALE_DEFS } from '../../i18n/translations'
 import { useI18n } from '../../i18n/I18nContext'
 import { siteConfig } from '../../config/site'
 import { publicAssetUrl } from '../../utils/publicAssetUrl'
@@ -15,11 +15,7 @@ import type { MarkdownAnnotation } from '../../utils/annotationMarkdown'
 import { AnnotationBubbleProvider } from '../post/AnnotationBubbleCtx'
 import { LocaleSwitcher } from '../layout/LocaleSwitcher'
 import { FocusAnnotationList } from './FocusAnnotationList'
-
-function getLocalePath(path: string, locale: Locale): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`
-  return `/${locale}${normalized}`
-}
+import { useLocalePath } from '../../utils/useLocalePath'
 
 export type FocusRelatedItem = {
   slug: string
@@ -62,13 +58,12 @@ export function FocusReader({
 }: Props) {
   const { theme, cycleTheme } = useTheme()
   const { locale, setLocale, t, availableLocales } = useI18n()
+  const { getLocalePath } = useLocalePath()
 
   const localeChoices = useMemo(
     () => LOCALE_DEFS.filter((d) => availableLocales.includes(d.code)),
     [availableLocales],
   )
-
-  const localePath = (path: string) => getLocalePath(path, locale)
 
   useEffect(() => {
     if (!open) return
@@ -206,7 +201,7 @@ export function FocusReader({
                     {related.filter((r) => r.icon).map((r) => (
                       <li key={r.slug}>
                         <Link
-                          to={localePath(`/post/${r.slug}`)}
+                          to={getLocalePath(`/post/${r.slug}`)}
                           className="related-row"
                           onClick={() => {
                             markPostRelatedNavigation()

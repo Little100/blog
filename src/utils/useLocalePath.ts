@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useI18n } from '../i18n/I18nContext'
 import type { Locale } from '../i18n/translations'
+import { VITE_BASE } from '../config/basePath'
 
 export function useLocalePath() {
   const { locale, defaultLocale } = useI18n()
@@ -9,9 +10,10 @@ export function useLocalePath() {
   const getLocalePath = useCallback(
     (path: string): string => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      return locale === defaultLocale
+      const prefixed = locale === defaultLocale
         ? normalized
         : `/${locale}${normalized}`
+      return `${VITE_BASE}${prefixed.slice(1)}`
     },
     [locale, defaultLocale],
   )
@@ -19,12 +21,15 @@ export function useLocalePath() {
   const getAllLocalePaths = useCallback(
     (path: string, availableLocales: Locale[]): { locale: Locale; path: string }[] => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      return availableLocales.map((loc) => ({
-        locale: loc,
-        path: loc === defaultLocale
+      return availableLocales.map((loc) => {
+        const prefixed = loc === defaultLocale
           ? normalized
-          : `/${loc}${normalized}`,
-      }))
+          : `/${loc}${normalized}`
+        return {
+          locale: loc,
+          path: `${VITE_BASE}${prefixed.slice(1)}`,
+        }
+      })
     },
     [defaultLocale],
   )
@@ -74,10 +79,8 @@ export function useLocaleNavigate() {
   const navigateWithLocale = useCallback(
     (path: string, options?: { replace?: boolean }) => {
       const normalized = path.startsWith('/') ? path : `/${path}`
-      navigate(
-        locale === defaultLocale ? normalized : `/${locale}${normalized}`,
-        options,
-      )
+      const prefixed = locale === defaultLocale ? normalized : `/${locale}${normalized}`
+      navigate(`${VITE_BASE}${prefixed.slice(1)}`, options)
     },
     [locale, defaultLocale, navigate],
   )
@@ -85,9 +88,8 @@ export function useLocaleNavigate() {
   const navigateToLocale = useCallback(
     (targetLocale: Locale, path?: string) => {
       const normalized = path?.startsWith('/') ? path : (path ? `/${path}` : '/')
-      navigate(
-        targetLocale === defaultLocale ? normalized : `/${targetLocale}${normalized}`,
-      )
+      const prefixed = targetLocale === defaultLocale ? normalized : `/${targetLocale}${normalized}`
+      navigate(`${VITE_BASE}${prefixed.slice(1)}`)
     },
     [defaultLocale, navigate],
   )
