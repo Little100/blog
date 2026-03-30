@@ -3123,10 +3123,12 @@ ul.site-locale-menu.fixed {
   text-underline-offset: 3px;
 }
 
-/* Block wrapper so GFM does not treat `|…|` annotation lines as table cells */
+/*
+ * Wrapper keeps annotation HTML grouped for table-row unwrap (annotationMarkdown.ts);
+ * must stay inline inside <p> so the anchor flows with surrounding text (not a forced line break).
+ */
 .post-md .md-anno-row {
-  display: block;
-  margin: 0.4em 0;
+  display: inline;
 }
 
 .md-anno {

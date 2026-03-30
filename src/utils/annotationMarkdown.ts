@@ -100,22 +100,22 @@ export type ParsedInlineAnnotation = {
 
 /**
  * Find the closing `|` for an annotation row tail:
- * - Same line: last `|` on that line with only whitespace after (tail must not contain other `|`).
+ * - Same line: first `|` on that line ends the tail (supports `…批注尾巴|正文继续` — text may follow the pipe).
+ *   (Tails must not contain extra `|` before the closing delimiter; use multi-line tails if you need `|` inside.)
  * - GFM: optional line that is only whitespace + `|`.
- * - Multi-line tail: later lines until a line whose last `|` has only whitespace after it.
+ * - Multi-line tail: first line has no `|`; later lines until one whose last `|` has only whitespace after it.
  */
 function findAnnotationRowClosingPipe(source: string, tailStart: number): number {
   const lineEnd = source.indexOf('\n', tailStart)
   const limit = lineEnd === -1 ? source.length : lineEnd
   const firstLine = source.slice(tailStart, limit)
-  const rel0 = firstLine.lastIndexOf('|')
-  if (rel0 !== -1 && /^\s*$/.test(firstLine.slice(rel0 + 1))) {
-    return tailStart + rel0
+  const firstPipeRel = firstLine.indexOf('|')
+  if (firstPipeRel !== -1) {
+    return tailStart + firstPipeRel
   }
 
   if (lineEnd === -1) {
-    const idx = source.indexOf('|', tailStart)
-    return idx === -1 ? -1 : idx
+    return -1
   }
 
   const after = source.slice(lineEnd + 1)
@@ -269,7 +269,7 @@ function replaceAnnotationsInSegment(
     annotations.push({ anchorText, title, body })
     const badge = i + 1
     const tone = annotationTone(idPrefix, i)
-    // Outer span (block via CSS) avoids GFM `|…|` table rows and callout-splitter eating `<div>…</div>`.
+    // Outer span groups markup; CSS keeps it inline inside paragraphs (see `.md-anno-row` in index.css).
     out += `<span class="md-anno-row"><span class="md-anno" data-anno-index="${i}" data-anno-tone="${tone}" id="BLOG-anno-text-${idPrefix}-${i}"><span class="md-anno__badge" aria-hidden="true">${badge}</span> ${escapeHtml(anchorText)}</span></span>`
     pos = parsed.end
   }
